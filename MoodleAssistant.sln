@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{9CF01A1C-2D49-4815-AA60-A3C07F1E16F4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoodleAssistant.UnitTests", "MoodleAssistant.UnitTests\MoodleAssistant.UnitTests.csproj", "{725004A9-E9C2-4876-A4F3-836F9B371C11}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoodleAssistant.UnitTests", "tests\MoodleAssistant.UnitTests\MoodleAssistant.UnitTests.csproj", "{725004A9-E9C2-4876-A4F3-836F9B371C11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodleAssistant.IntegrationTests", "MoodleAssistant.IntegrationTests\MoodleAssistant.IntegrationTests.csproj", "{646183D1-88D0-43FA-B270-9B8F2FE9FD02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoodleAssistant.IntegrationTests", "tests\MoodleAssistant.IntegrationTests\MoodleAssistant.IntegrationTests.csproj", "{646183D1-88D0-43FA-B270-9B8F2FE9FD02}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
