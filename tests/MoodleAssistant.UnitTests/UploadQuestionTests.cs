@@ -49,7 +49,15 @@ namespace MoodleAssistant.UnitTests
         [Fact]
         public void MoodleAssistant_UploadXML_EmptyXML_ReturnToUpload()
         {
-            throw new NotImplementedException();
+            UploadFile("EmptyXmlFile.txt");
+            Assert.Equal(RandomQuestionPageTitle, _webDriver.Title);
+        }
+
+        [Fact]
+        public void MoodleAssistant_UploadXML_EmptyXML_DisplaysAlert()
+        {
+            UploadFile("EmptyXmlFile.xml");
+            Assert.True(_webDriver.FindElement(By.Id(AlertError)).Displayed);
         }
 
 

@@ -25,6 +25,7 @@ namespace MoodleAssistant.Controllers
                 xmlFileModel.Error = Errors.NonXmlFile;
                 return View(pathToRandomQuestionView, xmlFileModel);
             }
+            
 
             xmlFileModel.Error = Errors.NoErrors;
             return Content("Hello world");
