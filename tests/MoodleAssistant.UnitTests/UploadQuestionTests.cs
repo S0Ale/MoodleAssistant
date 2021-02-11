@@ -5,31 +5,44 @@ using Xunit;
 
 namespace MoodleAssistant.UnitTests
 {
-    public class UploadQuestionTests
+    public abstract class TestsBase : IDisposable
     {
-        private readonly IWebDriver _webDriver;
-        private const string SiteUrl = "to-be-defined";
-        private const string AssetsDir = @"..\assets\xmlFiles\";
-        private const string UploadXmlButtonId = "upload-xml-question";
-        private const string AlertNotXml = "alert-not-xml-file";
+        protected readonly IWebDriver _webDriver;
+        protected const string SiteUrl = "https://localhost:44379/Home/RandomQuestions";
 
-        public UploadQuestionTests()
+        protected TestsBase()
         {
-            _webDriver = new ChromeDriver {Url = SiteUrl + @"\randomQuestions" };
+            _webDriver = new ChromeDriver { Url = SiteUrl };
         }
+
+        public void Dispose()
+        {
+            _webDriver.Close();
+            _webDriver.Dispose();
+        }
+    }
+
+    public class UploadQuestionTests : TestsBase
+    {
+       
+        private const string AssetsDir = @"C:\Users\andre\source\repos\MoodleAssistant\tests\assets\xmlFiles\";
+        private const string RandomQuestionPageTitle = "Random Questions - MoodleAssistant";
+        private const string UploadXmlButtonId = "upload-xml-question";
+        private const string AlertError = "alert-error-xml";
+
 
         [Fact]
         public void MoodleAssistant_UploadXML_NonXMLFile_ReturnToUpload()
         {
             UploadFile("txtFile.txt");
-            Assert.Equal(_webDriver.Url, SiteUrl);
+            Assert.Equal(RandomQuestionPageTitle, _webDriver.Title);
         }
 
         [Fact]
         public void MoodleAssistant_UploadXML_NonXMLFile_DisplaysAlert()
         {
             UploadFile("txtFile.txt");
-            Assert.True(_webDriver.FindElement(By.Id(AlertNotXml)).Displayed);
+            Assert.True(_webDriver.FindElement(By.Id(AlertError)).Displayed);
         }
 
 
