@@ -1,0 +1,21 @@
+﻿@using MoodleAssistant.Utils
+@model UploadXmlFileModel
+@{
+    ViewData["Title"] = "Random Questions";
+
+    var alert = string.Empty;
+    if (Model.Error != Errors.NoErrors)
+    {
+        alert = "<div id=\"alert-error-xml\" class=\"alert alert-warning\" role=\"alert\">" + Model.Error + "</div>";
+    }
+}
+<div class="text-center">
+    @Html.Raw(alert)
+    <h1 class="display-4">Upload your question in Moodle XML format</h1>
+    <form enctype="multipart/form-data" asp-controller="ProcessXml" asp-action="ProcessXmlQuestion" method="post">
+        <label>
+            <i class="fas fa-arrow-circle-up fa-8x"></i>
+            <input type="file" name="xmlFile" id="upload-xml-question" style="display: none" onchange="form.submit()">
+        </label>
+    </form>
+</div>
