@@ -60,6 +60,26 @@ namespace MoodleAssistant.UnitTests
             Assert.True(_webDriver.FindElement(By.Id(AlertError)).Displayed);
         }
 
+        [Theory]
+        [InlineData("MalFormatted.xml")]
+        [InlineData("MalFormatted-1.xml")]
+        [InlineData("MalFormatted-2.xml")]
+        public void MoodleAssistant_UploadXML_MalFormattedXml_ReturnToUpload(string fileName)
+        {
+            UploadFile(fileName);
+            Assert.Equal(RandomQuestionPageTitle, _webDriver.Title);
+        }
+
+        [Theory]
+        [InlineData("MalFormatted.xml")]
+        [InlineData("MalFormatted-1.xml")]
+        [InlineData("MalFormatted-2.xml")]
+        public void MoodleAssistant_UploadXML_MalFormattedXml_DisplaysAlert(string fileName)
+        {
+            UploadFile(fileName);
+            Assert.True(_webDriver.FindElement(By.Id(AlertError)).Displayed);
+        }
+
 
         [Fact]
         public void MoodleAssistant_UploadXML_NonMoodleXMLFormat_ReturnToUpload()
@@ -84,6 +104,9 @@ namespace MoodleAssistant.UnitTests
         {
             throw new NotImplementedException();
         }
+        
+        
+        
         private void UploadFile(string fileName)
         {
             var element = _webDriver.FindElement(By.Id(UploadXmlButtonId));
