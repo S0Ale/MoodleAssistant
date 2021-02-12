@@ -49,7 +49,7 @@ namespace MoodleAssistant.UnitTests
         [Fact]
         public void MoodleAssistant_UploadXML_EmptyXML_ReturnToUpload()
         {
-            UploadFile("EmptyXmlFile.txt");
+            UploadFile("EmptyXmlFile.xml");
             Assert.Equal(RandomQuestionPageTitle, _webDriver.Title);
         }
 

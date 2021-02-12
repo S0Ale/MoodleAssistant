@@ -8,8 +8,8 @@ namespace MoodleAssistant.Utils
     public static class Errors
     {
         public const string NoErrors = "";
-        public const string NullFile = "Upload a file";
-        public const string NonXmlFile = "File type must be XML";
-        
+        public const string NullFile = "Upload a file.";
+        public const string NonXmlFile = "File type must be XML.";
+        public const string EmptyFile = "File cannot be empty.";
     }
 }
