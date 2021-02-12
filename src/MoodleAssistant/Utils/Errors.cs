@@ -11,5 +11,6 @@ namespace MoodleAssistant.Utils
         public const string NullFile = "Upload a file.";
         public const string NonXmlFile = "File type must be XML.";
         public const string EmptyFile = "File cannot be empty.";
+        public const string MalFormatted = "XML file is bad formed.";
     }
 }

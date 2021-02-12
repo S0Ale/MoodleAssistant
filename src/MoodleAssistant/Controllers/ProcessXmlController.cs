@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using System.Xml;
 using Microsoft.AspNetCore.Http;
@@ -26,7 +27,14 @@ namespace MoodleAssistant.Controllers
             {
                 if (streamReader.EndOfStream)
                     return SetErrorAndReturnToView(xmlFileModel, Errors.EmptyFile, pathToRandomQuestionView);
-                xmlFile.LoadXml(streamReader.ReadToEnd());
+                try
+                {
+                    xmlFile.LoadXml(streamReader.ReadToEnd());
+                }
+                catch (XmlException)
+                {
+                    return SetErrorAndReturnToView(xmlFileModel, Errors.MalFormatted, pathToRandomQuestionView);
+                }
             }
             
             xmlFileModel.Error = Errors.NoErrors;
