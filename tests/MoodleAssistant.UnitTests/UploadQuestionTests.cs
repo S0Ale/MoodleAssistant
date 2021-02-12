@@ -88,9 +88,46 @@ namespace MoodleAssistant.UnitTests
         }
 
         [Fact]
+        public void MoodleAssistant_UploadXML_XMLWithoutQuestions_ReturnToUpload()
+        {
+            UploadFile("MoodleXMLWithoutQuestions.xml");
+            Assert.Equal(RandomQuestionPageTitle, _webDriver.Title);
+        }
+
+        [Fact]
+        public void MoodleAssistant_UploadXML_XMLWithoutQuestions_DisplaysAlert()
+        {
+            UploadFile("MoodleXMLWithoutQuestions.xml");
+            Assert.True(_webDriver.FindElement(By.Id(AlertError)).Displayed);
+        }
+
+
+        [Fact]
+        public void MoodleAssistant_UploadXML_XMLWithMoreThanOneQuestion_DisplaysAlert()
+        {
+            UploadFile("MoodleXMLWithMoreThanOneQuestion.xml");
+            Assert.True(_webDriver.FindElement(By.Id(AlertError)).Displayed);
+        }
+
+        [Fact]
+        public void MoodleAssistant_UploadXML_XMLWithMoreThanOneQuestion_ReturnToUpload()
+        {
+            UploadFile("MoodleXMLWithMoreThanOneQuestion.xml");
+            Assert.Equal(RandomQuestionPageTitle, _webDriver.Title);
+        }
+
+        [Fact]
         public void MoodleAssistant_UploadXML_XMLWithoutRandomizableParameters_ReturnToUpload()
         {
-            throw new NotImplementedException();
+            UploadFile("MoodleQuestionWithoutParameters.xml");
+            Assert.Equal(RandomQuestionPageTitle, _webDriver.Title);
+        }
+
+        [Fact]
+        public void MoodleAssistant_UploadXML_XMLWithoutRandomizableParameters_DisplaysAlert()
+        {
+            UploadFile("MoodleQuestionWithoutParameters.xml");
+            Assert.True(_webDriver.FindElement(By.Id(AlertError)).Displayed);
         }
 
         [Fact]
