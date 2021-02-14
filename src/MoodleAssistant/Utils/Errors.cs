@@ -12,5 +12,7 @@ namespace MoodleAssistant.Utils
         public const string NonXmlFile = "File type must be XML.";
         public const string EmptyFile = "File cannot be empty.";
         public const string MalFormatted = "XML file is bad formed.";
+        public const string ZeroOrMoreQuestions = "XML file must contains only one question.";
+        public const string NoParameters = "XML quiz must contains parameters.";
     }
 }

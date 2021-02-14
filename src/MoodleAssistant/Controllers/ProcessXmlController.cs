@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +39,18 @@ namespace MoodleAssistant.Controllers
                     return SetErrorAndReturnToView(xmlFileModel, Errors.MalFormatted, pathToRandomQuestionView);
                 }
             }
-            
+            //looking for number of question in file.
+            var questionList = xmlFile.GetElementsByTagName("question");
+            if (questionList.Count != 1)
+                return SetErrorAndReturnToView(xmlFileModel, Errors.ZeroOrMoreQuestions, pathToRandomQuestionView);
+            //looking for the question text.
+            var questionTextList = xmlFile.GetElementsByTagName("questiontext");
+            if (questionTextList.Count != 1)
+                return SetErrorAndReturnToView(xmlFileModel, Errors.ZeroOrMoreQuestions, pathToRandomQuestionView);
+
+            var questionParametersList = getQuestionParameters(questionTextList);
+            if(!questionParametersList.Any())
+                return SetErrorAndReturnToView(xmlFileModel, Errors.NoParameters, pathToRandomQuestionView);
             xmlFileModel.Error = Errors.NoErrors;
             return Content("Hello world");
         }
@@ -45,6 +59,23 @@ namespace MoodleAssistant.Controllers
         {
             model.Error = error;
             return View(pathToRandomQuestionView, model);
+        }
+
+        private IEnumerable<string> getQuestionParameters(XmlNodeList questionTextList)
+        {
+            //\[\*\[\[([^\]\*\]\]]+)\]\]\*\]
+            var questionTextNode = questionTextList.Item(0);
+            if (null == questionTextNode)
+                return new List<string>();
+            
+            var questionText = questionTextNode.InnerText;
+            const string pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
+            var rgx = new Regex(pattern);
+            var parametersList = new List<string>();
+            foreach (Match match in rgx.Matches(questionText))
+                parametersList.Add(match.Groups[2].Value);
+            return parametersList;
+            
         }
     }
 }
