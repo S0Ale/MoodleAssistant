@@ -32,9 +32,7 @@ namespace MoodleAssistant.Controllers
         public IActionResult RandomQuestions(UploadXmlFileModel model)
         {
             if (null == model)
-                model = new UploadXmlFileModel{Error = Errors.NoErrors};
-            if (null == model.Error)
-                model.Error = Errors.NoErrors;
+                model = new UploadXmlFileModel{Error = Utils.Error.NoErrors};
             return View(model);
         }
 

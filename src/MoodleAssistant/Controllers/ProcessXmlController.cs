@@ -18,57 +18,57 @@ namespace MoodleAssistant.Controllers
         public IActionResult ProcessXmlQuestion(IFormFile file)
         {
             const string pathToRandomQuestionView = "~/Views/Home/RandomQuestions.cshtml";
+            const string pathToSummaryPageView = "~/Views/Home/SummaryPage.cshtml";
+
             var xmlFileModel = new UploadXmlFileModel {XmlQuestion = file};
             if (null == file)
-                return SetErrorAndReturnToView(xmlFileModel, Errors.NullFile, pathToRandomQuestionView);
-            
-            if(System.Net.Mime.MediaTypeNames.Text.Xml != file.ContentType)
-                return SetErrorAndReturnToView(xmlFileModel, Errors.NonXmlFile, pathToRandomQuestionView);
-            
-            var xmlFile = new XmlDocument();
-            using (var streamReader = new StreamReader(file.OpenReadStream(), Encoding.UTF8))
-            {
-                if (streamReader.EndOfStream)
-                    return SetErrorAndReturnToView(xmlFileModel, Errors.EmptyFile, pathToRandomQuestionView);
-                try
-                {
-                    xmlFile.LoadXml(streamReader.ReadToEnd());
-                }
-                catch (XmlException)
-                {
-                    return SetErrorAndReturnToView(xmlFileModel, Errors.MalFormatted, pathToRandomQuestionView);
-                }
-            }
-            //looking for number of question in file.
-            var questionList = xmlFile.GetElementsByTagName("question");
-            if (questionList.Count != 1)
-                return SetErrorAndReturnToView(xmlFileModel, Errors.ZeroOrMoreQuestions, pathToRandomQuestionView);
-            //looking for the question text.
-            var questionTextList = xmlFile.GetElementsByTagName("questiontext");
-            if (questionTextList.Count != 1)
-                return SetErrorAndReturnToView(xmlFileModel, Errors.ZeroOrMoreQuestions, pathToRandomQuestionView);
+                return SetErrorAndReturnToView(xmlFileModel, Error.NullFile, pathToRandomQuestionView);
 
-            var questionParametersList = getQuestionParameters(questionTextList);
-            if(!questionParametersList.Any())
-                return SetErrorAndReturnToView(xmlFileModel, Errors.NoParameters, pathToRandomQuestionView);
-            xmlFileModel.Error = Errors.NoErrors;
-            return Content("Hello world");
+            if (!xmlFileModel.IsXml())
+                return SetErrorAndReturnToView(xmlFileModel, Error.NonXmlFile, pathToRandomQuestionView);
+            
+            if(xmlFileModel.IsEmpty())
+                return SetErrorAndReturnToView(xmlFileModel, Error.EmptyFile, pathToRandomQuestionView);
+
+            if(!xmlFileModel.IsWellFormattedXml())
+                return SetErrorAndReturnToView(xmlFileModel, Error.MalFormatted, pathToRandomQuestionView);
+
+            if(!xmlFileModel.HasOnlyOneQuestion())
+                return SetErrorAndReturnToView(xmlFileModel, Error.ZeroOrMoreQuestions, pathToRandomQuestionView);
+
+            if(!xmlFileModel.HasQuestionText())
+                return SetErrorAndReturnToView(xmlFileModel, Error.ZeroOrMoreQuestions, pathToRandomQuestionView);
+            
+            if(!xmlFileModel.QuestionHasParameters())
+                return SetErrorAndReturnToView(xmlFileModel, Error.NoParameters, pathToRandomQuestionView);
+            
+            if(!xmlFileModel.HasAnswer())
+                return SetErrorAndReturnToView(xmlFileModel, Error.ZeroAnswers, pathToRandomQuestionView);
+
+            xmlFileModel.TakeAnswerParameters();
+            
+            var summaryModel = new SummaryModel
+            {
+                QuestionParametersList = xmlFileModel.QuestionParametersList,
+                AnswerParametersList = xmlFileModel.AnswerParametersList
+            };
+            return View(pathToSummaryPageView, summaryModel);
         }
 
-        private IActionResult SetErrorAndReturnToView(UploadXmlFileModel model, string error, string pathToRandomQuestionView)
+        
+
+        private IActionResult SetErrorAndReturnToView(UploadXmlFileModel model, Error error, string pathToRandomQuestionView)
         {
             model.Error = error;
             return View(pathToRandomQuestionView, model);
         }
 
-        private IEnumerable<string> getQuestionParameters(XmlNodeList questionTextList)
+        private static IEnumerable<string> GetParametersFromXmlNode(XmlNode textNode)
         {
-            //\[\*\[\[([^\]\*\]\]]+)\]\]\*\]
-            var questionTextNode = questionTextList.Item(0);
-            if (null == questionTextNode)
+            if (null == textNode)
                 return new List<string>();
             
-            var questionText = questionTextNode.InnerText;
+            var questionText = textNode.InnerText;
             const string pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
             var rgx = new Regex(pattern);
             var parametersList = new List<string>();

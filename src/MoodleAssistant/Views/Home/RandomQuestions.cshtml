@@ -4,9 +4,10 @@
     ViewData["Title"] = "Random Questions";
 
     var alert = string.Empty;
-    if (Model.Error != Errors.NoErrors)
+    if (Model.Error != Error.NoErrors)
     {
-        alert = "<div id=\"alert-error-xml\" class=\"alert alert-warning\" role=\"alert\">" + Model.Error + "</div>";
+        var errorMessage = ErrorMessage.GetErrorMessage(Model.Error);
+        alert = "<div id=\"alert-error-xml\" class=\"alert alert-warning " + Model.Error.ToString() + "\" role=\"alert\">" + errorMessage + "</div>";
     }
 }
 <div class="text-center">
