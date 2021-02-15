@@ -27,6 +27,7 @@ namespace MoodleAssistant.UnitTests
        
         private const string AssetsDir = @"C:\Users\andre\source\repos\MoodleAssistant\tests\assets\xmlFiles\";
         private const string RandomQuestionPageTitle = "Random Questions - MoodleAssistant";
+        private const string SummaryPagePageTitle = "Summary Page - MoodleAssistant";
         private const string UploadXmlButtonId = "upload-xml-question";
         private const string AlertError = "alert-error-xml";
 
@@ -82,12 +83,6 @@ namespace MoodleAssistant.UnitTests
 
 
         [Fact]
-        public void MoodleAssistant_UploadXML_NonMoodleXMLFormat_ReturnToUpload()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Fact]
         public void MoodleAssistant_UploadXML_XMLWithoutQuestions_ReturnToUpload()
         {
             UploadFile("MoodleXMLWithoutQuestions.xml");
@@ -131,9 +126,39 @@ namespace MoodleAssistant.UnitTests
         }
 
         [Fact]
+        public void MoodleAssistant_UploadXML_XMLWithoutAnswer_ReturnToUpload()
+        {
+            UploadFile("MoodleQuestionWithoutAnswer.xml");
+            Assert.Equal(RandomQuestionPageTitle, _webDriver.Title);
+        }
+
+        [Fact]
+        public void MoodleAssistant_UploadXML_XMLWithoutAnswer_DisplaysAlert()
+        {
+            UploadFile("MoodleQuestionWithoutAnswer.xml");
+            Assert.True(_webDriver.FindElement(By.Id(AlertError)).Displayed);
+        }
+
+        /*[Fact]
+        public void MoodleAssistant_UploadXML_XMLWithRandomizableParametersButNotInAnswer_ReturnToUpload()
+        {
+            UploadFile("MoodleQuestionWithParametersInQuestionButNotInAnswer.xml");
+            Assert.Equal(RandomQuestionPageTitle, _webDriver.Title);
+        }
+
+        [Fact]
+        public void MoodleAssistant_UploadXML_XMLWithRandomizableParametersButNotInAnswer_DisplaysAlert()
+        {
+            UploadFile("MoodleQuestionWithParametersInQuestionButNotInAnswer.xml");
+            Assert.True(_webDriver.FindElement(By.Id(AlertError)).Displayed);
+        }*/
+
+
+        [Fact]
         public void MoodleAssistant_UploadXML_CorrectXMLFile_Ok()
         {
-            throw new NotImplementedException();
+            UploadFile("MoodleQuestionOk.xml");
+            Assert.Equal(SummaryPagePageTitle, _webDriver.Title);
         }
 
         [Fact]
