@@ -6,33 +6,9 @@ using Xunit;
 
 namespace MoodleAssistant.UnitTests
 {
-    public abstract class TestsBase : IDisposable
-    {
-        protected readonly IWebDriver WebDriver;
-        protected const string SiteUrl = "https://localhost:44379/Home/RandomQuestions";
-        
-        protected TestsBase()
-        {
-            WebDriver = new ChromeDriver { Url = SiteUrl };
-        }
-
-        public void Dispose()
-        {
-            WebDriver.Close();
-            WebDriver.Dispose();
-        }
-    }
-
     public class UploadQuestionTests : TestsBase
     {
-       
-        private const string AssetsDir = @"C:\Users\andre\source\repos\MoodleAssistant\tests\assets\xmlFiles\";
-        private const string RandomQuestionPageTitle = "Random Questions - MoodleAssistant";
-        private const string SummaryPagePageTitle = "Summary Page - MoodleAssistant";
-        private const string UploadXmlButtonId = "upload-xml-question";
-        private const string AlertError = "alert-error-xml";
-
-
+        
         [Fact]
         public void MoodleAssistant_UploadXML_NonXMLFile_ReturnToUpload()
         {
@@ -168,10 +144,6 @@ namespace MoodleAssistant.UnitTests
             throw new NotImplementedException();
         }
         
-        private void UploadFile(string fileName)
-        {
-            var element = WebDriver.FindElement(By.Id(UploadXmlButtonId));
-            element.SendKeys(AssetsDir + fileName);
-        }
+        
     }
 }
