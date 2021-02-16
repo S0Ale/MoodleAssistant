@@ -14,36 +14,36 @@ namespace MoodleAssistant.Controllers
 {
     public class ProcessXmlController : Controller
     {
+        private const string PathToRandomQuestionView = "~/Views/Home/RandomQuestions.cshtml";
+        private const string PathToSummaryPageView = "~/Views/Home/SummaryPage.cshtml";
+
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult ProcessXmlQuestion(IFormFile file)
         {
-            const string pathToRandomQuestionView = "~/Views/Home/RandomQuestions.cshtml";
-            const string pathToSummaryPageView = "~/Views/Home/SummaryPage.cshtml";
-
             var xmlFileModel = new UploadXmlFileModel {XmlQuestion = file};
             if (null == file)
-                return SetErrorAndReturnToView(xmlFileModel, Error.NullFile, pathToRandomQuestionView);
+                return SetErrorAndReturnToView(xmlFileModel, Error.NullFile);
 
             if (!xmlFileModel.IsXml())
-                return SetErrorAndReturnToView(xmlFileModel, Error.NonXmlFile, pathToRandomQuestionView);
+                return SetErrorAndReturnToView(xmlFileModel, Error.NonXmlFile);
             
             if(xmlFileModel.IsEmpty())
-                return SetErrorAndReturnToView(xmlFileModel, Error.EmptyFile, pathToRandomQuestionView);
+                return SetErrorAndReturnToView(xmlFileModel, Error.EmptyFile);
 
             if(!xmlFileModel.IsWellFormattedXml())
-                return SetErrorAndReturnToView(xmlFileModel, Error.MalFormatted, pathToRandomQuestionView);
+                return SetErrorAndReturnToView(xmlFileModel, Error.MalFormatted);
 
             if(!xmlFileModel.HasOnlyOneQuestion())
-                return SetErrorAndReturnToView(xmlFileModel, Error.ZeroOrMoreQuestions, pathToRandomQuestionView);
+                return SetErrorAndReturnToView(xmlFileModel, Error.ZeroOrMoreQuestions);
 
             if(!xmlFileModel.HasQuestionText())
-                return SetErrorAndReturnToView(xmlFileModel, Error.ZeroOrMoreQuestions, pathToRandomQuestionView);
+                return SetErrorAndReturnToView(xmlFileModel, Error.ZeroOrMoreQuestions);
             
             if(!xmlFileModel.QuestionHasParameters())
-                return SetErrorAndReturnToView(xmlFileModel, Error.NoParameters, pathToRandomQuestionView);
+                return SetErrorAndReturnToView(xmlFileModel, Error.NoParameters);
             
             if(!xmlFileModel.HasAnswer())
-                return SetErrorAndReturnToView(xmlFileModel, Error.ZeroAnswers, pathToRandomQuestionView);
+                return SetErrorAndReturnToView(xmlFileModel, Error.ZeroAnswers);
 
             xmlFileModel.TakeAnswerParameters();
             
@@ -52,30 +52,14 @@ namespace MoodleAssistant.Controllers
                 QuestionParametersList = xmlFileModel.QuestionParametersList,
                 AnswerParametersList = xmlFileModel.AnswerParametersList
             };
-            return View(pathToSummaryPageView, summaryModel);
+            return View(PathToSummaryPageView, summaryModel);
         }
 
-        
-
-        private IActionResult SetErrorAndReturnToView(UploadXmlFileModel model, Error error, string pathToRandomQuestionView)
+        private IActionResult SetErrorAndReturnToView(UploadXmlFileModel model, Error error)
         {
             model.Error = error;
-            return View(pathToRandomQuestionView, model);
+            return View(PathToRandomQuestionView, model);
         }
 
-        private static IEnumerable<string> GetParametersFromXmlNode(XmlNode textNode)
-        {
-            if (null == textNode)
-                return new List<string>();
-            
-            var questionText = textNode.InnerText;
-            const string pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
-            var rgx = new Regex(pattern);
-            var parametersList = new List<string>();
-            foreach (Match match in rgx.Matches(questionText))
-                parametersList.Add(match.Groups[2].Value);
-            return parametersList;
-            
-        }
     }
 }

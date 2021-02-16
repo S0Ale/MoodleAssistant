@@ -18,35 +18,18 @@ namespace MoodleAssistant.Utils
 
         public static string GetErrorMessage(Error error)
         {
-            switch (error)
+            return error switch
             {
-                case Error.NoErrors:
-                    return NoErrors;
-                    
-                case Error.NullFile:
-                    return NullFile;
-
-                case Error.NonXmlFile:
-                    return NonXmlFile;
-
-                case Error.EmptyFile:
-                    return EmptyFile;
-
-                case Error.MalFormatted:
-                    return MalFormatted;
-
-                case Error.ZeroOrMoreQuestions:
-                    return ZeroOrMoreQuestions;
-
-                case Error.NoParameters:
-                    return NoParameters;
-
-                case Error.ZeroAnswers:
-                    return ZeroAnswers;
-
-                default:
-                    return NoErrors;
-            }
+                Error.NoErrors => NoErrors,
+                Error.NullFile => NullFile,
+                Error.NonXmlFile => NonXmlFile,
+                Error.EmptyFile => EmptyFile,
+                Error.MalFormatted => MalFormatted,
+                Error.ZeroOrMoreQuestions => ZeroOrMoreQuestions,
+                Error.NoParameters => NoParameters,
+                Error.ZeroAnswers => ZeroAnswers,
+                _ => NoErrors
+            };
         }
     }
 
