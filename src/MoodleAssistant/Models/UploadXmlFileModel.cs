@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Xml;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
 using MoodleAssistant.Utils;
 
@@ -13,6 +14,7 @@ namespace MoodleAssistant.Models
 {
     public class UploadXmlFileModel
     {
+        private const string Pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
         public IFormFile XmlQuestion;
 
         public Error Error;
@@ -62,6 +64,51 @@ namespace MoodleAssistant.Models
             return questiontextNodeList.Count == 1;
         }
 
+
+        public string GetFormattedQuestionText()
+        {
+            if(!HasQuestionText())
+                return string.Empty;
+            var questiontextNode = XmlFile.GetElementsByTagName("questiontext").Item(0);
+            if (questiontextNode == null)
+                return string.Empty;
+
+            var htmlFormatted = "<div id=\"questiontext\">";
+            var questiontext = questiontextNode.InnerText;
+            var rgx = new Regex(Pattern);
+            foreach (Match match in rgx.Matches(questiontext))
+                questiontext = questiontext.Replace(match.Value, "<mark>" + match.Value + "</mark>");
+            htmlFormatted += questiontext;
+            htmlFormatted += "</div>";
+            return htmlFormatted;
+
+        }
+
+        public string GetFormattedAnswers()
+        {
+            if (!HasAnswer())
+                return string.Empty;
+            var htmlFormatted = "<div id=\"answerbox\">";
+            var answerTextNodeList = XmlFile.GetElementsByTagName("answer");
+            var rgx = new Regex(Pattern);
+            foreach (XmlNode answerTextNode in answerTextNodeList)
+            {
+                if (answerTextNode == null) 
+                    continue;
+                htmlFormatted += "<p>";
+                foreach (XmlNode node in answerTextNode.SelectNodes("text"))
+                {
+                    var answerText = node.InnerText;
+                    foreach (Match match in rgx.Matches(answerText))
+                        answerText = answerText.Replace(match.Value, "<mark>" + match.Value + "</mark>");
+                    htmlFormatted += answerText;
+                }
+                htmlFormatted += "</p>";
+            }
+            htmlFormatted += "</div>";
+            return htmlFormatted;
+        }
+
         public bool QuestionHasParameters()
         {
             var questiontextNodeList = XmlFile.GetElementsByTagName("questiontext");
@@ -90,8 +137,7 @@ namespace MoodleAssistant.Models
                 return new List<string>();
 
             var questionText = textNode.InnerText;
-            const string pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
-            var rgx = new Regex(pattern);
+            var rgx = new Regex(Pattern);
             var parametersList = new List<string>();
             foreach (Match match in rgx.Matches(questionText))
                 parametersList.Add(match.Groups[2].Value);

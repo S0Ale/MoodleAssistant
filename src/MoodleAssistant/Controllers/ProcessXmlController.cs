@@ -52,7 +52,7 @@ namespace MoodleAssistant.Controllers
                 QuestionParametersList = xmlFileModel.QuestionParametersList,
                 AnswerParametersList = xmlFileModel.AnswerParametersList
             };
-            return View(PathToSummaryPageView, summaryModel);
+            return View(PathToSummaryPageView, xmlFileModel);
         }
 
         private IActionResult SetErrorAndReturnToView(UploadXmlFileModel model, Error error)

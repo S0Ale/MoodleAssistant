@@ -46,7 +46,7 @@ namespace MoodleAssistant.UnitTests
         public void MoodleAssistant_SummaryPage_AnswerText_CountNumberOfParameters(string fileName, int numberOfParameters)
         {
             UploadFile(fileName);
-            Assert.Equal(numberOfParameters, WebDriver.FindElements(By.XPath("//*[@id='" + AnswerTextId + "']/mark")).Count);
+            Assert.Equal(numberOfParameters, WebDriver.FindElements(By.XPath("//*[@id='" + AnswerTextId + "']/p/mark")).Count);
         }
     }
 }
