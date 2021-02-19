@@ -138,12 +138,5 @@ namespace MoodleAssistant.UnitTests
             Assert.Equal(SummaryPagePageTitle, WebDriver.Title);
         }
 
-        [Fact]
-        public void MoodleAssistant_UploadXML_CorrectXMLFile_TakeParameters()
-        {
-            throw new NotImplementedException();
-        }
-        
-        
     }
 }

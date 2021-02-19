@@ -11,6 +11,8 @@ namespace MoodleAssistant.UnitTests
     {
         private const string QuestionTextId = "questiontext";
         private const string AnswerTextId = "answerbox";
+        private const string ReturnToUploadButtonId = "return-to-upload";
+        private const string UploadCsvButtonId = "upload-csv";
 
 
         [Theory]
@@ -47,6 +49,36 @@ namespace MoodleAssistant.UnitTests
         {
             UploadFile(fileName);
             Assert.Equal(numberOfParameters, WebDriver.FindElements(By.XPath("//*[@id='" + AnswerTextId + "']/p/mark")).Count);
+        }
+
+        [Fact]
+        public void MoodleAssistant_SummaryPage_ReturnToUploadButton_Displayed()
+        {
+            UploadFile("MoodleQuestionOk.xml");
+            Assert.True(WebDriver.FindElement(By.Id(ReturnToUploadButtonId)).Displayed);
+        }
+
+        [Fact]
+        public void MoodleAssistant_SummaryPage_ClickReturnToUploadButton_ReturnToUploadPage()
+        {
+            UploadFile("MoodleQuestionOk.xml");
+            WebDriver.FindElement(By.Id(ReturnToUploadButtonId)).Click();
+            Assert.Equal(RandomQuestionPageTitle, WebDriver.Title);
+        }
+
+        [Fact]
+        public void MoodleAssistant_SummaryPage_UploadCSVButton_Displayed()
+        {
+            UploadFile("MoodleQuestionOk.xml");
+            Assert.True(WebDriver.FindElement(By.Id(UploadCsvButtonId)).Displayed);
+        }
+
+        [Fact]
+        public void MoodleAssistant_SummaryPage_ClickUploadCSVButton_GoToUploadCSVPage()
+        {
+            UploadFile("MoodleQuestionOk.xml");
+            WebDriver.FindElement(By.Id(UploadCsvButtonId)).Click();
+            Assert.Equal(UploadCsvPage, WebDriver.Title);
         }
     }
 }

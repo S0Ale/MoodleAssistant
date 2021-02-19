@@ -29,12 +29,6 @@ namespace MoodleAssistant.Controllers
             return View();
         }
 
-        public IActionResult RandomQuestions(UploadXmlFileModel model)
-        {
-            if (null == model)
-                model = new UploadXmlFileModel{Error = Utils.Error.NoErrors};
-            return View(model);
-        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

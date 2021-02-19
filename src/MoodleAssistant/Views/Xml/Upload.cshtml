@@ -13,7 +13,7 @@
 <div class="text-center">
     @Html.Raw(alert)
     <h1 class="display-4">Upload your question in Moodle XML format</h1>
-    <form enctype="multipart/form-data" asp-controller="ProcessXml" asp-action="ProcessXmlQuestion" method="post">
+    <form enctype="multipart/form-data" asp-controller="Xml" asp-action="Upload" method="post">
         <label>
             <i class="fas fa-arrow-circle-up fa-8x"></i>
             <input type="file" name="file" id="upload-xml-question" style="display: none" onchange="form.submit()">

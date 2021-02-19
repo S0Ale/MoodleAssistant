@@ -12,13 +12,20 @@ using MoodleAssistant.Utils;
 
 namespace MoodleAssistant.Controllers
 {
-    public class ProcessXmlController : Controller
+    public class XmlController : Controller
     {
-        private const string PathToRandomQuestionView = "~/Views/Home/RandomQuestions.cshtml";
-        private const string PathToSummaryPageView = "~/Views/Home/SummaryPage.cshtml";
+        private const string PathToRandomQuestionView = "~/Views/Xml/Upload.cshtml";
+        private const string PathToSummaryPageView = "~/Views/Xml/SummaryPage.cshtml";
+
+        public IActionResult Upload(UploadXmlFileModel model)
+        {
+            if (null == model)
+                model = new UploadXmlFileModel { Error = Utils.Error.NoErrors };
+            return View(model);
+        }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult ProcessXmlQuestion(IFormFile file)
+        public IActionResult Upload(IFormFile file)
         {
             var xmlFileModel = new UploadXmlFileModel {XmlQuestion = file};
             if (null == file)

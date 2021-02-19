@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewData["Title"] = "Upload CSV";
+
+}
+<div class="text-center">
+    <h1 class="display-4">Upload your answers in CSV format</h1>
+    <form enctype="multipart/form-data" asp-controller="Csv" asp-action="Upload" method="post">
+        <label>
+            <i class="fas fa-arrow-circle-up fa-8x"></i>
+            <input type="file" name="file" id="upload-xml-question" style="display: none" onchange="form.submit()">
+        </label>
+    </form>
+</div>
