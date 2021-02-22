@@ -1,14 +1,21 @@
-﻿
+﻿@using MoodleAssistant.Utils
+@model UploadCsvFileModel
 @{
     ViewData["Title"] = "Upload CSV";
-
+    var alert = string.Empty;
+    if (Model.Error != Error.NoErrors)
+    {
+        var errorMessage = ErrorMessage.GetErrorMessage(Model.Error);
+        alert = "<div id=\"alert-error-xml\" class=\"alert alert-warning " + Model.Error.ToString() + "\" role=\"alert\">" + errorMessage + "</div>";
+    }
 }
 <div class="text-center">
+    @Html.Raw(alert)
     <h1 class="display-4">Upload your answers in CSV format</h1>
     <form enctype="multipart/form-data" asp-controller="Csv" asp-action="Upload" method="post">
         <label>
             <i class="fas fa-arrow-circle-up fa-8x"></i>
-            <input type="file" name="file" id="upload-xml-question" style="display: none" onchange="form.submit()">
+            <input type="file" name="file" id="upload-csv-answers" style="display: none" onchange="form.submit()">
         </label>
     </form>
 </div>
