@@ -58,7 +58,7 @@ namespace MoodleAssistant.UnitTests
             UploadXmlFile("MoodleQuestionOk.xml");
             WebDriver.Url = SiteUrl + "Csv/Upload";
             UploadCsvFile("CsvWithoutHeader.csv");
-            Assert.True(WebDriver.FindElement(By.ClassName(Error.CsvWithoutHeaders.ToString())).Displayed);
+            Assert.True(WebDriver.FindElement(By.ClassName(Error.CsvInvalidHeader.ToString())).Displayed);
         }
 
         [Fact]

@@ -119,25 +119,19 @@ namespace MoodleAssistant.UnitTests
             Assert.True(WebDriver.FindElement(By.ClassName(Error.ZeroAnswers.ToString())).Displayed);
         }
 
-        /*[Fact]
-        public void MoodleAssistant_UploadXML_XMLWithRandomizableParametersButNotInAnswer_ReturnToUpload()
+        [Fact]
+        public void MoodleAssistant_UploadXML_XMLWithRandomizableParametersButNotInAnswer_Ok()
         {
             UploadXmlFile("MoodleQuestionWithParametersInQuestionButNotInAnswer.xml");
-            Assert.Equal(RandomQuestionPageTitle, _webDriver.Title);
+            Assert.Equal(SummaryPagePageTitle, WebDriver.Title);
         }
 
-        [Fact]
-        public void MoodleAssistant_UploadXML_XMLWithRandomizableParametersButNotInAnswer_DisplaysAlert()
+        [Theory]
+        [InlineData("MoodleQuestionOk.xml")]
+        [InlineData("MoodleQuestionOk_2Params.xml")]
+        public void MoodleAssistant_UploadXML_CorrectXMLFile_Ok(string filename)
         {
-            UploadXmlFile("MoodleQuestionWithParametersInQuestionButNotInAnswer.xml");
-            Assert.True(_webDriver.FindElement(By.Id(AlertError)).Displayed);
-        }*/
-
-
-        [Fact]
-        public void MoodleAssistant_UploadXML_CorrectXMLFile_Ok()
-        {
-            UploadXmlFile("MoodleQuestionOk.xml");
+            UploadXmlFile(filename);
             Assert.Equal(SummaryPagePageTitle, WebDriver.Title);
         }
 

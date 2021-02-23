@@ -13,9 +13,7 @@ namespace MoodleAssistant.Controllers
     public class CsvController : Controller
     {
         private const string PathToUploadCsvView = "~/Views/Csv/Upload.cshtml";
-        private IEnumerable<string> _questionParametersList;
-        private IEnumerable<string> _answersParametersList;
-
+        private const string PathToRandomQuestionView = "~/Views/Xml/Upload.cshtml";
 
         public IActionResult Upload(UploadCsvFileModel model)
         {
@@ -27,13 +25,23 @@ namespace MoodleAssistant.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Upload(IFormFile file, string questionParametersList, string answersParametersList)
         {
-            var csvFileModel = new UploadCsvFileModel
+            var csvFileModel = new UploadCsvFileModel { CsvAnswers = file };
+
+            if (string.IsNullOrEmpty(questionParametersList) || string.IsNullOrEmpty(answersParametersList))
+                return View(PathToRandomQuestionView, new UploadXmlFileModel { Error = Error.XmlProcessing });
+
+            try
             {
-                CsvAnswers = file,
-                QuestionParametersList = JsonSerializer.Deserialize<IEnumerable<string>>(questionParametersList),
-                AnswersParametersList = JsonSerializer.Deserialize<IEnumerable<string>>(answersParametersList)
-            };
-            
+                var questDeserialize = JsonSerializer.Deserialize<IEnumerable<string>>(questionParametersList);
+                var answerDeserialize = JsonSerializer.Deserialize<IEnumerable<string>>(answersParametersList);
+                csvFileModel.QuestionParametersList = questDeserialize;
+                csvFileModel.AnswersParametersList = answerDeserialize;
+            }
+            catch (JsonException)
+            {
+                return View(PathToRandomQuestionView, new UploadXmlFileModel{ Error = Error.XmlProcessing });
+            }
+
             if (null == file)
                 return SetErrorAndReturnToView(csvFileModel, Error.NullFile);
 
@@ -43,8 +51,8 @@ namespace MoodleAssistant.Controllers
             if (csvFileModel.IsEmpty())
                 return SetErrorAndReturnToView(csvFileModel, Error.EmptyFile);
 
-            if (!csvFileModel.HasHeader())
-                return SetErrorAndReturnToView(csvFileModel, Error.CsvWithoutHeaders);
+            if (!csvFileModel.HasValidHeader())
+                return SetErrorAndReturnToView(csvFileModel, Error.CsvInvalidHeader);
 
             return Content("ciao");
         }

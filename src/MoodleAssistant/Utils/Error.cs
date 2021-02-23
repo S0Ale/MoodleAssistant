@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace MoodleAssistant.Utils
 {
@@ -18,10 +19,11 @@ namespace MoodleAssistant.Utils
         public const string ZeroOrMoreQuestions = "XML file must contains only one question.";
         public const string NoParameters = "XML quiz must contains parameters.";
         public const string ZeroAnswers = "XML quiz must contains answers.";
+        public const string XmlProcessing = "Something went wrong during Xml Processing. Please try again.";
 
         //csv errors
         public const string NonCsvFile = "File type must be CSV.";
-        public const string CsvWithoutHeaders = "One or more csv header missing.";
+        public const string CsvInvalidHeader = "One or more csv header missing.";
 
         public static string GetErrorMessage(Error error)
         {
@@ -36,7 +38,8 @@ namespace MoodleAssistant.Utils
                 Error.NoParameters => NoParameters,
                 Error.ZeroAnswers => ZeroAnswers,
                 Error.NonCsvFile => NonCsvFile,
-                Error.CsvWithoutHeaders => CsvWithoutHeaders,
+                Error.CsvInvalidHeader => CsvInvalidHeader,
+                Error.XmlProcessing => XmlProcessing,
                 _ => NoErrors
             };
         }
@@ -53,6 +56,7 @@ namespace MoodleAssistant.Utils
         NoParameters,
         ZeroAnswers,
         NonCsvFile,
-        CsvWithoutHeaders
+        CsvInvalidHeader,
+        XmlProcessing
     }
 }
