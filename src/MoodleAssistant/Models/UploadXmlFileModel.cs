@@ -129,6 +129,7 @@ namespace MoodleAssistant.Models
             var answerList = XmlFile.GetElementsByTagName("answer");
             foreach (XmlNode answer in answerList)
                 answerParametersList.AddRange(GetParametersFromXmlNode(answer));
+            AnswerParametersList = answerParametersList;
         }
 
         private static IEnumerable<string> GetParametersFromXmlNode(XmlNode textNode)

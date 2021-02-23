@@ -21,6 +21,7 @@ namespace MoodleAssistant.Utils
 
         //csv errors
         public const string NonCsvFile = "File type must be CSV.";
+        public const string CsvWithoutHeaders = "One or more csv header missing.";
 
         public static string GetErrorMessage(Error error)
         {
@@ -35,6 +36,7 @@ namespace MoodleAssistant.Utils
                 Error.NoParameters => NoParameters,
                 Error.ZeroAnswers => ZeroAnswers,
                 Error.NonCsvFile => NonCsvFile,
+                Error.CsvWithoutHeaders => CsvWithoutHeaders,
                 _ => NoErrors
             };
         }
@@ -50,6 +52,7 @@ namespace MoodleAssistant.Utils
         ZeroOrMoreQuestions,
         NoParameters,
         ZeroAnswers,
-        NonCsvFile
+        NonCsvFile,
+        CsvWithoutHeaders
     }
 }

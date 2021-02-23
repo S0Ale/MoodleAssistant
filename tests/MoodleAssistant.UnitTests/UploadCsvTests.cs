@@ -1,4 +1,5 @@
 ﻿using System;
+using MoodleAssistant.Controllers;
 using MoodleAssistant.Utils;
 using OpenQA.Selenium;
 using Xunit;
@@ -39,10 +40,25 @@ namespace MoodleAssistant.UnitTests
             Assert.True(WebDriver.FindElement(By.ClassName(Error.EmptyFile.ToString())).Displayed);
         }
 
+
         [Fact]
         public void MoodleAssistant_UploadCSV_CSVWithoutHeader_ReturnToUpload()
         {
-            throw new NotImplementedException();
+            WebDriver.Url = SiteUrl + "Xml/Upload";
+            UploadXmlFile("MoodleQuestionOk.xml");
+            WebDriver.Url = SiteUrl + "Csv/Upload";
+            UploadCsvFile("CsvWithoutHeader.csv");
+            Assert.Equal(UploadCsvPageTitle, WebDriver.Title);
+        }
+
+        [Fact]
+        public void MoodleAssistant_UploadCSV_CSVWithoutHeader_DisplaysAlert()
+        {
+            WebDriver.Url = SiteUrl + "Xml/Upload";
+            UploadXmlFile("MoodleQuestionOk.xml");
+            WebDriver.Url = SiteUrl + "Csv/Upload";
+            UploadCsvFile("CsvWithoutHeader.csv");
+            Assert.True(WebDriver.FindElement(By.ClassName(Error.CsvWithoutHeaders.ToString())).Displayed);
         }
 
         [Fact]
