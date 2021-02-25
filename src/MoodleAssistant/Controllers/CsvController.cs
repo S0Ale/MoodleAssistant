@@ -23,24 +23,15 @@ namespace MoodleAssistant.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Upload(IFormFile file, string questionParametersList, string answersParametersList, bool firstAccess)
+        public IActionResult Upload(IFormFile file, bool firstAccess)
         {
-            var csvFileModel = new UploadCsvFileModel { CsvAnswers = file, Error = Error.NoErrors};
-            
-            if (string.IsNullOrEmpty(questionParametersList) || string.IsNullOrEmpty(answersParametersList))
-                return View(PathToRandomQuestionView, new UploadXmlFileModel { Error = Error.XmlProcessing });
-
-            try
+            var csvFileModel = new UploadCsvFileModel
             {
-                var questDeserialize = JsonSerializer.Deserialize<IEnumerable<string>>(questionParametersList);
-                var answerDeserialize = JsonSerializer.Deserialize<IEnumerable<string>>(answersParametersList);
-                csvFileModel.QuestionParametersList = questDeserialize;
-                csvFileModel.AnswersParametersList = answerDeserialize;
-            }
-            catch (JsonException)
-            {
-                return View(PathToRandomQuestionView, new UploadXmlFileModel{ Error = Error.XmlProcessing });
-            }
+                CsvAnswers = file,
+                Error = Error.NoErrors,
+                QuestionParametersList = HttpContext.Session.GetObjectFromJson<IEnumerable<string>>(SessionNameFieldConst.SessionQuestionList),
+                AnswersParametersList = HttpContext.Session.GetObjectFromJson<IEnumerable<string>>(SessionNameFieldConst.SessionAnswerList)
+            };
 
             if (firstAccess)
                 return View(csvFileModel);

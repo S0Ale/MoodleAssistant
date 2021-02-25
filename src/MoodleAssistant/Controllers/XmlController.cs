@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Collections;
+using System.Text.Json;
 using System.Xml;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +12,7 @@ namespace MoodleAssistant.Controllers
     {
         private const string PathToRandomQuestionView = "~/Views/Xml/Upload.cshtml";
         private const string PathToSummaryPageView = "~/Views/Xml/SummaryPage.cshtml";
+        const string Session = "_Session";
 
         public IActionResult Upload(UploadXmlFileModel model)
         {
@@ -53,12 +50,11 @@ namespace MoodleAssistant.Controllers
                 return SetErrorAndReturnToView(xmlFileModel, Error.ZeroAnswers);
 
             xmlFileModel.TakeAnswerParameters();
-            
-            var summaryModel = new SummaryModel
-            {
-                QuestionParametersList = xmlFileModel.QuestionParametersList,
-                AnswerParametersList = xmlFileModel.AnswerParametersList
-            };
+
+            HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionXmlDocument, xmlFileModel.XmlFile);
+            HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionQuestionList, xmlFileModel.QuestionParametersList);
+            HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionAnswerList, xmlFileModel.AnswerParametersList);
+
             return View(PathToSummaryPageView, xmlFileModel);
         }
 

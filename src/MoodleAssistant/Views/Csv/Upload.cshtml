@@ -17,8 +17,6 @@
     <form enctype="multipart/form-data" asp-controller="Csv" asp-action="Upload" method="post">
         <label>
             <i class="fas fa-arrow-circle-up fa-8x"></i>
-            <input type="hidden" name="questionParametersList" value="@JsonSerializer.Serialize(Model.QuestionParametersList)" />
-            <input type="hidden" name="answersParametersList" value="@JsonSerializer.Serialize(Model.AnswersParametersList)" />
             <input type="file" name="file" id="upload-csv-answers" style="display: none" onchange="form.submit()">
         </label>
     </form>
