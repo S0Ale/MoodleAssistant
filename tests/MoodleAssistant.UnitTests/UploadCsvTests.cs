@@ -85,27 +85,24 @@ namespace MoodleAssistant.UnitTests
             
         }
 
-
-        [Fact]
-        public void MoodleAssistant_UploadCSV_CSVWithAnEmptyAnswerField_ReturnToUpload()
-        {
-            throw new NotImplementedException();
-        }
-
         [Fact]
         public void MoodleAssistant_UploadCSV_CSVWithSemicolonSeparator_ReturnToUpload()
         {
-            throw new NotImplementedException();
+            UploadCorrectXMlFile();
+            UploadCsvFile("CsvWithSemiColonSeparator.csv");
+            Assert.Equal(UploadCsvPageTitle, WebDriver.Title);
+        }
+
+        [Fact]
+        public void MoodleAssistant_UploadCSV_CSVWithSemicolonSeparator_DisplaysAlert()
+        {
+            UploadCorrectXMlFile();
+            UploadCsvFile("CsvWithSemiColonSeparator.csv");
+            Assert.True(WebDriver.FindElement(By.ClassName(Error.CsvInvalidHeader.ToString())).Displayed);
         }
 
         [Fact]
         public void MoodleAssistant_UploadCSV_CorrectCSVFile_Ok()
-        {
-            throw new NotImplementedException();
-        }
-
-        [Fact]
-        public void MoodleAssistant_UploadCSV_CorrectCSVFile_TakeFields()
         {
             throw new NotImplementedException();
         }
