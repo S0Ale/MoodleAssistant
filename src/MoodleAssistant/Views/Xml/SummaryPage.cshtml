@@ -1,4 +1,5 @@
-﻿@model UploadXmlFileModel
+﻿@using System.Text.Json
+@model UploadXmlFileModel
 @{
     ViewData["Title"] = "Summary Page";
     var questiontextContainer = Model.GetFormattedQuestionText();
@@ -34,8 +35,9 @@
             <div class="col-md-6">
                 <div class="offset-md-2 col-md-8">
                     <form asp-controller="Csv" asp-action="Upload" method="post">
-                        <input type="hidden" name="questionParametersList" value="@Json.Serialize(Model.QuestionParametersList).ToString()" />
-                        <input type="hidden" name="answersParametersList" value="@Json.Serialize(Model.AnswerParametersList).ToString()" />
+                        <input type="hidden" name="questionParametersList" value="@JsonSerializer.Serialize(Model.QuestionParametersList)" />
+                        <input type="hidden" name="answersParametersList" value="@JsonSerializer.Serialize(Model.AnswerParametersList)" />
+                        <input type="hidden" name="firstAccess" value="true"/>
                         <input type="submit" id="upload-csv" class="btn btn-outline-primary btn-block" value="Upload CSV answers" />
                     </form>
                 </div>

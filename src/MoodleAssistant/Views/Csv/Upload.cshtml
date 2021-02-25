@@ -7,7 +7,7 @@
     if (Model.Error != Error.NoErrors)
     {
         var errorMessage = ErrorMessage.GetErrorMessage(Model.Error);
-        alert = "<div id=\"alert-error-xml\" class=\"alert alert-warning " + Model.Error.ToString() + "\" role=\"alert\">" + errorMessage + "</div>";
+        alert = "<div id=\"alert-error-csv\" class=\"alert alert-warning " + Model.Error.ToString() + "\" role=\"alert\">" + errorMessage + "</div>";
     }
 
 }
@@ -17,8 +17,8 @@
     <form enctype="multipart/form-data" asp-controller="Csv" asp-action="Upload" method="post">
         <label>
             <i class="fas fa-arrow-circle-up fa-8x"></i>
-            <input type="hidden" name="questionParametersList" value="@JsonSerializer.Serialize(Model.QuestionParametersList, new JsonSerializerOptions{ IgnoreNullValues = true });" />
-            <input type="hidden" name="answersParametersList" value="@Json.Serialize(Model.AnswersParametersList).ToString()" />
+            <input type="hidden" name="questionParametersList" value="@JsonSerializer.Serialize(Model.QuestionParametersList)" />
+            <input type="hidden" name="answersParametersList" value="@JsonSerializer.Serialize(Model.AnswersParametersList)" />
             <input type="file" name="file" id="upload-csv-answers" style="display: none" onchange="form.submit()">
         </label>
     </form>

@@ -23,7 +23,8 @@ namespace MoodleAssistant.Utils
 
         //csv errors
         public const string NonCsvFile = "File type must be CSV.";
-        public const string CsvInvalidHeader = "One or more csv header missing.";
+        public const string CsvInvalidHeader = "Please enter a valid CSV file. One or more csv header missing.";
+        public const string CsvBadFormed = "Please enter a valid CSV file. Check if there are missing fields or if each row contains the same number of columns.";
 
         public static string GetErrorMessage(Error error)
         {
@@ -40,6 +41,7 @@ namespace MoodleAssistant.Utils
                 Error.NonCsvFile => NonCsvFile,
                 Error.CsvInvalidHeader => CsvInvalidHeader,
                 Error.XmlProcessing => XmlProcessing,
+                Error.CsvBadFormed => CsvBadFormed,
                 _ => NoErrors
             };
         }
@@ -57,6 +59,7 @@ namespace MoodleAssistant.Utils
         ZeroAnswers,
         NonCsvFile,
         CsvInvalidHeader,
-        XmlProcessing
+        XmlProcessing,
+        CsvBadFormed,
     }
 }

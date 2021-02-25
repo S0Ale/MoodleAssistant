@@ -18,7 +18,7 @@ namespace MoodleAssistant.Models
         public Error Error;
 
         private readonly string[] _mimeTypes = {"application/vnd.ms-excel", "text/csv"};
-        
+
         public IEnumerable<string> QuestionParametersList;
 
         public IEnumerable<string> AnswersParametersList;
@@ -36,16 +36,33 @@ namespace MoodleAssistant.Models
 
         public bool HasValidHeader()
         {
-            string[] headerRow;
             using var fileReader = new StreamReader(CsvAnswers.OpenReadStream());
-            using (var csv = new CsvReader(fileReader, CultureInfo.InvariantCulture))
+            using var csv = new CsvReader(fileReader, CultureInfo.InvariantCulture);
+            csv.Read();
+            csv.ReadHeader();
+            var headerRow = csv.HeaderRecord;
+            var questionAndAnswerList = (QuestionParametersList ?? Enumerable.Empty<string>())
+                .Concat(AnswersParametersList ?? Enumerable.Empty<string>()).ToList();
+            return headerRow.All(questionAndAnswerList.Contains) &&
+                   Equals(headerRow.Count(), questionAndAnswerList.Count());
+        }
+
+        public bool IsWellFormed()
+        {
+            using var fileReader = new StreamReader(CsvAnswers.OpenReadStream());
+            using var csv = new CsvReader(fileReader, CultureInfo.InvariantCulture);
+            csv.Read();
+            csv.ReadHeader();
+            var numOfHeaders = csv.Parser.Count;
+            while (csv.Read())
             {
-                csv.Read();
-                csv.ReadHeader();
-                headerRow = csv.HeaderRecord;
+                if (numOfHeaders != csv.Parser.Count)
+                    return false;
+                for (var i = 0; i < csv.Parser.Count; i++)
+                    if(string.IsNullOrEmpty(csv.GetField<string>(i)))
+                        return false;
             }
-            var questionAndAnswerList = (QuestionParametersList ?? Enumerable.Empty<string>()).Concat(AnswersParametersList ?? Enumerable.Empty<string>()).ToList();
-            return headerRow.All(questionAndAnswerList.Contains) && Equals(headerRow.Count(), questionAndAnswerList.Count());
+            return true;
         }
     }
 }

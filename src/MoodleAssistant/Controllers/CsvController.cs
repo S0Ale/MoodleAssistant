@@ -23,10 +23,10 @@ namespace MoodleAssistant.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Upload(IFormFile file, string questionParametersList, string answersParametersList)
+        public IActionResult Upload(IFormFile file, string questionParametersList, string answersParametersList, bool firstAccess)
         {
-            var csvFileModel = new UploadCsvFileModel { CsvAnswers = file };
-
+            var csvFileModel = new UploadCsvFileModel { CsvAnswers = file, Error = Error.NoErrors};
+            
             if (string.IsNullOrEmpty(questionParametersList) || string.IsNullOrEmpty(answersParametersList))
                 return View(PathToRandomQuestionView, new UploadXmlFileModel { Error = Error.XmlProcessing });
 
@@ -42,6 +42,9 @@ namespace MoodleAssistant.Controllers
                 return View(PathToRandomQuestionView, new UploadXmlFileModel{ Error = Error.XmlProcessing });
             }
 
+            if (firstAccess)
+                return View(csvFileModel);
+
             if (null == file)
                 return SetErrorAndReturnToView(csvFileModel, Error.NullFile);
 
@@ -53,6 +56,9 @@ namespace MoodleAssistant.Controllers
 
             if (!csvFileModel.HasValidHeader())
                 return SetErrorAndReturnToView(csvFileModel, Error.CsvInvalidHeader);
+
+            if (!csvFileModel.IsWellFormed())
+                return SetErrorAndReturnToView(csvFileModel, Error.CsvBadFormed);
 
             return Content("ciao");
         }
