@@ -1,0 +1,12 @@
+﻿@{
+    ViewData["Title"] = "Download";
+}
+<div class="text-center">
+    <h1 class="display-4">Download random questions in Moodle XML format</h1>
+    <form enctype="multipart/form-data" asp-controller="Xml" asp-action="Download" method="post">
+        <label>
+            <i class="fas fa-arrow-circle-down fa-8x"></i>
+            <input type="submit" name="submit" id="download-xml-question" style="display: none">
+        </label>
+    </form>
+</div>

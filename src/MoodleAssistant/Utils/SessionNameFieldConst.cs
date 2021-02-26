@@ -10,5 +10,6 @@ namespace MoodleAssistant.Utils
         public const string SessionXmlDocument = "_XmlDocument";
         public const string SessionQuestionList = "_QuestionList";
         public const string SessionAnswerList = "_AnswerList";
+        public const string SessionCsvFile = "_CsvFile";
     }
 }

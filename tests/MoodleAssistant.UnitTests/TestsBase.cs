@@ -12,6 +12,7 @@ namespace MoodleAssistant.UnitTests
         protected const string RandomQuestionPageTitle = "Random Questions - MoodleAssistant";
         protected const string SummaryPagePageTitle = "Summary Page - MoodleAssistant";
         protected const string UploadCsvPageTitle = "Upload CSV - MoodleAssistant";
+        protected const string DownloadPageTitle = "Download - MoodleAssistant";
         private const string UploadXmlButtonId = "upload-xml-question";
         private const string UploadCsvButtonId = "upload-csv-answers";
 

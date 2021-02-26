@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ namespace MoodleAssistant.Controllers
     public class CsvController : Controller
     {
         private const string PathToUploadCsvView = "~/Views/Csv/Upload.cshtml";
-        private const string PathToRandomQuestionView = "~/Views/Xml/Upload.cshtml";
+        private const string PathToDownloadView = "~/Views/Xml/Download.cshtml";
 
         public IActionResult Upload(UploadCsvFileModel model)
         {
@@ -51,7 +52,14 @@ namespace MoodleAssistant.Controllers
             if (!csvFileModel.IsWellFormed())
                 return SetErrorAndReturnToView(csvFileModel, Error.CsvBadFormed);
 
-            return Content("ciao");
+            
+            using var memoryStream = new MemoryStream();
+            file.CopyTo(memoryStream);
+            var fileBytes = memoryStream.ToArray();
+            var base64File = Convert.ToBase64String(fileBytes);
+
+            HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionCsvFile, base64File);
+            return View(PathToDownloadView);
         }
 
         private IActionResult SetErrorAndReturnToView(UploadCsvFileModel model, Error error)

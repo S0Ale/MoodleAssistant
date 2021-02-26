@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Text.Json;
-using System.Xml;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoodleAssistant.Models;
 using MoodleAssistant.Utils;
@@ -12,8 +9,7 @@ namespace MoodleAssistant.Controllers
     {
         private const string PathToRandomQuestionView = "~/Views/Xml/Upload.cshtml";
         private const string PathToSummaryPageView = "~/Views/Xml/SummaryPage.cshtml";
-        const string Session = "_Session";
-
+        
         public IActionResult Upload(UploadXmlFileModel model)
         {
             if (null == model)
@@ -58,11 +54,17 @@ namespace MoodleAssistant.Controllers
             return View(PathToSummaryPageView, xmlFileModel);
         }
 
+        public IActionResult Download()
+        {
+            throw new System.NotImplementedException();
+        }
+
         private IActionResult SetErrorAndReturnToView(UploadXmlFileModel model, Error error)
         {
             model.Error = error;
             return View(PathToRandomQuestionView, model);
         }
 
+        
     }
 }

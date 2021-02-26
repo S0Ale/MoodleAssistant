@@ -104,7 +104,9 @@ namespace MoodleAssistant.UnitTests
         [Fact]
         public void MoodleAssistant_UploadCSV_CorrectCSVFile_Ok()
         {
-            throw new NotImplementedException();
+            UploadCorrectXMlFile();
+            UploadCsvFile("CsvWithHeader.csv");
+            Assert.Equal(DownloadPageTitle, WebDriver.Title);
         }
 
         private void UploadCorrectXMlFile()
