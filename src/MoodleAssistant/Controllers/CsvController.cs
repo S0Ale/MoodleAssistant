@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using CsvHelper;
 using Microsoft.AspNetCore.Http;
 using MoodleAssistant.Models;
 using MoodleAssistant.Utils;
@@ -52,13 +54,15 @@ namespace MoodleAssistant.Controllers
             if (!csvFileModel.IsWellFormed())
                 return SetErrorAndReturnToView(csvFileModel, Error.CsvBadFormed);
 
-            
-            using var memoryStream = new MemoryStream();
-            file.CopyTo(memoryStream);
-            var fileBytes = memoryStream.ToArray();
-            var base64File = Convert.ToBase64String(fileBytes);
 
-            HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionCsvFile, base64File);
+            var filePath = Path.GetTempFileName();
+
+            using (var stream = System.IO.File.Create(filePath))
+            {
+                file.CopyToAsync(stream);
+            }
+
+            HttpContext.Session.SetString(SessionNameFieldConst.SessionCsvFile, filePath);
             return View(PathToDownloadView);
         }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Xml;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoodleAssistant.Models;
 using MoodleAssistant.Utils;
@@ -13,7 +14,7 @@ namespace MoodleAssistant.Controllers
         public IActionResult Upload(UploadXmlFileModel model)
         {
             if (null == model)
-                model = new UploadXmlFileModel { Error = Utils.Error.NoErrors };
+                model = new UploadXmlFileModel { Error = Error.NoErrors };
             return View(model);
         }
 
@@ -46,8 +47,8 @@ namespace MoodleAssistant.Controllers
                 return SetErrorAndReturnToView(xmlFileModel, Error.ZeroAnswers);
 
             xmlFileModel.TakeAnswerParameters();
-
-            HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionXmlDocument, xmlFileModel.XmlFile);
+            
+            HttpContext.Session.SetString(SessionNameFieldConst.SessionXmlDocument, xmlFileModel.XmlFile.OuterXml);
             HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionQuestionList, xmlFileModel.QuestionParametersList);
             HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionAnswerList, xmlFileModel.AnswerParametersList);
 
@@ -56,9 +57,22 @@ namespace MoodleAssistant.Controllers
 
         public IActionResult Download()
         {
-            throw new System.NotImplementedException();
+            var xmlFileString = HttpContext.Session.GetString(SessionNameFieldConst.SessionXmlDocument);
+            var csvFilePath = HttpContext.Session.GetString(SessionNameFieldConst.SessionCsvFile);
+
+            var xmlFile = new XmlDocument();
+            xmlFile.LoadXml(xmlFileString);
+
+            var xmlModel = new DownloadModel{
+               XmlFile = xmlFile,
+               CsvFilePath = csvFilePath
+            };
+
+            xmlFile = xmlModel.CreateQuestion(csvFilePath, xmlFile);
+            return File(xmlModel.GetFile(xmlFile.OuterXml), "text/xml", "questions.xml");
         }
 
+        
         private IActionResult SetErrorAndReturnToView(UploadXmlFileModel model, Error error)
         {
             model.Error = error;

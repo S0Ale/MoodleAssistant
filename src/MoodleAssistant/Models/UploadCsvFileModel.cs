@@ -31,7 +31,7 @@ namespace MoodleAssistant.Models
             using var streamReader = new StreamReader(CsvAnswers.OpenReadStream(), Encoding.UTF8);
             return streamReader.EndOfStream;
         }
-
+        
         public bool HasValidHeader()
         {
             using var fileReader = new StreamReader(CsvAnswers.OpenReadStream());
