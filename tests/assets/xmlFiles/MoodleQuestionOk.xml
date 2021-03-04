@@ -2,15 +2,15 @@
 <quiz>
 <question type="shortanswer">
 <name>
-<text>Capitali degli stati</text>
+<text>Capitals</text>
 </name>
 <questiontext format="html">
-<text>Qual è la capitale di [*[[stato]]*]</text>
+<text>What is the capital of [*[[state]]*]</text>
 </questiontext>
 <defaultgrade>1.0000000</defaultgrade>
 <penalty>0.3333333</penalty>
 <answer fraction="100" format="moodle_auto_format">
-<text>[*[[capitale]]*]</text>
+<text>[*[[capital]]*]</text>
 </answer>
 <answer fraction="0" format="moodle_auto_format">
 <text>**</text>

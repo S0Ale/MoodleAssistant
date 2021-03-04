@@ -69,3 +69,13 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+/* CSS
+-------------------------------------------------- */
+.site-screen-img {
+    width: 70%;
+    border: 1px solid lightgray;
+}
+.guide-title {
+    margin-top: 50px;
+}

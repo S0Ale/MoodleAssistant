@@ -3,6 +3,81 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Moodle Assistant</h1>
+    <p>Insert <code>[*[[placeholders]]*]</code> and get your questions</p>
+    <br/><br/>
 </div>
+<div>
+    <h2 class="text-center">Bored of rewrite each question in Moodle?</h2>
+    <p>
+        Thanks to Moodle Assistant you can create only one question in Moodle, change words to placeholders and export it.
+        Create a CSV and get some copies of question. Now just upload this questions in Moodle.
+    </p>
+</div>
+<div>
+    <h3 class="text-center">Let's take an example for learn Moodle Assistant usage.</h3>
+    <p>
+        Think about a teacher who want ask to students what is the capital of some states. How boring can be create a question for each state?
+        Moodle Assistant can be the solution!
+    </p>
+</div>
+<div>
+    <h4 class="text-center guide-title">1. First of all you need a Moodle question in Moodle XML Format.</h4>
+    <p>
+        When you crete a question, where possible, you must put into question and answers textarea "placeholders".<br />
+        Placeholders format is <code>[*[[what-you-want]]*]</code> and are used from Moodle Assistant to find which word you want replace.
+        Now you must export the question in Moodle XML Format.
+        (<a href="https://docs.moodle.org/310/en/Export_questions" target="_blank">How to export questions in Moodle?</a>)
+        If is not possible edit directly in Moodle you must find your identifiers and add <code>[*[[</code> and <code>]]*]</code> in file previously exported.<br />
+        In our example we had:
+    </p>
+</div>
+<div class="text-center">
+    <img src="images/questionExample.png" alt="Question with placeholders example." class="text-center" />
+</div>
+<div>
+    <h4 class="text-center guide-title">2. Upload XML file.</h4>
+    <p>
+        Go to <code>random question</code> tab click the <code>arrow up</code> button and upload the file previously exported.
+    </p>
+</div>
+<div class="text-center">
+    <img src="images/uploadXML.png" alt="Upload question page." class="text-center site-screen-img" />
+</div>
+<div>
+    <h4 class="text-center guide-title">3. Check your input.</h4>
+    <p>
+        If is all right during the upload now is the time to check if there is any type of errors: look for identifiers chosen
+        or typing errors. Click on <code>upload CSV answers</code>.
+    </p>
+</div>
+<div class="text-center">
+    <img src="images/summaryPage.png" alt="Summary Page." class="text-center site-screen-img" />
+</div>
+<div>
+    <h4 class="text-center guide-title">4. Upload CSV with answers.</h4>
+    <p>
+        In this page we have to upload a <code>CSV file</code> with words that we want to replace. The CSV's first line (header) must contains all 
+        of identifiers the we used as placeholder. Make sure, opening it with a text editor, does not contain empty field or extra commas. In our example:
+    </p>
+</div>
+<div class="text-center">
+    <img src="images/csvExample.png" alt="CSV example." class="text-center" />
+</div>
+<div>
+    <h4 class="text-center guide-title">5. Download questions.</h4>
+    <p>
+        Now we can download tan XML file. It contains a question for each row of the CSV previously uploaded. Click on the <code>arrow down</code> button and
+        the download will start automatically.
+    </p>
+</div>
+<div class="text-center">
+    <img src="images/downloadPage.png" alt="Download page." class="text-center site-screen-img" />
+</div>
+<div>
+    <h4 class="text-center guide-title">6. Upload questions.</h4>
+    <p>
+        Upload the <code>questions.xml</code> file downloaded in your Moodle instance. (<a href="https://docs.moodle.org/310/en/Import_questions#Question_bank_import_process" target="_blank">How to import questions in Moodle?</a>)
+    </p>
+</div>
+
