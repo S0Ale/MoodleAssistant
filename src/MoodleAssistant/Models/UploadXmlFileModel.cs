@@ -110,13 +110,6 @@ namespace MoodleAssistant.Models
             return htmlFormatted;
         }
 
-        public bool QuestionHasParameters()
-        {
-            var questiontextNodeList = XmlFile.GetElementsByTagName("questiontext");
-            var questionParametersList = GetParametersFromXmlNode(questiontextNodeList.Item(0));
-            QuestionParametersList = questionParametersList;
-            return questionParametersList.Any();
-        }
 
         public bool HasAnswer()
         {
@@ -124,8 +117,22 @@ namespace MoodleAssistant.Models
             return answerList.Count > 0;
         }
 
-        public void TakeAnswerParameters()
+        public void TakeParameters()
         {
+            var questiontextNodeList = XmlFile.GetElementsByTagName("questiontext");
+            QuestionParametersList = GetParametersFromXmlNode(questiontextNodeList.Item(0));
+
+            //for matching questions
+            var subQuestionNodeList = XmlFile.GetElementsByTagName("subquestion");
+            if (subQuestionNodeList.Count != 0)
+            {
+                var subQuestionParametersList = new List<string>();
+                foreach (XmlNode subQuestion in subQuestionNodeList)
+                    subQuestionParametersList.AddRange(GetParametersFromXmlNode(subQuestion));
+                subQuestionParametersList.AddRange(QuestionParametersList);
+                QuestionParametersList = subQuestionParametersList;
+            }
+
             var answerParametersList = new List<string>();
             var answerList = XmlFile.GetElementsByTagName("answer");
             foreach (XmlNode answer in answerList)

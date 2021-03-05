@@ -39,14 +39,11 @@ namespace MoodleAssistant.Controllers
 
             if(!xmlFileModel.HasQuestionText())
                 return SetErrorAndReturnToView(xmlFileModel, Error.ZeroOrMoreQuestions);
-            
-            if(!xmlFileModel.QuestionHasParameters())
-                return SetErrorAndReturnToView(xmlFileModel, Error.NoParameters);
-            
+
             if(!xmlFileModel.HasAnswer())
                 return SetErrorAndReturnToView(xmlFileModel, Error.ZeroAnswers);
 
-            xmlFileModel.TakeAnswerParameters();
+            xmlFileModel.TakeParameters();
             
             HttpContext.Session.SetString(SessionNameFieldConst.SessionXmlDocument, xmlFileModel.XmlFile.OuterXml);
             HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionQuestionList, xmlFileModel.QuestionParametersList);

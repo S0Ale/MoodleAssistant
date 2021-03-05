@@ -92,20 +92,6 @@ namespace MoodleAssistant.UnitTests
         }
 
         [Fact]
-        public void MoodleAssistant_UploadXML_XMLWithoutRandomizableParameters_ReturnToUpload()
-        {
-            UploadXmlFile("MoodleQuestionWithoutParameters.xml");
-            Assert.Equal(RandomQuestionPageTitle, WebDriver.Title);
-        }
-
-        [Fact]
-        public void MoodleAssistant_UploadXML_XMLWithoutRandomizableParameters_DisplaysAlert()
-        {
-            UploadXmlFile("MoodleQuestionWithoutParameters.xml");
-            Assert.True(WebDriver.FindElement(By.ClassName(Error.NoParameters.ToString())).Displayed);
-        }
-
-        [Fact]
         public void MoodleAssistant_UploadXML_XMLWithoutAnswer_ReturnToUpload()
         {
             UploadXmlFile("MoodleQuestionWithoutAnswer.xml");
