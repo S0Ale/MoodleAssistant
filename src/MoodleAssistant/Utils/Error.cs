@@ -36,11 +36,9 @@ namespace MoodleAssistant.Utils
                 Error.EmptyFile => EmptyFile,
                 Error.MalFormatted => MalFormatted,
                 Error.ZeroOrMoreQuestions => ZeroOrMoreQuestions,
-                Error.NoParameters => NoParameters,
                 Error.ZeroAnswers => ZeroAnswers,
                 Error.NonCsvFile => NonCsvFile,
                 Error.CsvInvalidHeader => CsvInvalidHeader,
-                Error.XmlProcessing => XmlProcessing,
                 Error.CsvBadFormed => CsvBadFormed,
                 _ => NoErrors
             };
@@ -55,11 +53,9 @@ namespace MoodleAssistant.Utils
         EmptyFile,
         MalFormatted,
         ZeroOrMoreQuestions,
-        NoParameters,
         ZeroAnswers,
         NonCsvFile,
         CsvInvalidHeader,
-        XmlProcessing,
         CsvBadFormed,
     }
 }
