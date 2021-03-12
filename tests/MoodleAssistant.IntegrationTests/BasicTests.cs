@@ -48,6 +48,13 @@ namespace MoodleAssistant.IntegrationTests
             Assert.Equal(DownloadPageTitle, WebDriver.Title);
         }
 
+        [Fact]
+        public void MoodleAssistant_TestAllFunctionality_WithSameIdentifierTwiceInQuiz_Ok()
+        {
+            UseApplication("MultiChoice1");
+            Assert.Equal(DownloadPageTitle, WebDriver.Title);
+        }
+
         private void UseApplication(string filename)
         {
             var element = WebDriver.FindElement(By.Id(UploadXmlButtonId));
