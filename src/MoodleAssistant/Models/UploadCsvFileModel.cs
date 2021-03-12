@@ -31,7 +31,7 @@ namespace MoodleAssistant.Models
             using var streamReader = new StreamReader(CsvAnswers.OpenReadStream(), Encoding.UTF8);
             return streamReader.EndOfStream;
         }
-        
+
         public bool HasValidHeader()
         {
             using var fileReader = new StreamReader(CsvAnswers.OpenReadStream());
@@ -57,10 +57,24 @@ namespace MoodleAssistant.Models
                 if (numOfHeaders != csv.Parser.Count)
                     return false;
                 for (var i = 0; i < csv.Parser.Count; i++)
-                    if(string.IsNullOrEmpty(csv.GetField<string>(i)))
+                    if (string.IsNullOrEmpty(csv.GetField<string>(i)))
                         return false;
             }
+
             return true;
+        }
+
+        public List<string[]> ConvertToArrayString(IFormFile file)
+        {
+            using var streamReader = new StreamReader(file.OpenReadStream());
+            var csvAsList = new List<string[]>();
+            csvAsList.Add(streamReader.ReadLine().Split(',')); //Title
+            while (!streamReader.EndOfStream) //get all the content in rows 
+            {
+                csvAsList.Add(streamReader.ReadLine().Split(','));
+            }
+
+            return csvAsList;
         }
     }
 }

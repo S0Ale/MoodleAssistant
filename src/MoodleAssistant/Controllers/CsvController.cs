@@ -55,14 +55,16 @@ namespace MoodleAssistant.Controllers
                 return SetErrorAndReturnToView(csvFileModel, Error.CsvBadFormed);
 
 
-            var filePath = Path.GetTempFileName();
+            /*var filePath = Path.GetTempFileName();
 
             using (var stream = System.IO.File.Create(filePath))
             {
                 file.CopyToAsync(stream);
-            }
+            }*/
 
-            HttpContext.Session.SetString(SessionNameFieldConst.SessionCsvFile, filePath);
+            var csvAsList = csvFileModel.ConvertToArrayString(file);
+
+            HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionCsvFile, csvAsList);
             return View(PathToDownloadView);
         }
 

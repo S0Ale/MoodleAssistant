@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Collections.Generic;
+using System.Xml;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoodleAssistant.Models;
@@ -55,17 +56,17 @@ namespace MoodleAssistant.Controllers
         public IActionResult Download()
         {
             var xmlFileString = HttpContext.Session.GetString(SessionNameFieldConst.SessionXmlDocument);
-            var csvFilePath = HttpContext.Session.GetString(SessionNameFieldConst.SessionCsvFile);
+            var csvAsList = HttpContext.Session.GetObjectFromJson<List<string[]>>(SessionNameFieldConst.SessionCsvFile);
 
             var xmlFile = new XmlDocument();
             xmlFile.LoadXml(xmlFileString);
 
             var xmlModel = new DownloadModel{
                XmlFile = xmlFile,
-               CsvFilePath = csvFilePath
+               CsvAsList = csvAsList
             };
 
-            xmlFile = xmlModel.CreateQuestion(csvFilePath, xmlFile);
+            xmlFile = xmlModel.CreateQuestion(csvAsList, xmlFile);
             return File(xmlModel.GetFile(xmlFile.OuterXml), "text/xml", "questions.xml");
         }
 
