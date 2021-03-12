@@ -40,7 +40,7 @@ namespace MoodleAssistant.Models
             csv.ReadHeader();
             var headerRow = csv.HeaderRecord;
             var questionAndAnswerList = (QuestionParametersList ?? Enumerable.Empty<string>())
-                .Concat(AnswersParametersList ?? Enumerable.Empty<string>()).ToList();
+                .Concat(AnswersParametersList ?? Enumerable.Empty<string>()).Distinct().ToList();
             return headerRow.All(questionAndAnswerList.Contains) &&
                    Equals(headerRow.Count(), questionAndAnswerList.Count());
         }

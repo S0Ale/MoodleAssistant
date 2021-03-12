@@ -120,7 +120,7 @@ namespace MoodleAssistant.Models
         public void TakeParameters()
         {
             var questiontextNodeList = XmlFile.GetElementsByTagName("questiontext");
-            QuestionParametersList = GetParametersFromXmlNode(questiontextNodeList.Item(0));
+            QuestionParametersList = GetParametersFromXmlNode(questiontextNodeList.Item(0)).Distinct();
 
             //for matching questions
             var subQuestionNodeList = XmlFile.GetElementsByTagName("subquestion");
@@ -137,7 +137,7 @@ namespace MoodleAssistant.Models
             var answerList = XmlFile.GetElementsByTagName("answer");
             foreach (XmlNode answer in answerList)
                 answerParametersList.AddRange(GetParametersFromXmlNode(answer));
-            AnswerParametersList = answerParametersList;
+            AnswerParametersList = answerParametersList.Distinct();
         }
 
         private static IEnumerable<string> GetParametersFromXmlNode(XmlNode textNode)
@@ -152,11 +152,6 @@ namespace MoodleAssistant.Models
                 parametersList.Add(match.Groups[2].Value);
             return parametersList;
 
-        }
-
-        public void UpdateSession()
-        {
-            
         }
 
     }
