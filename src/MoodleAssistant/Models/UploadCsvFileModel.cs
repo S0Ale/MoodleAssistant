@@ -64,16 +64,22 @@ namespace MoodleAssistant.Models
             return true;
         }
 
-        public List<string[]> ConvertToArrayString(IFormFile file)
+        public IEnumerable<string[]> ConvertCsvToListOfArrayString()
         {
-            using var streamReader = new StreamReader(file.OpenReadStream());
             var csvAsList = new List<string[]>();
-            csvAsList.Add(streamReader.ReadLine().Split(',')); //Title
-            while (!streamReader.EndOfStream) //get all the content in rows 
+            using var fileReader = new StreamReader(CsvAnswers.OpenReadStream());
+            using var csv = new CsvReader(fileReader, CultureInfo.InvariantCulture);
+            csv.Read();
+            csv.ReadHeader();
+            var numOfHeaders = csv.Parser.Count;
+            csvAsList.Add(csv.HeaderRecord);
+            while (csv.Read())
             {
-                csvAsList.Add(streamReader.ReadLine().Split(','));
+                var temp = new string[numOfHeaders];
+                for (var i = 0; i < numOfHeaders; i++)
+                    temp[i] = csv.GetField<string>(i);
+                csvAsList.Add(temp);
             }
-
             return csvAsList;
         }
     }

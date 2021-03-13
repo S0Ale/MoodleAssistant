@@ -61,13 +61,13 @@ namespace MoodleAssistant.Controllers
             var xmlFile = new XmlDocument();
             xmlFile.LoadXml(xmlFileString);
 
-            var xmlModel = new DownloadModel{
+            var downloadModel = new DownloadModel{
                XmlFile = xmlFile,
                CsvAsList = csvAsList
             };
 
-            xmlFile = xmlModel.CreateQuestion(csvAsList, xmlFile);
-            return File(xmlModel.GetFile(xmlFile.OuterXml), "text/xml", "questions.xml");
+            xmlFile = downloadModel.CreateQuestion();
+            return File(downloadModel.GetFile(xmlFile.OuterXml), "text/xml", "questions.xml");
         }
 
         

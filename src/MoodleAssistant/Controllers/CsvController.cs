@@ -54,15 +54,8 @@ namespace MoodleAssistant.Controllers
             if (!csvFileModel.IsWellFormed())
                 return SetErrorAndReturnToView(csvFileModel, Error.CsvBadFormed);
 
-
-            /*var filePath = Path.GetTempFileName();
-
-            using (var stream = System.IO.File.Create(filePath))
-            {
-                file.CopyToAsync(stream);
-            }*/
-
-            var csvAsList = csvFileModel.ConvertToArrayString(file);
+            
+            var csvAsList = csvFileModel.ConvertCsvToListOfArrayString();
 
             HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionCsvFile, csvAsList);
             return View(PathToDownloadView);
