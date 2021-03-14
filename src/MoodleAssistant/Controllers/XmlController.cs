@@ -33,7 +33,7 @@ namespace MoodleAssistant.Controllers
                 return SetErrorAndReturnToView(xmlFileModel, Error.EmptyFile);
 
             if(!xmlFileModel.IsWellFormattedXml())
-                return SetErrorAndReturnToView(xmlFileModel, Error.MalFormatted);
+                return SetErrorAndReturnToView(xmlFileModel, Error.XmlBadFormed);
 
             if(!xmlFileModel.HasOnlyOneQuestion())
                 return SetErrorAndReturnToView(xmlFileModel, Error.ZeroOrMoreQuestions);

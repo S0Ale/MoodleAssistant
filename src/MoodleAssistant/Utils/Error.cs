@@ -17,9 +17,7 @@ namespace MoodleAssistant.Utils
         public const string NonXmlFile = "File type must be XML.";
         public const string MalFormatted = "XML file is bad formed.";
         public const string ZeroOrMoreQuestions = "XML file must contains only one question.";
-        public const string NoParameters = "XML quiz must contains parameters.";
         public const string ZeroAnswers = "XML quiz must contains answers.";
-        public const string XmlProcessing = "Something went wrong during Xml Processing. Please try again.";
 
         //csv errors
         public const string NonCsvFile = "File type must be CSV.";
@@ -34,7 +32,7 @@ namespace MoodleAssistant.Utils
                 Error.NullFile => NullFile,
                 Error.NonXmlFile => NonXmlFile,
                 Error.EmptyFile => EmptyFile,
-                Error.MalFormatted => MalFormatted,
+                Error.XmlBadFormed => MalFormatted,
                 Error.ZeroOrMoreQuestions => ZeroOrMoreQuestions,
                 Error.ZeroAnswers => ZeroAnswers,
                 Error.NonCsvFile => NonCsvFile,
@@ -51,7 +49,7 @@ namespace MoodleAssistant.Utils
         NullFile,
         NonXmlFile,
         EmptyFile,
-        MalFormatted,
+        XmlBadFormed,
         ZeroOrMoreQuestions,
         ZeroAnswers,
         NonCsvFile,

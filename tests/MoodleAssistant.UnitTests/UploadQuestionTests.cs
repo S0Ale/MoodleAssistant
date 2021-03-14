@@ -42,23 +42,23 @@ namespace MoodleAssistant.UnitTests
         }
 
         [Theory]
-        [InlineData("MalFormatted.xml")]
-        [InlineData("MalFormatted-1.xml")]
-        [InlineData("MalFormatted-2.xml")]
-        public void MoodleAssistant_UploadXML_MalFormattedXml_ReturnToUpload(string fileName)
+        [InlineData("XmlBadFormed.xml")]
+        [InlineData("XmlBadFormed-1.xml")]
+        [InlineData("XmlBadFormed-2.xml")]
+        public void MoodleAssistant_UploadXML_XmlBadFormed_ReturnToUpload(string fileName)
         {
             UploadXmlFile(fileName);
             Assert.Equal(RandomQuestionPageTitle, WebDriver.Title);
         }
 
         [Theory]
-        [InlineData("MalFormatted.xml")]
-        [InlineData("MalFormatted-1.xml")]
-        [InlineData("MalFormatted-2.xml")]
-        public void MoodleAssistant_UploadXML_MalFormattedXml_DisplaysAlert(string fileName)
+        [InlineData("XmlBadFormed.xml")]
+        [InlineData("XmlBadFormed-1.xml")]
+        [InlineData("XmlBadFormed-2.xml")]
+        public void MoodleAssistant_UploadXML_XmlBadFormed_DisplaysAlert(string fileName)
         {
             UploadXmlFile(fileName);
-            Assert.True(WebDriver.FindElement(By.ClassName(Error.MalFormatted.ToString())).Displayed);
+            Assert.True(WebDriver.FindElement(By.ClassName(Error.XmlBadFormed.ToString())).Displayed);
         }
 
 
