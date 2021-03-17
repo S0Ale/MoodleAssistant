@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json.Serialization;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -73,7 +74,7 @@ namespace MoodleAssistant.Models
             var questiontext = questiontextNode.SelectSingleNode("text").InnerText;
             var rgx = new Regex(Pattern);
             foreach (Match match in rgx.Matches(questiontext))
-                questiontext = questiontext.Replace(match.Value, "<mark>" + match.Value + "</mark>");
+                questiontext = questiontext.Replace(match.Value, "<mark>" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</mark>");
             htmlFormatted += questiontext;
             htmlFormatted += "</div>";
             return htmlFormatted;
@@ -96,7 +97,7 @@ namespace MoodleAssistant.Models
                 {
                     var answerText = node.InnerText;
                     foreach (Match match in rgx.Matches(answerText))
-                        answerText = answerText.Replace(match.Value, "<mark>" + match.Value + "</mark>");
+                        answerText = answerText.Replace(match.Value, "<mark>" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</mark>");
                     htmlFormatted += answerText;
                 }
                 htmlFormatted += "</p>";
