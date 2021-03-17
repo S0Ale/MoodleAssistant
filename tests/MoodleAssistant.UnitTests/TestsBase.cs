@@ -9,7 +9,7 @@ namespace MoodleAssistant.UnitTests
         protected readonly IWebDriver WebDriver;
         protected const string SiteUrl = "https://localhost:44379/";
         protected const string AssetsDir = @"C:\Users\andre\source\repos\MoodleAssistant\tests\assets\xmlFiles\";
-        protected const string RandomQuestionPageTitle = "Random Questions - MoodleAssistant";
+        protected const string RandomQuestionPageTitle = "Upload XML - MoodleAssistant";
         protected const string SummaryPagePageTitle = "Summary Page - MoodleAssistant";
         protected const string UploadCsvPageTitle = "Upload CSV - MoodleAssistant";
         protected const string DownloadPageTitle = "Download - MoodleAssistant";

@@ -24,7 +24,7 @@ namespace MoodleAssistant.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Tutorial()
         {
             return View();
         }

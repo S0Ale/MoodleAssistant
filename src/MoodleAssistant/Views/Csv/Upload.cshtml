@@ -10,12 +10,12 @@
     }
 
 }
-<div class="text-center">
+<div class="text-center upload-container">
     @Html.Raw(alert)
     <h1 class="display-4">Upload your answers in CSV format</h1>
     <form enctype="multipart/form-data" asp-controller="Csv" asp-action="Upload" method="post">
         <label>
-            <i class="fas fa-arrow-circle-up fa-8x"></i>
+            <i class="fas fa-arrow-circle-up fa-8x cursor-pointer"></i>
             <input type="file" name="file" id="upload-csv-answers" style="display: none" onchange="form.submit()">
         </label>
     </form>
