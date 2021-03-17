@@ -47,7 +47,7 @@ namespace MoodleAssistant.Models
 
         public bool IsWellFormed()
         {
-            using var fileReader = new StreamReader(CsvAnswers.OpenReadStream());
+            using var fileReader = new StreamReader(CsvAnswers.OpenReadStream(), Encoding.Default);
             using var csv = new CsvReader(fileReader, CultureInfo.InvariantCulture);
             csv.Read();
             csv.ReadHeader();

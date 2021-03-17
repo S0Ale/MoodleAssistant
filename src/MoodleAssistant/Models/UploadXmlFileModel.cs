@@ -17,13 +17,9 @@ namespace MoodleAssistant.Models
     {
         private const string Pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
         public IFormFile XmlQuestion;
-
         public Error Error;
-
         public XmlDocument XmlFile;
-
         public IEnumerable<string> QuestionParametersList;
-
         public IEnumerable<string> AnswerParametersList;
 
         public bool IsXml()
@@ -65,7 +61,6 @@ namespace MoodleAssistant.Models
             return questiontextNodeList.Count == 1;
         }
 
-
         public string GetFormattedQuestionText()
         {
             if(!HasQuestionText())
@@ -75,7 +70,7 @@ namespace MoodleAssistant.Models
                 return string.Empty;
 
             var htmlFormatted = "<div id=\"questiontext\">";
-            var questiontext = questiontextNode.InnerText;
+            var questiontext = questiontextNode.SelectSingleNode("text").InnerText;
             var rgx = new Regex(Pattern);
             foreach (Match match in rgx.Matches(questiontext))
                 questiontext = questiontext.Replace(match.Value, "<mark>" + match.Value + "</mark>");
@@ -109,7 +104,6 @@ namespace MoodleAssistant.Models
             htmlFormatted += "</div>";
             return htmlFormatted;
         }
-
 
         public bool HasAnswer()
         {
