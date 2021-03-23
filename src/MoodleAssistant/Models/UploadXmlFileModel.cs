@@ -27,13 +27,11 @@ namespace MoodleAssistant.Models
         {
             return System.Net.Mime.MediaTypeNames.Text.Xml == XmlQuestion.ContentType;
         }
-
         public bool IsEmpty()
         {
             using var streamReader = new StreamReader(XmlQuestion.OpenReadStream(), Encoding.UTF8);
             return streamReader.EndOfStream;
         }
-
         public bool IsWellFormattedXml()
         {
             using var streamReader = new StreamReader(XmlQuestion.OpenReadStream(), Encoding.UTF8);
@@ -49,19 +47,16 @@ namespace MoodleAssistant.Models
                 return false;
             }
         }
-
         public bool HasOnlyOneQuestion()
         {
             var questionList = XmlFile.GetElementsByTagName("question");
             return questionList.Count == 1;
         }
-
         public bool HasQuestionText()
         {
             var questiontextNodeList = XmlFile.GetElementsByTagName("questiontext");
             return questiontextNodeList.Count == 1;
         }
-
         public string GetFormattedQuestionText()
         {
             if(!HasQuestionText())
@@ -80,7 +75,6 @@ namespace MoodleAssistant.Models
             return htmlFormatted;
 
         }
-
         public string GetFormattedAnswers()
         {
             if (!HasAnswer())
@@ -105,13 +99,11 @@ namespace MoodleAssistant.Models
             htmlFormatted += "</div>";
             return htmlFormatted;
         }
-
         public bool HasAnswer()
         {
             var answerList = XmlFile.GetElementsByTagName("answer");
             return answerList.Count > 0;
         }
-
         public void TakeParameters()
         {
             var questiontextNodeList = XmlFile.GetElementsByTagName("questiontext");
@@ -134,7 +126,6 @@ namespace MoodleAssistant.Models
                 answerParametersList.AddRange(GetParametersFromXmlNode(answer));
             AnswerParametersList = answerParametersList.Distinct();
         }
-
         private static IEnumerable<string> GetParametersFromXmlNode(XmlNode textNode)
         {
             if (null == textNode)
@@ -148,7 +139,5 @@ namespace MoodleAssistant.Models
             return parametersList;
 
         }
-
     }
-
 }

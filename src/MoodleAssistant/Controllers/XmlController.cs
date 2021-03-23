@@ -25,25 +25,18 @@ namespace MoodleAssistant.Controllers
             var xmlFileModel = new UploadXmlFileModel {XmlQuestion = file};
             if (null == file)
                 return SetErrorAndReturnToView(xmlFileModel, Error.NullFile);
-
             if (!xmlFileModel.IsXml())
                 return SetErrorAndReturnToView(xmlFileModel, Error.NonXmlFile);
-            
             if(xmlFileModel.IsEmpty())
                 return SetErrorAndReturnToView(xmlFileModel, Error.EmptyFile);
-
             if(!xmlFileModel.IsWellFormattedXml())
                 return SetErrorAndReturnToView(xmlFileModel, Error.XmlBadFormed);
-
             if(!xmlFileModel.HasOnlyOneQuestion())
                 return SetErrorAndReturnToView(xmlFileModel, Error.ZeroOrMoreQuestions);
-
             if(!xmlFileModel.HasQuestionText())
                 return SetErrorAndReturnToView(xmlFileModel, Error.ZeroOrMoreQuestions);
-
             if(!xmlFileModel.HasAnswer())
                 return SetErrorAndReturnToView(xmlFileModel, Error.ZeroAnswers);
-
             xmlFileModel.TakeParameters();
             
             HttpContext.Session.SetString(SessionNameFieldConst.SessionXmlDocument, xmlFileModel.XmlFile.OuterXml);
