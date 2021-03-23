@@ -9,10 +9,10 @@ namespace MoodleAssistant.UnitTests
         protected readonly IWebDriver WebDriver;
         protected const string SiteUrl = "https://localhost:44379/";
         protected const string AssetsDir = @"C:\Users\andre\source\repos\MoodleAssistant\tests\assets\xmlFiles\";
-        protected const string RandomQuestionPageTitle = "Upload XML - MoodleAssistant";
-        protected const string SummaryPagePageTitle = "Summary Page - MoodleAssistant";
-        protected const string UploadCsvPageTitle = "Upload CSV - MoodleAssistant";
-        protected const string DownloadPageTitle = "Download - MoodleAssistant";
+        protected const string RandomQuestionPageTitle = "Upload XML - MQ-Replicator";
+        protected const string SummaryPagePageTitle = "Summary Page - MQ-Replicator";
+        protected const string UploadCsvPageTitle = "Upload CSV - MQ-Replicator";
+        protected const string DownloadPageTitle = "Download - MQ-Replicator";
         private const string UploadXmlButtonId = "upload-xml-question";
         private const string UploadCsvButtonId = "upload-csv-answers";
 
