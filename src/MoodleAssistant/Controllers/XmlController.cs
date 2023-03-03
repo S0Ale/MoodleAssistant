@@ -35,8 +35,8 @@ namespace MoodleAssistant.Controllers
                 return SetErrorAndReturnToView(xmlFileModel, Error.ZeroOrMoreQuestions);
             if(!xmlFileModel.HasQuestionText())
                 return SetErrorAndReturnToView(xmlFileModel, Error.ZeroOrMoreQuestions);
-            if(!xmlFileModel.HasAnswer())
-                return SetErrorAndReturnToView(xmlFileModel, Error.ZeroAnswers);
+           /* if(!xmlFileModel.HasAnswer())
+                return SetErrorAndReturnToView(xmlFileModel, Error.ZeroAnswers);*/
             xmlFileModel.TakeParameters();
             
             HttpContext.Session.SetString(SessionNameFieldConst.SessionXmlDocument, xmlFileModel.XmlFile.OuterXml);
