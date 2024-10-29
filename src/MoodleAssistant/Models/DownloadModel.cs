@@ -27,9 +27,9 @@ namespace MoodleAssistant.Models
                 XmlFile.DocumentElement?.AppendChild(xmlQuestionNode.Clone());
             }
             
-            while(XmlFile.DocumentElement.FirstChild.NodeType == XmlNodeType.Comment)
+            while(XmlFile.DocumentElement?.FirstChild?.NodeType == XmlNodeType.Comment)
                 XmlFile.DocumentElement.RemoveChild(XmlFile.DocumentElement.FirstChild);
-            XmlFile.DocumentElement.RemoveChild(XmlFile.DocumentElement.FirstChild);
+            XmlFile.DocumentElement?.RemoveChild(XmlFile.DocumentElement.FirstChild);
 
             return XmlFile;
         }

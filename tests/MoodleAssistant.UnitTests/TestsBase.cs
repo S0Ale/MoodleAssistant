@@ -21,9 +21,9 @@ namespace MoodleAssistant.UnitTests
             WebDriver = new ChromeDriver { Url = SiteUrl + webPage };
         }
         
-        public void Dispose()
-        {
+        public void Dispose() {
             WebDriver.Close();
+            WebDriver.Quit();
             WebDriver.Dispose();
         }
 
