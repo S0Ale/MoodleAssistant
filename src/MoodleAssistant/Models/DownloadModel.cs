@@ -13,7 +13,8 @@ namespace MoodleAssistant.Models
 
         public XmlDocument CreateQuestion()
         {
-            var headerRow = CsvAsList.ElementAt(0);
+            // create new question nodes
+            var headerRow = CsvAsList.ElementAt(0); // first row contains parameter names
             for (var j = 1; j < CsvAsList.Count(); j++)
             {
                 var xmlQuestionNode = XmlFile.GetElementsByTagName("question").Item(0)?.Clone();
@@ -26,7 +27,8 @@ namespace MoodleAssistant.Models
                 xmlQuestionNode.InnerXml = questionString;
                 XmlFile.DocumentElement?.AppendChild(xmlQuestionNode.Clone());
             }
-            
+
+            // remove template question
             while(XmlFile.DocumentElement?.FirstChild?.NodeType == XmlNodeType.Comment)
                 XmlFile.DocumentElement.RemoveChild(XmlFile.DocumentElement.FirstChild);
             XmlFile.DocumentElement?.RemoveChild(XmlFile.DocumentElement.FirstChild);
