@@ -1,4 +1,3 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
     content: [
         "../Views/**/*.cshtml",
@@ -11,10 +10,8 @@ module.exports = {
                 '1/10': '10%',
             },
             colors: {
-                'btn_primary': '#0366d6'
             }
         }
     },
     plugins: [],
 }
-
