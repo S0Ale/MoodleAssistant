@@ -1,39 +1,62 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+body {
+    background: #f9fafb;
 }
 
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+nav, footer {
+    background: #fff;
 }
 
-.btn-primary {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+p {
+    color: #374151;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-  color: #fff;
-  background-color: #1b6ec2;
-  border-color: #1861ac;
+.debug1 {
+    border: 1px solid red
 }
+.debug2 {
+    border: 1px solid orange
+}
+.debug3 {
+    border: 1px solid green
+}
+.debug4 {
+    border: 1px solid blue
+}
+.debug4 {
+    border: 1px solid purple
+}
+
+
+ /* Global styles */
+
+.code {
+    color: hotpink;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .9rem;
+    line-height: 1.5;
+}
+.btn {
+    cursor: pointer;
+}
+/*
+.btn {
+    -moz-border-radius: .25rem;
+    -webkit-border-radius: .25rem;
+    border-radius: .25rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: #fff;
+}
+*/
+
 
 /* Sticky footer styles
 -------------------------------------------------- */
-html {
-  font-size: 14px;
-}
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
 
 .border-top {
   border-top: 1px solid #e5e5e5;
@@ -62,7 +85,7 @@ body {
   /* Margin bottom by footer height */
   margin-bottom: 60px;
 }
-.footer {
+footer {
   position: absolute;
   bottom: 0;
   width: 100%;

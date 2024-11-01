@@ -4,38 +4,30 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MoodleAssistant</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                    }
-                }
-            }
-        }
-    </script>
+    
+    <link rel="stylesheet" href="~/css/output.css" />
+    <link rel="stylesheet" href="~/css/tail-init.css" />
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
     <header>
-        <nav class="border-b border-zinc-300">
+        <nav class="border-b border-zinc-200">
             <div class="max-w-6xl mx-auto px-4">
                 <div class="flex justify-between">
 
                     <div class="flex space-x-4">
                         <!-- logo -->
                         <div>
-                            <a href="#" class="flex items-center py-5 text-2xl text-slate-700 hover:text-slate-900">
+                            <a href="#" class="flex items-center py-5 text-2xl text-gray-700 hover:text-gray-900">
                                 <span class="">MoodleAssistant</span>
                             </a>
                         </div>
 
                         <!-- primary nav -->
                         <div class="hidden md:flex items-center space-x-1">
-                            <a href="#" class="py-5 px-3 text-slate-500 hover:text-slate-700">Home</a>
-                            <a href="#" class="py-5 px-3 text-slate-500 hover:text-slate-700">Expand a question</a>
-                            <a href="#" class="py-5 px-3 text-slate-500 hover:text-slate-700">Tutorial</a>
+                            <a href="#" class="py-5 px-3 text-gray-500 hover:text-gray-700">Home</a>
+                            <a href="#" class="py-5 px-3 text-gray-500 hover:text-gray-700">Expand a question</a>
+                            <a href="#" class="py-5 px-3 text-gray-500 hover:text-gray-700">Tutorial</a>
                         </div>
                     </div>
 
@@ -62,6 +54,11 @@
     <main class="w-full">
         @RenderBody()
     </main>
+    <footer class="border-t border-zinc-200">
+        <div class="text-center w-full text-gray-500">
+            &copy; 2024 - MoodleAssistant
+        </div>
+    </footer>
 
     <script src="~/js/site.js" asp-append-version="true"></script>
     @RenderSection("Scripts", required: false)
