@@ -11,10 +11,6 @@ function query(selector, asArray = false) {
     return queryChilds(document, selector, asArray);
 }
 
-function onTrigger(el, event, handler, capture = false) {
-    el.addEventListener(event, handler, capture);
-}
-
 function range(size, startAt = 0) {
     return [...Array(size).keys()].map(i => i + startAt);
 }
@@ -32,4 +28,4 @@ function elementChildren(element) {
     return children;
 }
 
-export { queryChilds, query, onTrigger, range, elementChildren };
+export { queryChilds, query, range, elementChildren };

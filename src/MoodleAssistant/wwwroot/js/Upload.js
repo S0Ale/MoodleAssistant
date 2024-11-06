@@ -1,19 +1,22 @@
-﻿import { query, queryChilds, onTrigger } from "./utils.js";
+﻿import { query, queryChilds } from "./utils.js";
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    const row = query('#file-input-row');
     const items = query('.file-input-item', true);
+    let data = new FormData();
 
+    // Add
     items.forEach((item) => {
         const input = queryChilds(item, 'input');
         const dropZone = queryChilds(item, '.drop-zone');
         const previewContainer = queryChilds(item, '.preview-container');
 
-        onTrigger(dropZone, 'dragover', function (e) {
+       // console.log(input.value);
+
+        dropZone.addEventListener('dragover', function (e) {
             e.preventDefault();
         });
-        onTrigger(dropZone, 'drop', function (e) {
+        dropZone.addEventListener('drop', function (e) {
             e.preventDefault();
 
             let file;
@@ -27,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
             previewContainer.appendChild(createPreviewItem(file, previewContainer, dropZone));
         });
 
-        onTrigger(input, 'change', function() {
+        input.addEventListener('change', function() {
             const file = input.files[0];
             handleFiles(file);
             dropZone.classList.add('hidden');
@@ -60,4 +63,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
         return previewItem;
     }
+
+    function clearForm() {
+        items.forEach((item) => {
+            const previewContainer = queryChilds(item, '.preview-container');
+            const input = queryChilds(item, 'input');
+            input.value = ''; // clear input
+
+            if (previewContainer.firstChild) {
+                // Clear preview item
+                previewContainer.removeChild(previewContainer.firstChild);
+                const dropZone = queryChilds(item, '.drop-zone');
+                dropZone.classList.remove('hidden');
+            }
+        });
+    }
+
+    const clearBtn = query('#clear-files');
+    clearBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        clearForm();
+    });
 });

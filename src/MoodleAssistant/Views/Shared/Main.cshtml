@@ -11,7 +11,7 @@
         <div class="pb-6">
             <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
             <form enctype="multipart/form-data" asp-controller="Main" asp-action="UploadFiles" method="post">
-                <div class="flex flex-col md:space-x-3 md:flex-row" id="file-input-row">
+                <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row" id="file-input-row">
                     <div class="file-input-item">
                         <label class="drop-zone flex justify-center w-full border border-zinc-400 bg-gray-100 border-dashed rounded appearance-none cursor-pointer h-32 px-4 hover:border-zinc-500 focus:outline-none">
                             <span class="flex items-center text-gray-500">
@@ -32,8 +32,8 @@
                     </div>
                 </div>
                 <div class="flex flex-row mt-3">
-                    <button type="submit" class="btn btn-primary py-1.5 px-6">Upload</button>
-                    <button class="btn btn-secondary py-1.5 px-6 ml-3">Clear</button>
+                    <button type="submit" class="btn btn-primary py-1.5 px-6" id="upload-files">Upload</button>
+                    <button class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files">Clear</button>
                 </div>
             </form>
         </div>
