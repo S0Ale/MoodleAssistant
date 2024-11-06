@@ -11,7 +11,7 @@ nav, footer {
     background: #fff;
 }
 
-p {
+p, span {
     color: #374151;
 }
 
@@ -43,71 +43,20 @@ p {
 .btn {
     cursor: pointer;
 }
-/*
-.btn {
-    -moz-border-radius: .25rem;
-    -webkit-border-radius: .25rem;
-    border-radius: .25rem;
-    font-weight: 600;
-    cursor: pointer;
-    color: #fff;
-}
-*/
 
-
-/* Sticky footer styles
--------------------------------------------------- */
-
-.border-top {
-  border-top: 1px solid #e5e5e5;
-}
-.border-bottom {
-  border-bottom: 1px solid #e5e5e5;
-}
-
-.box-shadow {
-  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
-}
-
-button.accept-policy {
-  font-size: 1rem;
-  line-height: inherit;
-}
-
-/* Sticky footer styles
--------------------------------------------------- */
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
-  /* Margin bottom by footer height */
-  margin-bottom: 60px;
-}
-footer {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  white-space: nowrap;
-  line-height: 60px; /* Vertically center the text there */
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
 }
 
-/* CSS
--------------------------------------------------- */
-.site-screen-img {
-    width: 70%;
-    border: 1px solid lightgray;
-}
-.guide-title {
-    margin-top: 50px;
-}
-.title-container {
-    margin-top: 20%;
-}
-.upload-container{
-    margin-top: 25%;
-}
-.cursor-pointer {
-    cursor: pointer;
+footer {
+    position: absolute;
+    bottom: 0;
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
 }

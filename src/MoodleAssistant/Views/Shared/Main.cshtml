@@ -1,0 +1,41 @@
+﻿@using MoodleAssistant.Utils
+@model MainModel
+@{
+    ViewData["Title"] = "Main";
+}
+@section Scripts {
+    <script src="~/js/Upload.js" type="module"></script>
+}
+<div class="debug1 pt-16">
+    <div class="flex items-center justify-center mx-auto">
+        <div class="pb-6">
+            <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
+            <form enctype="multipart/form-data" asp-controller="Main" asp-action="UploadFiles" method="post">
+                <div class="flex flex-col md:space-x-3 md:flex-row" id="file-input-row">
+                    <div class="file-input-item">
+                        <label class="drop-zone flex justify-center w-full border border-zinc-400 bg-gray-100 border-dashed rounded appearance-none cursor-pointer h-32 px-4 hover:border-zinc-500 focus:outline-none">
+                            <span class="flex items-center text-gray-500">
+                                Drop XML file here, or<span class="text-blue-500 underline ml-[4px]">browse</span>
+                            </span>
+                            <input type="file" name="xml_upload" class="hidden" accept="text/xml" id="xml-input">
+                        </label>
+                        <div class="preview-container"></div>
+                    </div>
+                    <div class="file-input-item">
+                        <label class="drop-zone flex justify-center w-full border border-zinc-400 bg-gray-100 border-dashed rounded appearance-none cursor-pointer h-32 px-4 hover:border-zinc-500 focus:outline-none">
+                            <span class="flex items-center text-gray-500">
+                                Drop CSV file here, or<span class="text-blue-500 underline ml-[4px]">browse</span>
+                            </span>
+                            <input type="file" name="csv_upload" class="hidden" accept="text/csv" id="csv-input">
+                        </label>
+                        <div class="preview-container"></div>
+                    </div>
+                </div>
+                <div class="flex flex-row mt-3">
+                    <button type="submit" class="btn btn-primary py-1.5 px-6">Upload</button>
+                    <button class="btn btn-secondary py-1.5 px-6 ml-3">Clear</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

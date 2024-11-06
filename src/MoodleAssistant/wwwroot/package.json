@@ -7,7 +7,7 @@
     "lib": "lib"
   },
   "scripts": {
-    "cssbuild": "npx tailwind build -i ./css/tail-init.css -o ./css/output.css --minify"
+    "cssbuild": "npx tailwind -i ./css/tail-init.css -o ./css/output.css --minify"
   },
   "keywords": [],
   "author": "",
