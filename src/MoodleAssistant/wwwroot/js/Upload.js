@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const items = query('.file-input-item', true);
     let data = new FormData();
 
-    // Add
     items.forEach((item) => {
         const input = queryChilds(item, 'input');
         const dropZone = queryChilds(item, '.drop-zone');
@@ -61,6 +60,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         submit(data);
+        data = new FormData();
         clearForm();
     });
 });

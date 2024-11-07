@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoodleAssistant.Models;
@@ -15,27 +16,70 @@ public class MainController : Controller{
     [HttpPost]
     public IActionResult UploadFiles(){
         var files = HttpContext.Request.Form.Files;
-        if(files.Count < 2)
+        if (files.Count < 2)
             return BadRequest("Missing files. Please fill all fields.");
 
         // XML file
+        UploadXmlFileModel xmlModel;
         var xmlFile = files.GetFile("xml_upload");
-        var xmlModel = new UploadXmlFileModel { XmlQuestion = xmlFile };
-        if (xmlFile == null || xmlFile.Length == 0 || !xmlModel.IsXml()) {
-            return BadRequest("Invalid file. Please upload an XML file.");
+        try{ xmlModel = LoadXml(xmlFile); }
+        catch (ValidationException e){
+            return BadRequest(e.Message);
         }
 
         // CSV file
+        IEnumerable<string[]> list;
         var csvFile = files.GetFile("csv_upload");
-        var csvModel = new UploadCsvFileModel { CsvAnswers = csvFile };
-        if (csvFile == null || csvFile.Length == 0 || !csvModel.IsCsv()) {
-            return BadRequest("Invalid file. Please upload a CSV file.");
+        try{ list = LoadCsv(csvFile, xmlModel);}
+        catch (ValidationException e) {
+            return BadRequest(e.Message);
         }
 
-        //HttpContext.Session.SetString(SessionNameFieldConst.SessionXmlDocument, xmlModel.XmlFile.OuterXml);
-        //var csvAsList = csvModel.ConvertCsvToListOfArrayString();
-        //HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionCsvFile, csvAsList);
+        // Save in session
+        HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionXmlFile, xmlModel);
+        HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionCsvFile, list);
 
         return Ok("File uploaded and saved in session successfully.");
+    }
+
+    private UploadXmlFileModel LoadXml(IFormFile file){
+        var model = new UploadXmlFileModel{ XmlQuestion = file };
+
+        if (null == file)
+            throw new ValidationException(Error.NullFile);
+        if (!model.IsXml())
+            throw new ValidationException(Error.NonXmlFile);
+        if (model.IsEmpty())
+            throw new ValidationException(Error.EmptyFile);
+        if (!model.IsWellFormattedXml())
+            throw new ValidationException(Error.XmlBadFormed);
+        if (!model.HasOnlyOneQuestion())
+            throw new ValidationException(Error.ZeroOrMoreQuestions);
+        if (!model.HasQuestionText())
+            throw new ValidationException(Error.ZeroOrMoreQuestions);
+
+        model.TakeParameters();
+        return model;
+    }
+
+    private IEnumerable<string[]> LoadCsv(IFormFile file, UploadXmlFileModel xmlModel){
+        var model = new UploadCsvFileModel{
+            CsvAnswers = file,
+            QuestionParametersList = xmlModel.QuestionParametersList,
+            AnswersParametersList = xmlModel.AnswerParametersList
+        };
+
+        if (null == file)
+            throw new ValidationException(Error.NullFile);
+        if (!model.IsCsv())
+            throw new ValidationException(Error.NonCsvFile);
+        if (model.IsEmpty())
+            throw new ValidationException(Error.EmptyFile);
+        if (!model.HasValidHeader())
+            throw new ValidationException(Error.CsvInvalidHeader);
+        if (!model.IsWellFormed())
+            throw new ValidationException(Error.CsvBadFormed);
+
+        return model.ConvertCsvToListOfArrayString();
     }
 }
