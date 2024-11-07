@@ -6,11 +6,11 @@
 @section Scripts {
     <script src="~/js/Upload.js" type="module"></script>
 }
-<div class="debug1 pt-16">
+<div class="pt-16">
     <div class="flex items-center justify-center mx-auto">
-        <div class="pb-6">
+        <div class="pb-9">
             <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
-            <form enctype="multipart/form-data" method="post">
+            <form enctype="multipart/form-data" method="post" id="first-form">
                 <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row">
                     <div class="file-input-item">
                         <label class="drop-zone flex justify-center w-full border border-zinc-400 bg-gray-100 border-dashed rounded appearance-none cursor-pointer h-32 px-4 hover:border-zinc-500 focus:outline-none">
@@ -46,4 +46,5 @@
             </form>
         </div>
     </div>
+    <div class="hidden border-t border-zinc-200"></div>
 </div>

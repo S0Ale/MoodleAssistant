@@ -1,5 +1,5 @@
 ﻿import { query, queryChilds } from "./utils.js";
-import { submit, clearForm, isEmptyForm, createPreviewItem } from "./form.js";
+import { submit, clearForm, isEmptyForm, createPreviewItem, showError } from "./form.js";
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -11,8 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
         const input = queryChilds(item, 'input');
         const dropZone = queryChilds(item, '.drop-zone');
         const previewContainer = queryChilds(item, '.preview-container');
-
-       // console.log(input.value);
 
         dropZone.addEventListener('dragover', function (e) {
             e.preventDefault();
@@ -51,11 +49,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     query('#clear-files').addEventListener('click', (e) => {
         e.preventDefault();
+        data = new FormData();
         clearForm();
     });
 
     query('#upload-files').addEventListener('click', (e) => {
         e.preventDefault();
+        if (isEmptyForm(data)) {
+            showError(query('#first-form'), 'No files selected. Please fill all fields.');
+            return false;
+        }
+
         submit(data);
         clearForm();
     });

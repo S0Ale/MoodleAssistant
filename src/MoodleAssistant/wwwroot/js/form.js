@@ -7,22 +7,22 @@ function clearForm() {
         const previewContainer = queryChilds(item, '.preview-container');
         const input = queryChilds(item, 'input');
         input.value = ''; // clear input
+        query('#first-form').reset();
 
+        // Clear preview item
         if (previewContainer.firstChild) {
-            // Clear preview item
             previewContainer.removeChild(previewContainer.firstChild);
             const dropZone = queryChilds(item, '.drop-zone');
             dropZone.classList.remove('hidden');
         }
     });
 }
-function isEmptyForm() {
-    var form = query('form');
-    var inputs = queryChilds(form, 'input');
-    inputs.forEach(input => {
-        if (input && input.value) return false;
-    });
-
+function isEmptyForm(data) {
+    for (let value of data.values()) {
+        if (value) {
+            return false;
+        }
+    }
     return true;
 }
 
@@ -52,18 +52,14 @@ function createPreviewItem(fileSrc, container, dropZone) {
 }
 
 async function submit(data) {
-    try {
-        const response = await fetch('/Main/UploadFiles', {
-            method: 'POST',
-            body: data,
-        });
+    const response = await fetch('/Main/UploadFiles', {
+        method: 'POST',
+        body: data,
+    });
 
-        if (response.ok) {
-            console.log('Files uploaded');
-        } else showError(query('form'), await response.text());
-    } catch (error) {
-        console.error('Error:', error);
-    }
+    if (response.ok) {
+        console.log('Files uploaded');
+    } else showError(query('form'), await response.text());
 }
 
 function showError(form, msg) {
@@ -74,4 +70,4 @@ function showError(form, msg) {
     cont.classList.remove('hidden');
 }
 
-export { submit, clearForm, isEmptyForm, createPreviewItem };
+export { submit, clearForm, isEmptyForm, createPreviewItem, showError };
