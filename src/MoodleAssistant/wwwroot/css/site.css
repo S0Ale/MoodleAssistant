@@ -31,9 +31,11 @@ p, span {
     border: 1px solid purple
 }
 
+.material-symbols-outlined {
+     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
+ }
 
- /* Global styles */
-
+/* Global styles */
 .code {
     color: hotpink;
     font-family: 'IBM Plex Mono', monospace;

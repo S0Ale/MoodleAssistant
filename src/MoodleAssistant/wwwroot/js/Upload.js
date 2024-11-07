@@ -1,4 +1,5 @@
 ﻿import { query, queryChilds } from "./utils.js";
+import { submit, clearForm, isEmptyForm, createPreviewItem } from "./form.js";
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -38,50 +39,24 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         function handleFiles(file) {
-            console.log(file);
+            data.append(input.name, file);
         }
     });
 
-    function createPreviewItem(fileSrc, container, dropZone) {
-        const previewItem = document.createElement('div');
-        previewItem.classList.add('file-item');
-
-        const text = document.createElement('p');
-        text.innerHTML = fileSrc.name;
-
-        const removeButton = document.createElement('button');
-        removeButton.innerHTML = 'X';
-        removeButton.classList.add('absolute', 'top-1', 'right-1', 'text-gray-700', 'border-none', 'px-2', 'py-1', 'transition', 'hover:text-red-500');
-
-        removeButton.addEventListener('click', function () {
-            container.removeChild(previewItem);
-            dropZone.classList.remove('hidden');
-        });
-
-        previewItem.appendChild(text);
-        previewItem.appendChild(removeButton);
-
-        return previewItem;
-    }
-
-    function clearForm() {
-        items.forEach((item) => {
-            const previewContainer = queryChilds(item, '.preview-container');
-            const input = queryChilds(item, 'input');
-            input.value = ''; // clear input
-
-            if (previewContainer.firstChild) {
-                // Clear preview item
-                previewContainer.removeChild(previewContainer.firstChild);
-                const dropZone = queryChilds(item, '.drop-zone');
-                dropZone.classList.remove('hidden');
-            }
-        });
-    }
-
-    const clearBtn = query('#clear-files');
-    clearBtn.addEventListener('click', (e) => {
+    query('#error-container button').addEventListener('click', (e) => {
         e.preventDefault();
+        let cont = query('#error-container');
+        cont.classList.add('hidden');
+    });
+
+    query('#clear-files').addEventListener('click', (e) => {
+        e.preventDefault();
+        clearForm();
+    });
+
+    query('#upload-files').addEventListener('click', (e) => {
+        e.preventDefault();
+        submit(data);
         clearForm();
     });
 });

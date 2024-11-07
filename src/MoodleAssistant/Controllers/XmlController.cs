@@ -19,10 +19,6 @@ namespace MoodleAssistant.Controllers
             return View(model);
         }
 
-        public IActionResult Main(MainModel model) {
-            return View(model);
-        }
-
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Upload(IFormFile file)
         {
