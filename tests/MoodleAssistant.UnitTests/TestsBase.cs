@@ -7,7 +7,7 @@ namespace MoodleAssistant.UnitTests
     public abstract class TestsBase : IDisposable
     {
         protected readonly IWebDriver WebDriver;
-        protected const string SiteUrl = "https://localhost:44379/";
+        protected const string SiteUrl = "https://localhost:5001/";
         protected const string AssetsDir = @"C:\Users\andre\source\repos\MoodleAssistant\tests\assets\xmlFiles\";
         protected const string RandomQuestionPageTitle = "Upload XML - MQ-Replicator";
         protected const string SummaryPagePageTitle = "Summary Page - MQ-Replicator";
