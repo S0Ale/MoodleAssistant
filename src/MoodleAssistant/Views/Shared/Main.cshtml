@@ -1,12 +1,10 @@
-﻿@using MoodleAssistant.Utils
-@model MainModel
-@{
+﻿@{
     ViewData["Title"] = "Main";
 }
 @section Scripts {
     <script src="~/js/Upload.js" type="module"></script>
 }
-<div class="pt-16">
+<div id="content" class="pt-16">
     <div class="flex items-center justify-center mx-auto">
         <div class="pb-9">
             <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
@@ -46,5 +44,4 @@
             </form>
         </div>
     </div>
-    <div class="hidden border-t border-zinc-200"></div>
 </div>

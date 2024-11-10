@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoodleAssistant.Models;
@@ -40,6 +41,10 @@ public class MainController : Controller{
         HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionCsvFile, list);
 
         return Ok("File uploaded and saved in session successfully.");
+    }
+
+    public IActionResult Analysis(){
+        return PartialView("_Analysis");
     }
 
     private UploadXmlFileModel LoadXml(IFormFile file){

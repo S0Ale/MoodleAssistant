@@ -28,4 +28,17 @@ function elementChildren(element) {
     return children;
 }
 
-export { queryChilds, query, range, elementChildren };
+// Similar to jQuery load function
+async function loadPartialView(url) {
+    const view = await fetch('/Main/Analysis')
+        .then(response => response.text())
+        .then(data => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(data, 'text/html');
+            return doc.body.firstChild;
+        })
+        .catch(error => console.error('Error:', error));
+    return view;
+}
+
+export { queryChilds, query, range, elementChildren, loadPartialView };

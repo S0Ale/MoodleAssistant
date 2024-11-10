@@ -1,4 +1,4 @@
-﻿import { query, queryChilds } from "./utils.js";
+﻿import { query, queryChilds, loadPartialView } from "./utils.js";
 import { submit, clearForm, isEmptyForm, createPreviewItem, showError } from "./form.js";
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -59,8 +59,12 @@ document.addEventListener('DOMContentLoaded', function () {
             return false;
         }
 
-        submit(data);
+        submit(data, async () => {
+            let view = await loadPartialView('/Main/Analysis');
+            query('#content').append(view);
+        });
         data = new FormData();
         clearForm();
     });
 });
+

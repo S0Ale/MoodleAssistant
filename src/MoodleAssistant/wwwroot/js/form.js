@@ -51,14 +51,14 @@ function createPreviewItem(fileSrc, container, dropZone) {
     return previewItem;
 }
 
-async function submit(data) {
+async function submit(data, callback) {
     const response = await fetch('/Main/UploadFiles', {
         method: 'POST',
         body: data,
     });
 
     if (response.ok) {
-        console.log('Files uploaded');
+        callback();
     } else showError(query('form'), await response.text());
 }
 
