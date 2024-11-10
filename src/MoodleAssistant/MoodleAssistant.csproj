@@ -6,11 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CsvHelper" Version="33.0.1" />
+    <Compile Remove="wwwroot\lib\**" />
+    <Content Remove="wwwroot\lib\**" />
+    <EmbeddedResource Remove="wwwroot\lib\**" />
+    <None Remove="wwwroot\lib\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\lib\" />
+    <PackageReference Include="CsvHelper" Version="33.0.1" />
   </ItemGroup>
 	
 	<ItemGroup>
@@ -19,7 +22,7 @@
 	</ItemGroup>
 
 	<Target Name="Tailwind" BeforeTargets="Build">
-		<Exec WorkingDirectory="wwwroot" Command="npm run cssbuild"/>
+		<Exec WorkingDirectory="wwwroot" Command="npm run cssbuild" />
 	</Target>
 
 </Project>
