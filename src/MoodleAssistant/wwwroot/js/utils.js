@@ -35,7 +35,7 @@ async function loadPartialView(url) {
         .then(data => {
             const parser = new DOMParser();
             const doc = parser.parseFromString(data, 'text/html');
-            return doc.body.firstChild;
+            return elementChildren(doc.body);
         })
         .catch(error => console.error('Error:', error));
     return view;

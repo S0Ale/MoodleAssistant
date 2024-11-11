@@ -1,3 +1,10 @@
-﻿<div class="border-t border-zinc-200">
+﻿@using MoodleAssistant.Utils
+@Html.PartialSectionScripts(
+    @<script>
+             console.log("Partial view");
+    </script>
+)
+
+<div class="hidden flex justify-center pt-6 border-t border-zinc-200">
     HELLO WORLD
 </div>

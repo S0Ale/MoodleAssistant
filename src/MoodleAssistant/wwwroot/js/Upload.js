@@ -60,8 +60,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         submit(data, async () => {
-            let view = await loadPartialView('/Main/Analysis');
-            query('#content').append(view);
+            //let view = await loadPartialView('/Main/Analysis');
+            //view.forEach((element) => {
+                //query('#content').append(element);
+            //});
         });
         data = new FormData();
         clearForm();
