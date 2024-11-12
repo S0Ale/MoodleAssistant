@@ -23,6 +23,7 @@
 	
 	<ItemGroup>
 	  <Folder Include="Views\Csv\" />
+	  <Folder Include="Views\Xml\" />
 	</ItemGroup>
 
 	<Target Name="Tailwind" BeforeTargets="Build">

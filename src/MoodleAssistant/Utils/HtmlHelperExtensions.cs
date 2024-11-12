@@ -5,6 +5,8 @@ using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Razor;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
+// This class is used to render scripts in partial views
 public static class HtmlHelperExtensions {
     private const string _partialViewScriptItemPrefix = "scripts_";
     public static IHtmlContent PartialSectionScripts(this IHtmlHelper htmlHelper, Func<object, HelperResult> template) {
