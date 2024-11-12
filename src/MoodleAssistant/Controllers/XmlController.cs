@@ -9,10 +9,10 @@ namespace MoodleAssistant.Controllers
 {
     public class XmlController : Controller
     {
-        public IActionResult AnalizeXml(){
-            var model = HttpContext.Session.GetObjectFromJson<XmlFileModel>(SessionNameFieldConst.SessionXmlFile);
-            return PartialView("_Analysis", model);
-        }
+        //public IActionResult AnalizeXml(){
+            //var model = HttpContext.Session.GetObjectFromJson<XmlFileModel>(SessionNameFieldConst.SessionXmlFile);
+            //return PartialView("_Analysis", model);
+        //}
 
         public IActionResult Download()
         {

@@ -64,11 +64,11 @@ namespace MoodleAssistant.Models
             if (questiontextNode == null)
                 return string.Empty;
 
-            var htmlFormatted = "<div id=\"questiontext\">";
+            var htmlFormatted = "<div id=\"questiontext\" class=\"\">";
             var questiontext = questiontextNode.SelectSingleNode("text").InnerText;
             var rgx = new Regex(Pattern);
             foreach (Match match in rgx.Matches(questiontext))
-                questiontext = questiontext.Replace(match.Value, "<mark>" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</mark>");
+                questiontext = questiontext.Replace(match.Value, "<span class=\"code\">" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</span>");
             htmlFormatted += questiontext;
             htmlFormatted += "</div>";
             return htmlFormatted;
@@ -78,7 +78,7 @@ namespace MoodleAssistant.Models
         {
             if (!HasAnswer())
                 return string.Empty;
-            var htmlFormatted = "<div id=\"answerbox\">";
+            var htmlFormatted = "<div id=\"answerbox\" class=\"\">";
             var answerTextNodeList = XmlFile.GetElementsByTagName("answer");
             var rgx = new Regex(Pattern);
             foreach (XmlNode answerTextNode in answerTextNodeList)
@@ -90,7 +90,7 @@ namespace MoodleAssistant.Models
                 {
                     var answerText = node.InnerText;
                     foreach (Match match in rgx.Matches(answerText))
-                        answerText = answerText.Replace(match.Value, "<mark>" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</mark>");
+                        answerText = answerText.Replace(match.Value, "<span class=\"code\">" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</span>");
                     htmlFormatted += answerText;
                 }
                 htmlFormatted += "</p>";

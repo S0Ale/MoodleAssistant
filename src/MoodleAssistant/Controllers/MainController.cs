@@ -19,6 +19,8 @@ public class MainController : Controller{
     [HttpPost, ValidateAntiForgeryToken]
     public IActionResult UploadFiles(){
         var files = HttpContext.Request.Form.Files;
+        _m.RenderParameters = false;
+
         if (files.Count < 2){
             _m.Error = Error.NoFiles;
             return View("Index", _m); // the url is not index anymore

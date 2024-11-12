@@ -56,7 +56,7 @@
             </form>
         </div>
     </div>
-    @if (Model.RenderParameters){
-        @await Html.PartialAsync("_Analysis", Model.XmlModel)
+    @if (Model.RenderParameters) {
+        <partial name="_Analysis" model="Model.XmlModel"/>
     }
 </div>
