@@ -11,9 +11,8 @@ namespace MoodleAssistant.Controllers;
 public class MainController : Controller{
 
     private MainModel _m = new(){ Error = Error.NoErrors };
-    public IActionResult Index(MainModel model){
-        _m = model;
-        return View("Main", _m);
+    public IActionResult Index(){
+        return View(_m);
     }
 
     // Gets xml and csv files, saves them in the session and creates their models
@@ -22,7 +21,7 @@ public class MainController : Controller{
         var files = HttpContext.Request.Form.Files;
         if (files.Count < 2){
             _m.Error = Error.NoFiles;
-            return RedirectToAction("Index", _m); // not sure if it's good
+            return View("Index", _m); // the url is not index anymore
         }
 
         // XML file
@@ -31,7 +30,7 @@ public class MainController : Controller{
         try{ xmlModel = LoadXml(xmlFile); }
         catch (ValidationException e){
             _m.Error = e.Error;
-            return RedirectToAction("Index", _m);
+            return View("Index", _m);
         }
 
         // CSV file
@@ -40,17 +39,18 @@ public class MainController : Controller{
         try{ list = LoadCsv(csvFile, xmlModel);}
         catch (ValidationException e) {
             _m.Error = e.Error;
-            return RedirectToAction("Index", _m);
+            return View("Index", _m);
         }
 
         // Save in session
         //HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionXmlFile, xmlModel);
         //HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionCsvFile, list);
+
         _m.XmlModel = xmlModel;
         _m.CsvList = list;
 
         _m.RenderParameters = true;
-        return RedirectToAction("Index", _m);
+        return View("Index", _m);
     }
 
     private XmlFileModel LoadXml(IFormFile file){
