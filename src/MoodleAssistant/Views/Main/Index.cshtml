@@ -6,7 +6,6 @@
     ViewData["Title"] = "Main";
 
     var errorEl = String.Empty;
-    var xml = Model.XmlModel; // is null, why?
     if (Model.Error != Error.NoErrors){
         errorEl = "<p class='px-3 py-2 mt-3 error-dialog'>" + ErrorMessage.GetErrorMessage(Model.Error) + "</p>";
     }
@@ -60,7 +59,8 @@
         <partial name="_Analysis" model="Model.XmlModel"/>
     }
     @if (Model.RenderParameters){
-        <div class="flex justify-center pt-6 border-t border-zinc-200">
-            <button class="btn btn-primary py-1.5 px-5">Generate XML file</button>
+        <div class="flex flex-row justify-center pt-6 border-t border-zinc-200">
+            <a class="btn btn-primary py-1.5 px-5" asp-controller="Xml" asp-action="Download">Generate XML file</a>
+            <a class="btn btn-secondary py-1.5 px-5 ml-3" asp-controller="Main" asp-action="Index">Reset</a>
         </div>
     }

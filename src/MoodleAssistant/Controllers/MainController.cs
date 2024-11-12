@@ -46,7 +46,8 @@ public class MainController : Controller{
 
         // Save in session
         //HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionXmlFile, xmlModel);
-        //HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionCsvFile, list);
+        HttpContext.Session.SetString(SessionNameFieldConst.SessionXmlDocument, xmlModel.XmlFile.OuterXml);
+        HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionCsvFile, list);
 
         _m.XmlModel = xmlModel;
         _m.CsvList = list;
