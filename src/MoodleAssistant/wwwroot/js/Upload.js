@@ -1,5 +1,5 @@
 ﻿import { query, queryChilds, loadPartialView } from "./utils.js";
-import { submit, clearForm, isEmptyForm, createPreviewItem, showError } from "./form.js";
+import { createPreviewItem } from "./form.js";
 
 document.addEventListener('DOMContentLoaded', function () {
 
@@ -27,7 +27,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     });
 
-    query('#error-container button').addEventListener('click', (e) => {
+    let btn = query('#error-container button');
+    if (btn) btn.addEventListener('click', (e) => {
         e.preventDefault();
         let cont = query('#error-container');
         cont.classList.add('hidden');

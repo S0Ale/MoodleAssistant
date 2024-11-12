@@ -10,10 +10,10 @@ namespace MoodleAssistant.Controllers;
 
 public class MainController : Controller{
 
-    private MainModel m = new(){ Error = Error.NoErrors };
+    private MainModel _m = new(){ Error = Error.NoErrors };
     public IActionResult Index(MainModel model){
-        m = model;
-        return View("Main", m);
+        _m = model;
+        return View("Main", _m);
     }
 
     // Gets xml and csv files, saves them in the session and creates their models
@@ -21,17 +21,17 @@ public class MainController : Controller{
     public IActionResult UploadFiles(){
         var files = HttpContext.Request.Form.Files;
         if (files.Count < 2){
-            m.Error = Error.NoFiles;
-            return RedirectToAction("Index", m); // not sure if it's good
+            _m.Error = Error.NoFiles;
+            return RedirectToAction("Index", _m); // not sure if it's good
         }
 
         // XML file
-        UploadXmlFileModel xmlModel;
+        XmlFileModel xmlModel;
         var xmlFile = files.GetFile("xml_upload");
         try{ xmlModel = LoadXml(xmlFile); }
         catch (ValidationException e){
-            m.Error = e.Error;
-            return RedirectToAction("Index", m);
+            _m.Error = e.Error;
+            return RedirectToAction("Index", _m);
         }
 
         // CSV file
@@ -39,20 +39,22 @@ public class MainController : Controller{
         var csvFile = files.GetFile("csv_upload");
         try{ list = LoadCsv(csvFile, xmlModel);}
         catch (ValidationException e) {
-            m.Error = e.Error;
-            return RedirectToAction("Index", m);
+            _m.Error = e.Error;
+            return RedirectToAction("Index", _m);
         }
 
         // Save in session
-        HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionXmlFile, xmlModel);
-        HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionCsvFile, list);
+        //HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionXmlFile, xmlModel);
+        //HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionCsvFile, list);
+        _m.XmlModel = xmlModel;
+        _m.CsvList = list;
 
-        m.RenderParameters = true;
-        return RedirectToAction("Index", m);
+        _m.RenderParameters = true;
+        return RedirectToAction("Index", _m);
     }
 
-    private UploadXmlFileModel LoadXml(IFormFile file){
-        var model = new UploadXmlFileModel{ XmlQuestion = file };
+    private XmlFileModel LoadXml(IFormFile file){
+        var model = new XmlFileModel{ XmlQuestion = file };
 
         if (null == file)
             throw new ValidationException(Error.NullFile);
@@ -71,8 +73,8 @@ public class MainController : Controller{
         return model;
     }
 
-    private IEnumerable<string[]> LoadCsv(IFormFile file, UploadXmlFileModel xmlModel){
-        var model = new UploadCsvFileModel{
+    private IEnumerable<string[]> LoadCsv(IFormFile file, XmlFileModel xmlModel){
+        var model = new CsvFileModel{
             CsvAnswers = file,
             QuestionParametersList = xmlModel.QuestionParametersList,
             AnswersParametersList = xmlModel.AnswerParametersList

@@ -1,15 +1,17 @@
 ﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc.Razor;
 using MoodleAssistant.Utils;
 
 namespace MoodleAssistant.Models;
 
 public class MainModel{
-    private Dictionary<string, bool> _sections = new() {
+    public XmlFileModel XmlModel { get; set; }
+    public IEnumerable<string[]> CsvList { get; set; }
+
+    private Dictionary<string, bool> _sections = new() { // section list
         { "RenderParameters", false }
     };
 
-    public Error Error { get; set; }
+    public Error Error { get; set; } // page error
 
     public bool RenderParameters{
         get => _sections["RenderParameters"];

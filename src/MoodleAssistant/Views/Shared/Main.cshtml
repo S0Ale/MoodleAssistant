@@ -1,9 +1,12 @@
-﻿@using MoodleAssistant.Utils
+﻿@using Microsoft.AspNetCore.Http
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using MoodleAssistant.Utils
 @model MainModel
 @{
     ViewData["Title"] = "Main";
 
     var errorEl = String.Empty;
+    var xml = Model.XmlModel; // is null, why?
     if (Model.Error != Error.NoErrors){
         errorEl = "<p class='px-3 py-2 error-dialog'>" + ErrorMessage.GetErrorMessage(Model.Error) + "</p>";
     }
@@ -54,6 +57,6 @@
         </div>
     </div>
     @if (Model.RenderParameters){
-        <partial name="_Analysis"/>
+        @await Html.PartialAsync("_Analysis", Model.XmlModel)
     }
 </div>

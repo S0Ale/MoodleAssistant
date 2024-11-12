@@ -20,6 +20,10 @@
 		<UpToDateCheckBuilt Include="wwwroot/css/tail-init.css" Set="Css" />
 		<UpToDateCheckBuilt Include="tailwind.config.js" Set="Css" />
 	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="Views\Csv\" />
+	</ItemGroup>
 
 	<Target Name="Tailwind" BeforeTargets="Build">
 		<Exec WorkingDirectory="wwwroot" Command="npm run cssbuild" />

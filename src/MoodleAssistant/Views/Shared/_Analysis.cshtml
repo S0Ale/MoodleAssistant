@@ -1,5 +1,8 @@
-﻿<div class="flex justify-center pt-6 border-t border-zinc-200">
+﻿@model XmlFileModel
+
+<div class="flex justify-center pt-6 border-t border-zinc-200">
     <div id="answer-section" class="debug1">
         <h3>Answers</h3>
+        @Html.Raw(Model.GetFormattedQuestionText())
     </div>
 </div>

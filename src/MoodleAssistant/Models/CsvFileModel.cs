@@ -12,13 +12,9 @@ namespace MoodleAssistant.Models
     public class CsvFileModel
     {
         public IFormFile CsvAnswers;
-
-        public Error Error;
-
-        private readonly string[] _mimeTypes = {"application/vnd.ms-excel", "text/csv"};
+        private readonly string[] _mimeTypes = ["application/vnd.ms-excel", "text/csv"];
 
         public IEnumerable<string> QuestionParametersList;
-
         public IEnumerable<string> AnswersParametersList;
 
         public bool IsCsv()

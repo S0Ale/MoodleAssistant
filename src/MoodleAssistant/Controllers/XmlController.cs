@@ -9,8 +9,6 @@ namespace MoodleAssistant.Controllers
 {
     public class XmlController : Controller
     {
-
-
         public IActionResult Download()
         {
             var xmlFileString = HttpContext.Session.GetString(SessionNameFieldConst.SessionXmlDocument);

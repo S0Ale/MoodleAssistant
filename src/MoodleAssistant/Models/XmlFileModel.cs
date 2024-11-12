@@ -14,7 +14,7 @@ using MoodleAssistant.Utils;
 
 namespace MoodleAssistant.Models
 {
-    public class UploadXmlFileModel
+    public class XmlFileModel
     {
         private const string Pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
         public IFormFile XmlQuestion;
