@@ -38,15 +38,15 @@ document.addEventListener('DOMContentLoaded', function () {
         clearForm();
     });
 
+    /*
     let form = query('#first-form');
     form.addEventListener('submit', (e) => {
-        if (isEmptyForm()) {
-            showError(query('#first-form'), 'No files selected. Please fill all fields.');
-            return false;
-        }
+        //if (isEmptyForm()) { // NON FUNGE
+            //showError(query('#first-form'), 'No files selected. Please fill all fields.');
+            //return false;
+        //}
     });
 
-    /*
     query('#upload-files').addEventListener('click', (e) => {
         e.preventDefault();
         if (isEmptyForm(data)) {

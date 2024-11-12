@@ -1,5 +1,6 @@
 ﻿import { query, queryChilds } from "./utils.js";
 
+/*
 function clearForm() {
     const items = query('.file-input-item', true);
 
@@ -17,6 +18,7 @@ function clearForm() {
         }
     });
 }
+
 function isEmptyForm(form) {
     let inputs = queryChilds(form, 'input', true);
     inputs.forEach((input) => {
@@ -24,6 +26,7 @@ function isEmptyForm(form) {
     });
     return false;
 }
+*/
 
 function createPreviewItem(fileSrc, container, dropZone) {
     const previewItem = document.createElement('div');
@@ -50,7 +53,7 @@ function createPreviewItem(fileSrc, container, dropZone) {
     return previewItem;
 }
 
-// da eliminare
+/*
 async function submit(data, callback) {
     const response = await fetch('/Main/UploadFiles', {
         method: 'POST',
@@ -69,5 +72,6 @@ function showError(form, msg) {
     text.innerHTML = msg;
     cont.classList.remove('hidden');
 }
+*/
 
-export { submit, clearForm, isEmptyForm, createPreviewItem, showError };
+export { createPreviewItem };

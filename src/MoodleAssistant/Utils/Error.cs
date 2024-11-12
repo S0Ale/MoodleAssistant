@@ -10,6 +10,7 @@ namespace MoodleAssistant.Utils
     {
         //common
         public const string NoErrors = "";
+        public const string NoFiles = "Missing files. Please upload your files.";
         public const string NullFile = "Upload a file.";
         public const string EmptyFile = "File cannot be empty.";
 
@@ -29,6 +30,7 @@ namespace MoodleAssistant.Utils
             return error switch
             {
                 Error.NoErrors => NoErrors,
+                Error.NoFiles => NoFiles,
                 Error.NullFile => NullFile,
                 Error.NonXmlFile => NonXmlFile,
                 Error.EmptyFile => EmptyFile,
@@ -46,6 +48,7 @@ namespace MoodleAssistant.Utils
     public enum Error
     {
         NoErrors,
+        NoFiles,
         NullFile,
         NonXmlFile,
         EmptyFile,

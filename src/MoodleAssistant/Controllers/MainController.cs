@@ -10,8 +10,9 @@ namespace MoodleAssistant.Controllers;
 
 public class MainController : Controller{
 
-    private MainModel m = new();
-    public IActionResult Index(){
+    private MainModel m = new(){ Error = Error.NoErrors };
+    public IActionResult Index(MainModel model){
+        m = model;
         return View("Main", m);
     }
 
@@ -19,15 +20,18 @@ public class MainController : Controller{
     [HttpPost, ValidateAntiForgeryToken]
     public IActionResult UploadFiles(){
         var files = HttpContext.Request.Form.Files;
-        if (files.Count < 2)
-            return BadRequest("Missing files. Please fill all fields.");
+        if (files.Count < 2){
+            m.Error = Error.NoFiles;
+            return RedirectToAction("Index", m); // not sure if it's good
+        }
 
         // XML file
         UploadXmlFileModel xmlModel;
         var xmlFile = files.GetFile("xml_upload");
         try{ xmlModel = LoadXml(xmlFile); }
         catch (ValidationException e){
-            return BadRequest(e.Message);
+            m.Error = e.Error;
+            return RedirectToAction("Index", m);
         }
 
         // CSV file
@@ -35,7 +39,8 @@ public class MainController : Controller{
         var csvFile = files.GetFile("csv_upload");
         try{ list = LoadCsv(csvFile, xmlModel);}
         catch (ValidationException e) {
-            return BadRequest(e.Message);
+            m.Error = e.Error;
+            return RedirectToAction("Index", m);
         }
 
         // Save in session
@@ -43,7 +48,7 @@ public class MainController : Controller{
         HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionCsvFile, list);
 
         m.RenderParameters = true;
-        return View("Main", m);
+        return RedirectToAction("Index", m);
     }
 
     private UploadXmlFileModel LoadXml(IFormFile file){

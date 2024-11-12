@@ -18,17 +18,17 @@ namespace MoodleAssistant.Controllers
         private const string PathToUploadCsvView = "~/Views/Csv/Upload.cshtml";
         private const string PathToDownloadView = "~/Views/Xml/Download.cshtml";
 
-        public IActionResult Upload(UploadCsvFileModel model)
+        public IActionResult Upload(CsvFileModel model)
         {
             if (null == model)
-                model = new UploadCsvFileModel() {Error = Error.NoErrors};
+                model = new CsvFileModel() {Error = Error.NoErrors};
             return View(model);
         }
 
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Upload(IFormFile file, bool firstAccess)
         {
-            var csvFileModel = new UploadCsvFileModel
+            var csvFileModel = new CsvFileModel
             {
                 CsvAnswers = file,
                 Error = Error.NoErrors,
@@ -61,7 +61,7 @@ namespace MoodleAssistant.Controllers
             return View(PathToDownloadView);
         }
 
-        private IActionResult SetErrorAndReturnToView(UploadCsvFileModel model, Error error)
+        private IActionResult SetErrorAndReturnToView(CsvFileModel model, Error error)
         {
             model.Error = error;
             return View(PathToUploadCsvView, model);

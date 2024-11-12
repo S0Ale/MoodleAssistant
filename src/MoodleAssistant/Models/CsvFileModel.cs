@@ -9,7 +9,7 @@ using MoodleAssistant.Utils;
 
 namespace MoodleAssistant.Models
 {
-    public class UploadCsvFileModel
+    public class CsvFileModel
     {
         public IFormFile CsvAnswers;
 

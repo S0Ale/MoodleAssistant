@@ -1,6 +1,12 @@
-﻿@model MainModel
+﻿@using MoodleAssistant.Utils
+@model MainModel
 @{
     ViewData["Title"] = "Main";
+
+    var errorEl = String.Empty;
+    if (Model.Error != Error.NoErrors){
+        errorEl = "<p class='px-3 py-2 error-dialog'>" + ErrorMessage.GetErrorMessage(Model.Error) + "</p>";
+    }
 }
 @section Scripts {
     <script src="~/js/Upload.js" type="module"></script>
@@ -34,13 +40,15 @@
                     <button type="submit" class="btn btn-primary py-1.5 px-6" id="upload-files">Upload</button>
                     <button class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files">Clear</button>
                 </div>
-                <div id="error-container" class="relative hidden pt-3">
-                    <p class="px-3 py-2"></p>
-                    <button class="absolute top-2 right-0 p-1" id="close-error">
-                        <span class="material-symbols-outlined text-lg text-red-600">
-                            close
-                        </span>
-                    </button>
+                <div id="error-container" class="relative pt-3">
+                    @Html.Raw(errorEl)
+                    @if(errorEl != String.Empty){
+                        <button class="absolute top-2 right-0 p-1" id="close-error">
+                            <span class="material-symbols-outlined text-lg text-red-600">
+                                close
+                            </span>
+                        </button>
+                    }
                 </div>
             </form>
         </div>

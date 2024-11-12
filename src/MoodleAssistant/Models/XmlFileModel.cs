@@ -18,7 +18,6 @@ namespace MoodleAssistant.Models
     {
         private const string Pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
         public IFormFile XmlQuestion;
-        public Error Error;
         public XmlDocument XmlFile;
         public IEnumerable<string> QuestionParametersList;
         public IEnumerable<string> AnswerParametersList;
