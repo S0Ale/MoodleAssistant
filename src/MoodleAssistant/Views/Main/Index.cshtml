@@ -8,7 +8,7 @@
     var errorEl = String.Empty;
     var xml = Model.XmlModel; // is null, why?
     if (Model.Error != Error.NoErrors){
-        errorEl = "<p class='px-3 py-2 error-dialog'>" + ErrorMessage.GetErrorMessage(Model.Error) + "</p>";
+        errorEl = "<p class='px-3 py-2 mt-3 error-dialog'>" + ErrorMessage.GetErrorMessage(Model.Error) + "</p>";
     }
 }
 @section Scripts {
@@ -43,10 +43,10 @@
                     <button type="submit" class="btn btn-primary py-1.5 px-6" id="upload-files">Upload</button>
                     <button class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files">Clear</button>
                 </div>
-                <div id="error-container" class="relative pt-3">
+                <div id="error-container" class="relative">
                     @Html.Raw(errorEl)
                     @if(errorEl != String.Empty){
-                        <button class="absolute top-2 right-0 p-1" id="close-error">
+                        <button class="absolute top-0 right-0 py-0 px-1" id="close-error">
                             <span class="material-symbols-outlined text-lg text-red-600">
                                 close
                             </span>
@@ -59,4 +59,8 @@
     @if (Model.RenderParameters) {
         <partial name="_Analysis" model="Model.XmlModel"/>
     }
-</div>
+    @if (Model.RenderParameters){
+        <div class="flex justify-center pt-6 border-t border-zinc-200">
+            <button class="btn btn-primary py-1.5 px-5">Generate XML file</button>
+        </div>
+    }
