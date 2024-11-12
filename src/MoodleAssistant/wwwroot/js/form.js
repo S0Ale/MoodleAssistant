@@ -17,13 +17,12 @@ function clearForm() {
         }
     });
 }
-function isEmptyForm(data) {
-    for (let value of data.values()) {
-        if (value) {
-            return false;
-        }
-    }
-    return true;
+function isEmptyForm(form) {
+    let inputs = queryChilds(form, 'input', true);
+    inputs.forEach((input) => {
+        if (input.value == "") return true;
+    });
+    return false;
 }
 
 function createPreviewItem(fileSrc, container, dropZone) {
@@ -51,6 +50,7 @@ function createPreviewItem(fileSrc, container, dropZone) {
     return previewItem;
 }
 
+// da eliminare
 async function submit(data, callback) {
     const response = await fetch('/Main/UploadFiles', {
         method: 'POST',

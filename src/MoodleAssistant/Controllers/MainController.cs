@@ -9,12 +9,14 @@ using MoodleAssistant.Utils;
 namespace MoodleAssistant.Controllers;
 
 public class MainController : Controller{
-    public IActionResult Main(){
-        return View();
+
+    private MainModel m = new();
+    public IActionResult Index(){
+        return View("Main", m);
     }
 
     // Gets xml and csv files, saves them in the session and creates their models
-    [HttpPost]
+    [HttpPost, ValidateAntiForgeryToken]
     public IActionResult UploadFiles(){
         var files = HttpContext.Request.Form.Files;
         if (files.Count < 2)
@@ -40,11 +42,8 @@ public class MainController : Controller{
         HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionXmlFile, xmlModel);
         HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionCsvFile, list);
 
-        return Ok("File uploaded and saved in session successfully.");
-    }
-
-    public IActionResult Analysis(){
-        return PartialView("_Analysis");
+        m.RenderParameters = true;
+        return View("Main", m);
     }
 
     private UploadXmlFileModel LoadXml(IFormFile file){

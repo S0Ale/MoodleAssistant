@@ -4,7 +4,6 @@ import { submit, clearForm, isEmptyForm, createPreviewItem, showError } from "./
 document.addEventListener('DOMContentLoaded', function () {
 
     const items = query('.file-input-item', true);
-    let data = new FormData();
 
     items.forEach((item) => {
         const input = queryChilds(item, 'input');
@@ -16,28 +15,16 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         dropZone.addEventListener('drop', function (e) {
             e.preventDefault();
-
-            let file;
-            if (e.dataTransfer.items) {
-                file = e.dataTransfer.items[0].getAsFile();
-            } else {
-                file = e.dataTransfer.file[0];
-            }
-            handleFiles(file);
+            input.files = e.dataTransfer.files;
             dropZone.classList.add('hidden');
-            previewContainer.appendChild(createPreviewItem(file, previewContainer, dropZone));
+            previewContainer.appendChild(createPreviewItem(input.files[0], previewContainer, dropZone));
         });
 
         input.addEventListener('change', function() {
-            const file = input.files[0];
-            handleFiles(file);
             dropZone.classList.add('hidden');
-            previewContainer.appendChild(createPreviewItem(file, previewContainer, dropZone));
+            previewContainer.appendChild(createPreviewItem(input.files[0], previewContainer, dropZone));
         });
 
-        function handleFiles(file) {
-            data.append(input.name, file);
-        }
     });
 
     query('#error-container button').addEventListener('click', (e) => {
@@ -48,10 +35,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
     query('#clear-files').addEventListener('click', (e) => {
         e.preventDefault();
-        data = new FormData();
         clearForm();
     });
 
+    let form = query('#first-form');
+    form.addEventListener('submit', (e) => {
+        if (isEmptyForm()) {
+            showError(query('#first-form'), 'No files selected. Please fill all fields.');
+            return false;
+        }
+    });
+
+    /*
     query('#upload-files').addEventListener('click', (e) => {
         e.preventDefault();
         if (isEmptyForm(data)) {
@@ -68,5 +63,6 @@ document.addEventListener('DOMContentLoaded', function () {
         data = new FormData();
         clearForm();
     });
+    */
 });
 
