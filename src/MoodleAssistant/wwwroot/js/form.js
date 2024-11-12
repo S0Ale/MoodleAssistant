@@ -1,6 +1,5 @@
 ﻿import { query, queryChilds } from "./utils.js";
 
-/*
 function clearForm() {
     const items = query('.file-input-item', true);
 
@@ -19,6 +18,7 @@ function clearForm() {
     });
 }
 
+/*
 function isEmptyForm(form) {
     let inputs = queryChilds(form, 'input', true);
     inputs.forEach((input) => {
@@ -74,4 +74,4 @@ function showError(form, msg) {
 }
 */
 
-export { createPreviewItem };
+export { createPreviewItem, clearForm };

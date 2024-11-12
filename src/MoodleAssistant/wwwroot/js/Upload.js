@@ -1,5 +1,5 @@
 ﻿import { query, queryChilds, loadPartialView } from "./utils.js";
-import { createPreviewItem } from "./form.js";
+import { createPreviewItem, clearForm } from "./form.js";
 
 document.addEventListener('DOMContentLoaded', function () {
 
