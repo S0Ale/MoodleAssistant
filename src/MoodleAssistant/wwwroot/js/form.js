@@ -45,6 +45,7 @@ function createPreviewItem(fileSrc, container, dropZone) {
     removeButton.addEventListener('click', function () {
         container.removeChild(previewItem);
         dropZone.classList.remove('hidden');
+        queryChilds(container, 'input').value = ''; // clear input
     });
 
     previewItem.appendChild(text);

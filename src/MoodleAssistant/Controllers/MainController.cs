@@ -11,6 +11,11 @@ namespace MoodleAssistant.Controllers;
 public class MainController : Controller{
 
     private MainModel _m = new(){ Error = Error.NoErrors };
+
+    public MainController() {
+        _m.RenderParameters = false;
+    }
+
     public IActionResult Index(){
         return View(_m);
     }
