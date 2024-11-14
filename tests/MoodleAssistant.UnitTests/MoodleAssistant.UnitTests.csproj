@@ -7,11 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="assets\EmptyXmlFile.xml" />
+    <None Remove="assets\MoodleXMLWithoutQuestions.xml" />
     <None Remove="assets\txtFile.txt" />
+    <None Remove="assets\XmlBadFormed-1.xml" />
+    <None Remove="assets\XmlBadFormed-2.xml" />
+    <None Remove="assets\XmlBadFormed.xml" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="assets\EmptyXmlFile.xml" />
+    <EmbeddedResource Include="assets\MoodleXMLWithoutQuestions.xml" />
     <EmbeddedResource Include="assets\txtFile.txt" />
+    <EmbeddedResource Include="assets\XmlBadFormed-1.xml" />
+    <EmbeddedResource Include="assets\XmlBadFormed-2.xml" />
+    <EmbeddedResource Include="assets\XmlBadFormed.xml" />
   </ItemGroup>
 
   <ItemGroup>
