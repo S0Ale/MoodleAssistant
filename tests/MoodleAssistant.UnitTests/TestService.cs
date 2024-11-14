@@ -20,6 +20,8 @@ internal class TestService {
         stream.CopyTo(memoryStream);
         memoryStream.Position = 0;
 
-        return new FormFile(memoryStream, 0, memoryStream.Length, name, name);
+        return new FormFile(memoryStream, 0, memoryStream.Length, name, name) {
+            Headers = new HeaderDictionary()
+        };
     }
 }

@@ -27,7 +27,13 @@ internal class ViewTests{
     [Test]
     public void Base_Test() {
         var result = ((HomeController)_controllers["Home"]).Index() as ViewResult;
-        Assert.That(result.ViewName, Is.EqualTo(String.Empty)); //returns null
+        Assert.That(result.ViewName, Is.EqualTo("Index")); //returns null
+    }
+
+    [Test]
+    public void Main_Index_Test() {
+        var result = ((MainController)_controllers["Main"]).Index() as ViewResult;
+        Assert.That(result.ViewName, Is.EqualTo("Index"));
     }
 
     [TearDown]

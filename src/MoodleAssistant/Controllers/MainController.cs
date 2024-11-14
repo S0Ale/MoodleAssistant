@@ -17,13 +17,13 @@ public class MainController : Controller{
     }
 
     public IActionResult Index(){
-        return View(_m);
+        return View("Index", _m);
     }
 
     // Gets xml and csv files, saves them in the session and creates their models
     [HttpPost, ValidateAntiForgeryToken]
-    public IActionResult UploadFiles(){
-        var files = HttpContext.Request.Form.Files;
+    public IActionResult UploadFiles(IFormCollection form){
+        var files = form.Files;
         _m.RenderParameters = false;
 
         if (files.Count < 2){
