@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using Microsoft.AspNetCore.Http;
 using Moq;
+using static OpenQA.Selenium.BiDi.Modules.Session.ProxyConfiguration;
 
 namespace MoodleAssistant.UnitTests;
 internal class TestService {
@@ -22,12 +23,22 @@ internal class TestService {
         };
     }
 
-    public static IFormCollection GetFormsMock(IFormFile file){
+    public static IFormCollection GetFormsMock(IFormFile xml, IFormFile csv){
         var list = new Mock<IFormFileCollection>();
-        list.Setup(l => l.GetFile(It.IsAny<String>())).Returns(file);
+
+        if (csv == null) list.Setup(l => l.GetFile(It.IsAny<String>())).Returns(xml);
+        else{
+            list.Setup(l => l.GetFile("xml_upload")).Returns(xml);
+            list.Setup(l => l.GetFile("csv_upload")).Returns(csv);
+        }
+
         list.Setup(l => l.Count).Returns(2);
         var form = new Mock<IFormCollection>();
         form.Setup(f => f.Files).Returns(list.Object);
         return form.Object;
+    }
+
+    public static IFormFile GetCorrectXmlFile(){
+        return GetFileResource("MoodleQuestionOk.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
     }
 }

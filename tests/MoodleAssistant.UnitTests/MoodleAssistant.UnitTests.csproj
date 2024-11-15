@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <None Remove="assets\EmptyXmlFile.xml" />
+    <None Remove="assets\MoodleQuestionOk.xml" />
+    <None Remove="assets\MoodleXMLWithMoreThanOneQuestion.xml" />
     <None Remove="assets\MoodleXMLWithoutQuestions.xml" />
     <None Remove="assets\txtFile.txt" />
     <None Remove="assets\XmlBadFormed-1.xml" />
@@ -17,6 +19,8 @@
 
   <ItemGroup>
     <EmbeddedResource Include="assets\EmptyXmlFile.xml" />
+    <EmbeddedResource Include="assets\MoodleQuestionOk.xml" />
+    <EmbeddedResource Include="assets\MoodleXMLWithMoreThanOneQuestion.xml" />
     <EmbeddedResource Include="assets\MoodleXMLWithoutQuestions.xml" />
     <EmbeddedResource Include="assets\txtFile.txt" />
     <EmbeddedResource Include="assets\XmlBadFormed-1.xml" />
