@@ -51,4 +51,14 @@ internal class XmlTests : FileUploadTests{
         var m = res.Model as MainModel;
         Assert.That(m.Error, Is.EqualTo(Error.ZeroOrMoreQuestions));
     }
+
+    [Test]
+    public void UploadXML_XMLWithMoreThanOneQuestion(){
+        var xml = TestService.GetFileResource("MoodleXMLWithMoreThanOneQuestion.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
+
+        var form = TestService.GetFormsMock(xml);
+        var res = controller.UploadFiles(form) as ViewResult;
+        var m = res.Model as MainModel;
+        Assert.That(m.Error, Is.EqualTo(Error.ZeroOrMoreQuestions));
+    }
 }
