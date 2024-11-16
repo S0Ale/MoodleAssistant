@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="assets\CsvBadFormed.csv" />
+    <None Remove="assets\CsvWithoutHeader.csv" />
+    <None Remove="assets\CsvWithSemiColonSeparator.csv" />
+    <None Remove="assets\EmptyCsv.csv" />
     <None Remove="assets\EmptyXmlFile.xml" />
     <None Remove="assets\MoodleQuestionOk.xml" />
     <None Remove="assets\MoodleXMLWithMoreThanOneQuestion.xml" />
@@ -18,6 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="assets\CsvBadFormed.csv" />
+    <EmbeddedResource Include="assets\CsvWithoutHeader.csv" />
+    <EmbeddedResource Include="assets\CsvWithSemiColonSeparator.csv" />
+    <EmbeddedResource Include="assets\EmptyCsv.csv" />
     <EmbeddedResource Include="assets\EmptyXmlFile.xml" />
     <EmbeddedResource Include="assets\MoodleQuestionOk.xml" />
     <EmbeddedResource Include="assets\MoodleXMLWithMoreThanOneQuestion.xml" />

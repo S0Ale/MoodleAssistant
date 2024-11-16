@@ -31,4 +31,54 @@ internal class CsvTests : FileUploadTests{
         var m = res.Model as MainModel;
         Assert.That(m.Error, Is.EqualTo(Error.NonCsvFile));
     }
+
+    [Test]
+    public void UploadCSV_EmptyCSV(){
+        var csv = TestService.GetFileResource("EmptyCsv.csv", System.Net.Mime.MediaTypeNames.Text.Csv);
+
+        var form = TestService.GetFormsMock(xml, csv);
+        var res = controller.UploadFiles(form) as ViewResult;
+        var m = res.Model as MainModel;
+        Assert.That(m.Error, Is.EqualTo(Error.EmptyFile));
+    }
+
+    [Test]
+    public void UploadCSV_CSVWithoutHeader(){
+        var csv = TestService.GetFileResource("CsvWithoutHeader.csv", System.Net.Mime.MediaTypeNames.Text.Csv);
+
+        var form = TestService.GetFormsMock(xml, csv);
+        var res = controller.UploadFiles(form) as ViewResult;
+        var m = res.Model as MainModel;
+        Assert.That(m.Error, Is.EqualTo(Error.CsvInvalidHeader));
+    }
+
+    [Test]
+    public void UploadCSV_CSVBadFormed(){
+        var csv = TestService.GetFileResource("CsvBadFormed.csv", System.Net.Mime.MediaTypeNames.Text.Csv);
+
+        var form = TestService.GetFormsMock(xml, csv);
+        var res = controller.UploadFiles(form) as ViewResult;
+        var m = res.Model as MainModel;
+        Assert.That(m.Error, Is.EqualTo(Error.CsvBadFormed));
+    }
+
+    [Test]
+    public void UploadCSV_CSVWithSemicolonSeparator(){
+        var csv = TestService.GetFileResource("CsvWithSemiColonSeparator.csv", System.Net.Mime.MediaTypeNames.Text.Csv);
+
+        var form = TestService.GetFormsMock(xml, csv);
+        var res = controller.UploadFiles(form) as ViewResult;
+        var m = res.Model as MainModel;
+        Assert.That(m.Error, Is.EqualTo(Error.CsvInvalidHeader));
+    }
+
+    [Ignore("Not ready")][Test]
+    public void UploadCSV_CorrectCSVFile(){
+        var csv = TestService.GetFileResource("CsvWithSemiColonSeparator.csv", System.Net.Mime.MediaTypeNames.Text.Csv);
+
+        var form = TestService.GetFormsMock(xml, csv);
+        var res = controller.UploadFiles(form) as ViewResult;
+        var m = res.Model as MainModel;
+        Assert.That(m.Error, Is.EqualTo(Error.CsvBadFormed));
+    }
 }
