@@ -57,6 +57,9 @@ public class MainController : Controller{
         _m.XmlModel = xmlModel;
         _m.CsvList = list;
 
+        _m.CreateQuestion();
+        _m.Preview = new PreviewModel(_m.ReplicatedQuestion, xmlModel.AnswerCount);
+
         _m.RenderParameters = true;
         return View("Index", _m);
     }

@@ -22,6 +22,8 @@ namespace MoodleAssistant.Models
         public IEnumerable<string> QuestionParametersList;
         public IEnumerable<string> AnswerParametersList;
 
+        public int AnswerCount { get; private set; }
+
         public bool IsXml()
         {
             return System.Net.Mime.MediaTypeNames.Text.Xml == XmlQuestion.ContentType;
@@ -64,12 +66,13 @@ namespace MoodleAssistant.Models
             if (questiontextNode == null)
                 return string.Empty;
 
-            var htmlFormatted = "";
+            var htmlFormatted = "<div>";
             var questiontext = questiontextNode.SelectSingleNode("text").InnerText;
             var rgx = new Regex(Pattern);
             foreach (Match match in rgx.Matches(questiontext))
                 questiontext = questiontext.Replace(match.Value, "<span class=\"code\">" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</span>");
             htmlFormatted += questiontext;
+            htmlFormatted += "</div>";
             return htmlFormatted;
 
         }
@@ -120,6 +123,7 @@ namespace MoodleAssistant.Models
 
             var answerParametersList = new List<string>();
             var answerList = XmlFile.GetElementsByTagName("answer");
+            AnswerCount = answerList.Count;
             foreach (XmlNode answer in answerList)
                 answerParametersList.AddRange(GetParametersFromXmlNode(answer));
             AnswerParametersList = answerParametersList.Distinct();

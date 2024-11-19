@@ -57,7 +57,7 @@
     </div>
     @if (Model.RenderParameters) {
         <partial name="_Analysis" model="Model.XmlModel"/>
-        <partial name="_Preview" model="Model"/>
+        <partial name="_Preview" model="Model.Preview"/>
     }
     @if (Model.RenderParameters){
         <div class="flex flex-row justify-center pt-6 border-t border-zinc-200">
@@ -65,3 +65,4 @@
             <a class="btn btn-secondary py-1.5 px-5 ml-3" asp-controller="Main" asp-action="Index">Reset</a>
         </div>
     }
+</div>
