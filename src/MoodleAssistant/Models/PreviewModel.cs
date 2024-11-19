@@ -6,13 +6,12 @@ using System.Xml;
 namespace MoodleAssistant.Models;
 
 public class PreviewModel{
-    public IEnumerable<PreviewItem> Items{ get; private set; }
+    public IEnumerable<PreviewItem> Items{ get; private set; } = new List<PreviewItem>();
     //public IEnumerable<string> QuestPreviews; // more than 1 question is not allowed
     //public IEnumerable<string[]> AnsPreviews;
 
 
     public PreviewModel(XmlDocument question, int answers){
-        Items = new List<PreviewItem>();
         GenerateItems(question, answers);
     }
 
@@ -20,19 +19,21 @@ public class PreviewModel{
         var questions = doc.GetElementsByTagName("questiontext");
         var answers = doc.GetElementsByTagName("answer");
         var e = answers.GetEnumerator();
+        using var e1 = e as IDisposable;
 
-        for (int i = 0; i < questions.Count; i++){
-            var item = new PreviewItem(){ QuestionText = questions[i].InnerText };
+        for (var i = 0; i < questions.Count; i++){
+            var item = new PreviewItem{ QuestionText = questions[i]?.InnerText };
 
-            string[] answerStrings = new string[answerCount];
-            for (int j = 0; j < answerCount; j++) {
+            var answerStrings = new string[answerCount];
+            for (var j = 0; j < answerCount; j++) {
                 e.MoveNext();
-                answerStrings[j] = (e.Current as XmlNode).InnerText;
+                var node = e.Current as XmlNode;
+                answerStrings[j] = node.InnerText;
             }
 
             item.Answers = answerStrings;
-            (Items as List<PreviewItem>).Add(item);
-            //answerStrings[j - 1] = answers[i * j - 1].InnerText;
+            var list = Items as List<PreviewItem>;
+            list.Add(item);
         }
     }
 }

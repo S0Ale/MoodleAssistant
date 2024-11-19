@@ -66,13 +66,12 @@ namespace MoodleAssistant.Models
             if (questiontextNode == null)
                 return string.Empty;
 
-            var htmlFormatted = "<div>";
+            var htmlFormatted = "";
             var questiontext = questiontextNode.SelectSingleNode("text").InnerText;
             var rgx = new Regex(Pattern);
             foreach (Match match in rgx.Matches(questiontext))
                 questiontext = questiontext.Replace(match.Value, "<span class=\"code\">" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</span>");
             htmlFormatted += questiontext;
-            htmlFormatted += "</div>";
             return htmlFormatted;
 
         }
@@ -80,7 +79,7 @@ namespace MoodleAssistant.Models
         {
             if (!HasAnswer())
                 return string.Empty;
-            var htmlFormatted = "<div id=\"answerbox\" class=\"\">";
+            var htmlFormatted = "";
             var answerTextNodeList = XmlFile.GetElementsByTagName("answer");
             var rgx = new Regex(Pattern);
             foreach (XmlNode answerTextNode in answerTextNodeList)
@@ -97,7 +96,6 @@ namespace MoodleAssistant.Models
                 }
                 htmlFormatted += "</p>";
             }
-            htmlFormatted += "</div>";
             return htmlFormatted;
         }
         public bool HasAnswer()
