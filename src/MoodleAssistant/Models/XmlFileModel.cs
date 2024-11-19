@@ -64,13 +64,12 @@ namespace MoodleAssistant.Models
             if (questiontextNode == null)
                 return string.Empty;
 
-            var htmlFormatted = "<div id=\"questiontext\" class=\"\">";
+            var htmlFormatted = "";
             var questiontext = questiontextNode.SelectSingleNode("text").InnerText;
             var rgx = new Regex(Pattern);
             foreach (Match match in rgx.Matches(questiontext))
                 questiontext = questiontext.Replace(match.Value, "<span class=\"code\">" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</span>");
             htmlFormatted += questiontext;
-            htmlFormatted += "</div>";
             return htmlFormatted;
 
         }

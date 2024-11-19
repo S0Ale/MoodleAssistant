@@ -12,6 +12,7 @@
     <None Remove="assets\CsvWithSemiColonSeparator.csv" />
     <None Remove="assets\EmptyCsv.csv" />
     <None Remove="assets\EmptyXmlFile.xml" />
+    <None Remove="assets\MoodleQuestionOk.csv" />
     <None Remove="assets\MoodleQuestionOk.xml" />
     <None Remove="assets\MoodleXMLWithMoreThanOneQuestion.xml" />
     <None Remove="assets\MoodleXMLWithoutQuestions.xml" />
@@ -27,6 +28,7 @@
     <EmbeddedResource Include="assets\CsvWithSemiColonSeparator.csv" />
     <EmbeddedResource Include="assets\EmptyCsv.csv" />
     <EmbeddedResource Include="assets\EmptyXmlFile.xml" />
+    <EmbeddedResource Include="assets\MoodleQuestionOk.csv" />
     <EmbeddedResource Include="assets\MoodleQuestionOk.xml" />
     <EmbeddedResource Include="assets\MoodleXMLWithMoreThanOneQuestion.xml" />
     <EmbeddedResource Include="assets\MoodleXMLWithoutQuestions.xml" />

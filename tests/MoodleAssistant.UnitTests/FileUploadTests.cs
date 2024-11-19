@@ -14,8 +14,6 @@ internal class FileUploadTests {
         controller = new MainController();
     }
 
-
-
     [TearDown]
     public void TearDown() {
         controller.Dispose();
