@@ -1,0 +1,10 @@
+﻿@model FileParameterModel
+@{
+    var @params = Model.GetFileParameters();
+}
+
+<div class="flex flex-col p-6 border-t border-zinc-200">
+    <div class="flex flex-row w-max min-w-full justify-center space-x-4">
+        Files: @(@params.Count)
+    </div>
+</div>

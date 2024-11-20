@@ -13,7 +13,7 @@
 @section Scripts {
     <script src="~/js/Upload.js" type="module"></script>
 }
-<div id="content" class="pt-16 pb-8">
+<div id="content" class="pt-8 pb-8">
     <div class="flex items-center justify-center mx-auto">
         <div class="pb-9">
             <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
@@ -57,12 +57,19 @@
     </div>
     @if (Model.RenderParameters) {
         <partial name="_Analysis" model="Model.XmlModel"/>
+    }
+    @if (Model.RenderFilePrompt){
+        <partial name="_FileParameters" model="Model.FileParameters"/>
+    }
+    @if (Model.RenderPreview){
         <partial name="_Preview" model="Model.Preview"/>
     }
     @if (Model.RenderParameters){
         <div class="flex flex-row justify-center pt-6 border-t border-zinc-200">
-            <a class="btn btn-primary py-1.5 px-5" asp-controller="Xml" asp-action="Download">Generate XML file</a>
-            <a class="btn btn-secondary py-1.5 px-5 ml-3" asp-controller="Replicator" asp-action="Index">Reset</a>
+            @if(Model.RenderDownloadBtn){
+                <a class="btn btn-primary py-1.5 px-5 mr-3" asp-controller="Xml" asp-action="Download">Download</a>
+            }
+            <a class="btn btn-secondary py-1.5 px-5" asp-controller="Replicator" asp-action="Index">Reset</a>
         </div>
     }
 </div>

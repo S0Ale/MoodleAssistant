@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Xml;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoodleAssistant.Models;
+using MoodleAssistant.Parse;
 using MoodleAssistant.Utils;
 
 namespace MoodleAssistant.Controllers;
@@ -48,20 +50,25 @@ public class ReplicatorController : Controller{
         }
 
         _m.XmlModel = xmlModel;
-        
+
+        // replicate question
+        /*
         var mergeModel = new MergeModel{
             XmlFile = xmlModel.XmlFile,
             CsvAsList = list
         };
-        
-        // replicate question
         mergeModel.MergeQuestion();
         _m.Preview = new PreviewModel(mergeModel.XmlFile, xmlModel.AnswerCount);
+        _m.RenderPreview = true;
+        // needs to be moved after fiel upload
         
         // Save in session
         HttpContext.Session.SetString(SessionNameFieldConst.SessionXmlMergedDocument, mergeModel.XmlFile.OuterXml);
-
+        */
+        _m.FileParameters = new FileParameterModel(xmlModel.XmlFile);
+        
         _m.RenderParameters = true;
+        if(_m.FileParameters.GetFileParameters().Count > 0) _m.RenderFilePrompt = true;
         return View("Index", _m);
     }
 

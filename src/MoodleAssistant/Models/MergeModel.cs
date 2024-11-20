@@ -30,10 +30,7 @@ namespace MoodleAssistant.Models
                 var parser = new ParameterParser(questionString);
                 var parameters = parser.Match() as List<Parameter>;
                 for (var i = 0; i < headerRow.Length; i++)
-                {
-                    //questionString = questionString.Replace("[*[[" + headerRow[i] + "]]*]", CsvAsList.ElementAt(j)[i]);
                     parameters[i].Replacement = CsvAsList.ElementAt(j)[i]; // put replacements for each parameter
-                }
 
                 xmlQuestionNode.InnerXml = parser.Replace(parameters);
                 XmlFile.DocumentElement?.AppendChild(xmlQuestionNode.Clone());
