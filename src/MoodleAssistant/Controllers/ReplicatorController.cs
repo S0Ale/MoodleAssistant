@@ -49,16 +49,19 @@ public class ReplicatorController : Controller{
             return View("Index", _m);
         }
 
-        // Save in session
-        //HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionXmlFile, xmlModel);
-        HttpContext.Session.SetString(SessionNameFieldConst.SessionXmlDocument, xmlModel.XmlFile.OuterXml);
-        HttpContext.Session.SetObjectAsJson(SessionNameFieldConst.SessionCsvFile, list);
-
         _m.XmlModel = xmlModel;
-        _m.CsvList = list;
-
-        _m.CreateQuestion();
-        _m.Preview = new PreviewModel(_m.ReplicatedQuestion, xmlModel.AnswerCount);
+        
+        var mergeModel = new MergeModel{
+            XmlFile = xmlModel.XmlFile,
+            CsvAsList = list
+        };
+        
+        // replicate question
+        mergeModel.MergeQuestion();
+        _m.Preview = new PreviewModel(mergeModel.XmlFile, xmlModel.AnswerCount);
+        
+        // Save in session
+        HttpContext.Session.SetString(SessionNameFieldConst.SessionXmlMergedDocument, mergeModel.XmlFile.OuterXml);
 
         _m.RenderParameters = true;
         return View("Index", _m);

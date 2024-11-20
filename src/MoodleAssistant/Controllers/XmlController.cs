@@ -9,26 +9,17 @@ namespace MoodleAssistant.Controllers
 {
     public class XmlController : Controller
     {
-        //public IActionResult AnalizeXml(){
-            //var model = HttpContext.Session.GetObjectFromJson<XmlFileModel>(SessionNameFieldConst.SessionXmlFile);
-            //return PartialView("_Analysis", model);
-        //}
-
         public IActionResult Download()
         {
-            var xmlFileString = HttpContext.Session.GetString(SessionNameFieldConst.SessionXmlDocument);
-            var csvAsList = HttpContext.Session.GetObjectFromJson<List<string[]>>(SessionNameFieldConst.SessionCsvFile);
+            var xmlFileString = HttpContext.Session.GetString(SessionNameFieldConst.SessionXmlMergedDocument);
 
             var xmlFile = new XmlDocument();
             xmlFile.LoadXml(xmlFileString);
-
-            var downloadModel = new DownloadModel{
-               XmlFile = xmlFile,
-               CsvAsList = csvAsList
+            var model = new MergeModel(){
+                XmlFile = xmlFile,
             };
-
-            xmlFile = downloadModel.CreateQuestion();
-            return File(downloadModel.GetFile(xmlFile.OuterXml), "text/xml", "questions.xml");
+            
+            return File(model.GetMergedFile(), "text/xml", "questions.xml");
         }
 
     }

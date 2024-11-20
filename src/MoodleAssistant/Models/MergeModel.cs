@@ -5,13 +5,18 @@ using System.Xml;
 
 namespace MoodleAssistant.Models
 {
-    public class DownloadModel
+    public class MergeModel
     {
-        public XmlDocument XmlFile;
+        private readonly XmlDocument _xmlDoc;
+
+        public XmlDocument XmlFile{
+            get => _xmlDoc;
+            init => _xmlDoc = value.Clone() as XmlDocument;
+        }
 
         public IEnumerable<string[]> CsvAsList;
 
-        public XmlDocument CreateQuestion()
+        public void MergeQuestion()
         {
             // create new question nodes
             var headerRow = CsvAsList.ElementAt(0); // first row contains parameter names
@@ -32,15 +37,13 @@ namespace MoodleAssistant.Models
             while(XmlFile.DocumentElement?.FirstChild?.NodeType == XmlNodeType.Comment)
                 XmlFile.DocumentElement.RemoveChild(XmlFile.DocumentElement.FirstChild);
             XmlFile.DocumentElement?.RemoveChild(XmlFile.DocumentElement.FirstChild);
-
-            return XmlFile;
         }
 
-        public MemoryStream GetFile(string toWrite)
+        public MemoryStream GetMergedFile()
         {
             var newStream = new MemoryStream();
             var writer = new StreamWriter(newStream);
-            writer.Write(toWrite);
+            writer.Write(_xmlDoc.OuterXml);
             writer.Flush();
             newStream.Position = 0;
             return newStream;

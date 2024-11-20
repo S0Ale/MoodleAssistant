@@ -8,6 +8,7 @@ namespace MoodleAssistant.Utils
     public static class SessionNameFieldConst
     {
         public const string SessionXmlDocument = "_XmlDocument";
+        public const string SessionXmlMergedDocument = "_XmlMergedDocument";
         public const string SessionXmlFile = "_XmlFile";
         public const string SessionQuestionList = "_QuestionList";
         public const string SessionAnswerList = "_AnswerList";
