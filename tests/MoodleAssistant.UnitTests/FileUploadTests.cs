@@ -7,11 +7,11 @@ namespace MoodleAssistant.UnitTests;
 [TestFixture]
 internal class FileUploadTests {
 
-    protected MainController controller;
+    protected ReplicatorController controller;
 
     [SetUp]
     public void Setup() {
-        controller = new MainController();
+        controller = new ReplicatorController();
     }
 
     [TearDown]

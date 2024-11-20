@@ -6,7 +6,7 @@ using MoodleAssistant.Utils;
 
 namespace MoodleAssistant.Models;
 
-public class MainModel{
+public class ReplicatorModel{
     public XmlFileModel XmlModel { get; set; }
     public PreviewModel Preview{ get; set; }
     public IEnumerable<string[]> CsvList { get; set; }

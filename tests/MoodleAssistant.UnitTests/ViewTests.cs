@@ -19,7 +19,7 @@ internal class ViewTests{
     [SetUp]
     public void Setup() {
         _controllers = new Dictionary<string, Controller> {
-            { "Main", new MainController() },
+            { "Main", new ReplicatorController() },
             { "Home", new HomeController(new Mock<ILogger<HomeController>>().Object) }
         };
     }
@@ -32,7 +32,7 @@ internal class ViewTests{
 
     [Test]
     public void Main_Index_Test() {
-        var result = ((MainController)_controllers["Main"]).Index() as ViewResult;
+        var result = ((ReplicatorController)_controllers["Main"]).Index() as ViewResult;
         Assert.That(result.ViewName, Is.EqualTo("Index"));
     }
 

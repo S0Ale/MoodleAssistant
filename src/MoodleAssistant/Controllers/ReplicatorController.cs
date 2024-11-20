@@ -8,11 +8,11 @@ using MoodleAssistant.Utils;
 
 namespace MoodleAssistant.Controllers;
 
-public class MainController : Controller{
+public class ReplicatorController : Controller{
 
-    private MainModel _m = new(){ Error = Error.NoErrors };
+    private ReplicatorModel _m = new(){ Error = Error.NoErrors };
 
-    public MainController() {
+    public ReplicatorController() {
         _m.RenderParameters = false;
     }
 

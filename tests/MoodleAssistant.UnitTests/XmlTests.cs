@@ -14,7 +14,7 @@ internal class XmlTests : FileUploadTests{
         var form = TestService.GetFormsMock(xml, null);
 
         var res = controller.UploadFiles(form) as ViewResult;
-        var m = res.Model as MainModel;
+        var m = res.Model as ReplicatorModel;
         Assert.That(m.Error, Is.EqualTo(Error.NonXmlFile));
     }
 
@@ -24,7 +24,7 @@ internal class XmlTests : FileUploadTests{
         var form = TestService.GetFormsMock(xml, null);
 
         var res = controller.UploadFiles(form) as ViewResult;
-        var m = res.Model as MainModel;
+        var m = res.Model as ReplicatorModel;
         ;
         Assert.That(m.Error, Is.EqualTo(Error.EmptyFile));
     }
@@ -38,7 +38,7 @@ internal class XmlTests : FileUploadTests{
         var form = TestService.GetFormsMock(xml, null);
 
         var res = controller.UploadFiles(form) as ViewResult;
-        var m = res.Model as MainModel;
+        var m = res.Model as ReplicatorModel;
         Assert.That(m.Error, Is.EqualTo(Error.XmlBadFormed));
     }
 
@@ -48,7 +48,7 @@ internal class XmlTests : FileUploadTests{
 
         var form = TestService.GetFormsMock(xml, null);
         var res = controller.UploadFiles(form) as ViewResult;
-        var m = res.Model as MainModel;
+        var m = res.Model as ReplicatorModel;
         Assert.That(m.Error, Is.EqualTo(Error.ZeroOrMoreQuestions));
     }
 
@@ -58,7 +58,7 @@ internal class XmlTests : FileUploadTests{
 
         var form = TestService.GetFormsMock(xml, null);
         var res = controller.UploadFiles(form) as ViewResult;
-        var m = res.Model as MainModel;
+        var m = res.Model as ReplicatorModel;
         Assert.That(m.Error, Is.EqualTo(Error.ZeroOrMoreQuestions));
     }
 
@@ -69,7 +69,7 @@ internal class XmlTests : FileUploadTests{
 
         var form = TestService.GetFormsMock(xml, csv);
         var res = controller.UploadFiles(form) as ViewResult;
-        var m = res.Model as MainModel;
+        var m = res.Model as ReplicatorModel;
         Assert.Multiple(() => {
             Assert.That(m.Error, Is.EqualTo(Error.NoErrors));
             Assert.That(m.RenderParameters, Is.EqualTo(true));
