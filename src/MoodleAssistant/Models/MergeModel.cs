@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Xml;
+using MoodleAssistant.Parse;
 
 namespace MoodleAssistant.Models
 {
@@ -24,12 +25,17 @@ namespace MoodleAssistant.Models
             {
                 var xmlQuestionNode = XmlFile.GetElementsByTagName("question").Item(0)?.Clone();
                 var questionString = xmlQuestionNode.InnerXml;
-                
+
+                // Get Parameters
+                var parser = new ParameterParser(questionString);
+                var parameters = parser.Match() as List<Parameter>;
                 for (var i = 0; i < headerRow.Length; i++)
                 {
-                    questionString = questionString.Replace("[*[[" + headerRow[i] + "]]*]", CsvAsList.ElementAt(j)[i]);
+                    //questionString = questionString.Replace("[*[[" + headerRow[i] + "]]*]", CsvAsList.ElementAt(j)[i]);
+                    parameters[i].Replacement = CsvAsList.ElementAt(j)[i]; // put replacements for each parameter
                 }
-                xmlQuestionNode.InnerXml = questionString;
+
+                xmlQuestionNode.InnerXml = parser.Replace(parameters);
                 XmlFile.DocumentElement?.AppendChild(xmlQuestionNode.Clone());
             }
 

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Xml;
+﻿using System.Xml;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MoodleAssistant.Models;
