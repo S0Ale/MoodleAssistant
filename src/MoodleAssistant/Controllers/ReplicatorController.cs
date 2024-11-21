@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Xml;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -51,23 +52,25 @@ public class ReplicatorController : Controller{
 
         _m.XmlModel = xmlModel;
 
-        // replicate question
         /*
+        // replicate question
         var mergeModel = new MergeModel{
             XmlFile = xmlModel.XmlFile,
             CsvAsList = list
         };
         mergeModel.MergeQuestion();
         _m.Preview = new PreviewModel(mergeModel.XmlFile, xmlModel.AnswerCount);
-        _m.RenderPreview = true;
         // needs to be moved after fiel upload
         
         // Save in session
         HttpContext.Session.SetString(SessionNameFieldConst.SessionXmlMergedDocument, mergeModel.XmlFile.OuterXml);
         */
-        _m.FileParameters = new FileParameterModel(xmlModel.XmlFile);
+
+        _m.FileParameters = new FileParameterModel(xmlModel.XmlFile, list.Count() - 1); // exclude header row
         
         _m.RenderParameters = true;
+        //_m.RenderPreview = true;
+        //_m.RenderDownloadBtn = true;
         if(_m.FileParameters.GetFileParameters().Count > 0) _m.RenderFilePrompt = true;
         return View("Index", _m);
     }

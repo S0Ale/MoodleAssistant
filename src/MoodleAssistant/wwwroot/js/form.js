@@ -1,13 +1,13 @@
 ﻿import { query, queryChilds } from "./utils.js";
 
-function clearForm() {
-    const items = query('.file-input-item', true);
+function clearForm(form) {
+    const items = queryChilds(form, '.file-input-item', true);
 
     items.forEach((item) => {
         const previewContainer = queryChilds(item, '.preview-container');
         const input = queryChilds(item, 'input');
         input.value = ''; // clear input
-        query('#first-form').reset();
+        form.reset();
 
         // Clear preview item
         if (previewContainer.firstChild) {
@@ -17,16 +17,6 @@ function clearForm() {
         }
     });
 }
-
-/*
-function isEmptyForm(form) {
-    let inputs = queryChilds(form, 'input', true);
-    inputs.forEach((input) => {
-        if (input.value == "") return true;
-    });
-    return false;
-}
-*/
 
 function createPreviewItem(fileSrc, container, dropZone) {
     const previewItem = document.createElement('div');
@@ -45,7 +35,7 @@ function createPreviewItem(fileSrc, container, dropZone) {
     removeButton.addEventListener('click', function () {
         container.removeChild(previewItem);
         dropZone.classList.remove('hidden');
-        queryChilds(container, 'input').value = ''; // clear input
+        queryChilds(dropZone, 'input').value = ''; // clear input
     });
 
     previewItem.appendChild(text);
@@ -54,25 +44,39 @@ function createPreviewItem(fileSrc, container, dropZone) {
     return previewItem;
 }
 
-/*
-async function submit(data, callback) {
-    const response = await fetch('/Main/UploadFiles', {
-        method: 'POST',
-        body: data,
+function initDropFileForm(form){
+    if(!form) return;
+    
+    // Prepare inputs and drop zones
+    const items = queryChilds(form, '.file-input-item', true);
+    items.forEach((item) => {
+        const input = queryChilds(item, 'input');
+        const dropZone = queryChilds(item, '.drop-zone');
+        const previewContainer = queryChilds(item, '.preview-container');
+
+        dropZone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+        });
+        dropZone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            input.files = e.dataTransfer.files;
+            dropZone.classList.add('hidden');
+            previewContainer.appendChild(createPreviewItem(input.files[0], previewContainer, dropZone));
+        });
+
+        input.addEventListener('change', function() {
+            dropZone.classList.add('hidden');
+            previewContainer.appendChild(createPreviewItem(input.files[0], previewContainer, dropZone));
+        });
+
     });
 
-    if (response.ok) {
-        callback();
-    } else showError(query('form'), await response.text());
+    // Close and clear buttons
+    let clear = queryChilds(form, '#clear-files');
+    clear.addEventListener('click', (e) => {
+        e.preventDefault();
+        clearForm(form);
+    });
 }
 
-function showError(form, msg) {
-    let cont = queryChilds(form, '#error-container');
-    let text = queryChilds(cont, 'p');
-    text.classList.add('error-dialog');
-    text.innerHTML = msg;
-    cont.classList.remove('hidden');
-}
-*/
-
-export { createPreviewItem, clearForm };
+export { initDropFileForm };

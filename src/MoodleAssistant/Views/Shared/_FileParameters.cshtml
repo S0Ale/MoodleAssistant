@@ -1,10 +1,23 @@
 ﻿@model FileParameterModel
 @{
     var @params = Model.GetFileParameters();
+    var s = @params.Count > 1 ? "s" : "";
+    var fileH3 = $"{@params.Count} file parameter{s} found.";
+    ViewData["neededFiles"] = Model.NeededFiles;
 }
+@Html.PartialSectionScripts(
+    @<script src="~/js/snd-upload.js" type="module"></script>
+)
 
 <div class="flex flex-col p-6 border-t border-zinc-200">
-    <div class="flex flex-row w-max min-w-full justify-center space-x-4">
-        Files: @(@params.Count)
-    </div>
+    <h3 class="pb-4 text-gray-700 text-center">
+        <span class="font-semibold">@fileH3</span> Please upload @Model.NeededFiles files for every parameter:
+    </h3>
+    <form enctype="multipart/form-data" method="post" id="snd-form">
+        <div class="flex flex-row w-max min-w-full justify-center space-x-4">
+            @foreach (var param in @params){
+                <partial name="_FileForm" model="param" />
+            }
+        </div>
+    </form>
 </div>

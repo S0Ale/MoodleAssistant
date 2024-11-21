@@ -5,7 +5,7 @@ using NUnit.Framework;
 namespace MoodleAssistant.UnitTests;
 
 [TestFixture]
-internal class FileUploadTests {
+internal abstract class FileUploadTests {
 
     protected ReplicatorController controller;
 
