@@ -11,9 +11,7 @@
                 <span class="flex items-center text-gray-500">
                     Drop file here, or<span class="text-blue-500 underline ml-[4px]">browse</span>
                 </span>
-                @for(var i = 1; i <= needed; i++){
-                    <input type="file" name="@(Model.Name)_@i" class="snd-file-input hidden">
-                }
+                <input type="file" name="@(Model.Name)_upload" class="snd-file-input hidden" multiple>
             </label>
             <div class="preview-container"></div>
         </div>
