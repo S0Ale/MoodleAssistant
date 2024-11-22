@@ -1,0 +1,25 @@
+﻿@page "/Replicator"
+
+<PageTitle>Replicator</PageTitle>
+<div id="content" class="pt-8 pb-8">
+    <div class="flex items-center justify-center mx-auto">
+        <div class="pb-9">
+            <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
+            <form enctype="multipart/form-data" method="post" id="first-form" asp-controller="Replicator" asp-action="UploadFiles">
+                <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row debug1">
+                </div>
+                <div class="flex flex-row mt-3">
+                    <button type="submit" class="btn btn-primary py-1.5 px-6" id="upload-files">Upload</button>
+                    <button class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files">Clear</button>
+                </div>
+                <div id="error-container" class="relative">
+                    <!--
+                        <button class="absolute top-0 right-0 py-0 px-1" id="close-error">
+                            <span class="material-symbols-outlined text-lg text-red-600">close</span>
+                        </button>
+                    -->
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

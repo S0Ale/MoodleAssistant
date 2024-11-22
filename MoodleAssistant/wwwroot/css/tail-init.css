@@ -1,0 +1,25 @@
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .btn {
+        @apply border-2 text-white font-semibold rounded;
+    }
+
+    .btn-primary {
+        @apply border-teal-400 bg-teal-500/60 hover:bg-teal-500
+    }
+
+    .btn-secondary {
+        @apply border-gray-400 bg-gray-500/60 hover:bg-gray-500
+    }
+
+    .file-item {
+        @apply relative flex justify-center items-center w-full h-32 px-4 bg-gray-50 border rounded border-zinc-300 text-gray-500 flex-col
+    }
+
+    .error-dialog {
+        @apply bg-red-200 border rounded border-red-400 text-red-600
+    }
+}
