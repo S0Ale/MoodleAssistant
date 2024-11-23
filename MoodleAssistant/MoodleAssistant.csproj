@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Components\Models\" />
     <Folder Include="Components\Sections\" />
+    <Folder Include="wwwroot\Upload\" />
   </ItemGroup>
 	
 	<Target Name="Tailwind" BeforeTargets="Build">

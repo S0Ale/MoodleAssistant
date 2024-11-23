@@ -1,13 +1,18 @@
-﻿<div class="file-input-item">
+﻿@using MoodleAssistant.Services;
+@inject ReplicatorState replicatorState;
+
+<div class="file-input-item">
     <label class="drop-zone flex justify-center w-full border border-zinc-400 bg-gray-100 border-dashed rounded appearance-none cursor-pointer h-32 px-4 hover:border-zinc-500 focus:outline-none">
         <span class="flex items-center text-gray-500">
             Drop XML file here, or<span class="text-blue-500 underline ml-[4px]">browse</span>
         </span>
-        <input type="file" name="xml_upload" class="hidden" accept="text/xml" id="xml-input">
+        <InputFile class="hidden" @attributes="@InputAttributes"></InputFile>
     </label>
     <div class="preview-container"></div>
 </div>
 
 @code {
-    [Parameter] private int Limit{ get; set; } = 1;
+    [Parameter(CaptureUnmatchedValues = true)]
+    public required Dictionary<string, object> InputAttributes { get; set; }
+    [Parameter] public int Limit{ get; set; } = 1;
 }
