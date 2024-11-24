@@ -1,6 +1,9 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ["./Components/**/*.razor"],
+    content: [
+        "./Components/**/*{.razor, .js}",
+        "./wwwroot/js/**/*.js",
+    ],
     theme: {
         extend: {
             spacing: {

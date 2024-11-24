@@ -1,22 +1,23 @@
 ﻿@page "/Replicator"
 @using MoodleAssistant.Components.Upload
 @using MoodleAssistant.Services
+@rendermode InteractiveServer
 @inject ReplicatorState replicatorState;
+@inject IJSRuntime JS
 
 <PageTitle>Replicator</PageTitle>
 <div id="content" class="pt-8 pb-8">
     <div class="flex items-center justify-center mx-auto">
         <div class="pb-9">
             <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
-            <form method="post">
-                <AntiforgeryToken />
+            <EditForm id="main-form" Model="Model" FormName="main-upload" enctype="multipart/form-data" Enhance OnSubmit="Submit">
                 <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row debug1">
-                    <FileDropInput name="xml_upload" accept="text/xml" id="xml-input"/>
-                    <FileDropInput name="csv_upload" accept="text/csv" id="csv-input"/>
+                    <FileDropInput name="Model.Xml" accept="text/xml" id="xml-input"/>
+                    <FileDropInput name="Model.Csv" accept="text/csv" id="csv-input"/>
                 </div>
                 <div class="flex flex-row mt-3">
-                    <button type="submit" class="btn btn-primary py-1.5 px-6" id="upload-files">Upload</button>
-                    <button class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files">Clear</button>
+                    <button type="submit" class="btn btn-primary py-1.5 px-6">Upload</button>
+                    <button class="btn btn-secondary py-1.5 px-6 ml-3" id="main-clear-files" @onclick="ClearForm">Clear</button>
                 </div>
                 <div id="error-container" class="relative">
                     <!--
@@ -25,10 +26,25 @@
                         </button>
                     -->
                 </div>
-            </form>
+            </EditForm>
         </div>
     </div>
 </div>
 
 @code{
+    [SupplyParameterFromForm] private FormModel Model{ get; set; } = new();
+    
+    private async Task Submit(){
+        var f = Model;
+    }
+    
+    private void ClearForm(){
+        JS.InvokeVoidAsync("clearForm", "main-form"); //non funziona
+    }
+
+    public class FormModel
+    {
+        public IFormFile Xml { get; set; }
+        public IFormFile Csv { get; set; }
+    }
 }

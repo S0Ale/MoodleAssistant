@@ -1,18 +1,44 @@
 ﻿@using MoodleAssistant.Services;
-@inject ReplicatorState replicatorState;
+@rendermode InteractiveServer
+@implements IAsyncDisposable
+@inject IJSRuntime JS
 
-<div class="file-input-item">
+<div class="file-input-item" id="@InputAttributes["id"]">
     <label class="drop-zone flex justify-center w-full border border-zinc-400 bg-gray-100 border-dashed rounded appearance-none cursor-pointer h-32 px-4 hover:border-zinc-500 focus:outline-none">
         <span class="flex items-center text-gray-500">
             Drop XML file here, or<span class="text-blue-500 underline ml-[4px]">browse</span>
         </span>
-        <InputFile class="hidden" @attributes="@InputAttributes"></InputFile>
+        <InputFile class="hidden" @attributes="@InputAttributes" id=""></InputFile>
     </label>
     <div class="preview-container"></div>
 </div>
 
 @code {
+    private IJSObjectReference? module;
     [Parameter(CaptureUnmatchedValues = true)]
     public required Dictionary<string, object> InputAttributes { get; set; }
-    [Parameter] public int Limit{ get; set; } = 1;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender){
+        if (firstRender)
+        {
+            module = await JS.InvokeAsync<IJSObjectReference>("import",
+                "./Components/Upload/FileDropInput.razor.js");
+
+            await module.InvokeVoidAsync("initComponent", InputAttributes["id"]);
+        }
+    }
+    
+    async ValueTask IAsyncDisposable.DisposeAsync()
+    {
+        if (module is not null)
+        {
+            try
+            {
+                await module.DisposeAsync();
+            }
+            catch (JSDisconnectedException)
+            {
+            }
+        }
+    }
 }
