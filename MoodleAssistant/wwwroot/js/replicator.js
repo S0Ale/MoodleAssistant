@@ -1,6 +1,5 @@
-﻿function clearForm(formId) {
-    const form = query(formId);
-    console.log(form)
+﻿window.clearForm = (formId) => {
+    const form = query(`#${formId}`);
     const items = queryChilds(form, '.file-input-item', true);
 
     items.forEach((item) => {

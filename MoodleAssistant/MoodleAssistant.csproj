@@ -11,6 +11,10 @@
     <Folder Include="Components\Sections\" />
     <Folder Include="wwwroot\Upload\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\js\replicator.js" />
+  </ItemGroup>
 	
 	<Target Name="Tailwind" BeforeTargets="Build">
 		<Exec Command="npm run cssbuild" />
