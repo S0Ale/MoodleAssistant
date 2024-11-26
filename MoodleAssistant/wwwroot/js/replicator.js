@@ -1,5 +1,14 @@
-﻿window.clearForm = (formId) => {
-    const form = query(`#${formId}`);
+﻿function closeDialog(form){
+    const cont = queryChilds(form, '.error-container');
+    if (!cont) return;
+
+    //cont.replaceChildren();
+    for (const el of cont.children) {
+        el.classList.add('hidden');
+    }
+}
+
+function clearForm(form) {
     const items = queryChilds(form, '.file-input-item', true);
 
     items.forEach((item) => {
@@ -16,3 +25,17 @@
         }
     });
 }
+
+function initReplicator(){
+    const form = query("#main-upload");
+    if (!form) return;
+    let close = queryChilds(form, '#close-error');
+    if (!close) return;
+    let submit = queryChilds(form, 'button[type="submit"]');
+    if (!submit) return;
+
+    close.addEventListener('click', function() {
+        closeDialog(form);
+    });
+}
+initReplicator();
