@@ -9,7 +9,7 @@ namespace MoodleAssistant.Classes.Models;
 public class XmlFileModel{
     private const string Pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
     public IBrowserFile XmlQuestion{ get; init; }
-    private XmlDocument XmlFile{ get; set; }
+    public XmlDocument XmlFile{ get; set; }
     public IEnumerable<string> QuestionParametersList{ get; private set; }
     public IEnumerable<string> AnswerParametersList{ get; private set; }
     public int AnswerCount { get; private set; }

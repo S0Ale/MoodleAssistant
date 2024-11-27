@@ -23,6 +23,10 @@
     [Parameter(CaptureUnmatchedValues = true)]
     public required Dictionary<string, object> InputAttributes { get; set; }
     
+    public void Refresh(){
+        StateHasChanged();
+    }
+    
     private void UploadFile(InputFileChangeEventArgs e){
         if (e.FileCount == 0){
             replicatorState.Files.Remove(InputAttributes["id"] as string);

@@ -1,11 +1,10 @@
 ﻿@page "/Replicator"
-@using System.IO.Pipelines
 @using MoodleAssistant.Components.Upload
 @using MoodleAssistant.Services
-@using Microsoft.AspNetCore.Components.Sections
 @using MoodleAssistant.Classes.Models
 @using MoodleAssistant.Classes.Parse
 @using MoodleAssistant.Classes.Utils
+@using MoodleAssistant.Components.Sections
 @rendermode InteractiveServer
 @inject ReplicatorState ReplicatorState;
 
@@ -28,14 +27,14 @@
                     <button type="submit" class="btn btn-primary py-1.5 px-6">Upload</button>
                 </div>
                 <div class="relative error-container">
-                    <ErrorMsg @ref="dialog" Message="@(ErrorMessage.GetErrorMessage(_error))" FormId="@(mainForm)"></ErrorMsg>
+                    <ErrorMsg @ref="dialog" Message="@(ErrorMessage.GetErrorMessage(_error))" FormId="@(mainForm)"/>
                 </div>
             </form>
         </div>
     </div>
 </div>
 @if (show){
-    <p>Hello</p>
+    <Analysis />
 }
 <!--
 <SectionContent SectionId="App.LocalScripts"> 
@@ -48,7 +47,7 @@
     private ErrorMsg dialog;
     private bool show = false;
     
-    private async Task Submit(){
+    private async Task Submit(){ 
         // reset all sections
         var state = ReplicatorState;
         
@@ -64,6 +63,7 @@
             SetError(e.Error);
             return;
         }
+        ReplicatorState.XmlModel = xmlModel;
         
         List<string[]>? csvList;
         try{ csvList = await loader.LoadCsv(state.Files["csv-input"], xmlModel) as List<string[]>; }
@@ -71,8 +71,10 @@
             SetError(e.Error);
             return;
         }
+        ReplicatorState.CsvAsList = csvList;
 
         show = true;
+        //var fileModel = new FileParameterModel(xmlModel.XmlFile, csvList.Count() - 1);
     }
 
     private void SetError(Error err){
