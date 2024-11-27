@@ -9,7 +9,7 @@
         <span class="flex items-center text-gray-500">
             Drop XML file here, or<span class="text-blue-500 underline ml-[4px]">browse</span>
         </span>
-        <InputFile class="hidden" @attributes="@InputAttributes" id=""></InputFile>
+        <InputFile @ref="inputFile" class="hidden" @attributes="@InputAttributes" id="" OnChange="UploadFile"></InputFile>
     </label>
     <div class="preview-container"></div>
 </div>
@@ -17,24 +17,15 @@
 @code {
     //[Parameter]
     //public string FileType { get; set; }
+    private InputFile inputFile;
 
     private IJSObjectReference? module;
     [Parameter(CaptureUnmatchedValues = true)]
     public required Dictionary<string, object> InputAttributes { get; set; }
     
-    /*
     private void UploadFile(InputFileChangeEventArgs e){
-        var file = e.File;
-        switch (FileType){
-            case "xml":
-                replicatorState.FormXml = file;
-                break;
-            case "csv":
-                replicatorState.FormCsv = file;
-                break;
-        }
+        replicatorState.Files[InputAttributes["id"] as string] = e.GetMultipleFiles()[0];
     }
-    */
 
     protected override async Task OnAfterRenderAsync(bool firstRender){
         if (firstRender)

@@ -32,20 +32,11 @@ export function initComponent(id) {
     const input = queryChilds(item, 'input');
     const dropZone = queryChilds(item, '.drop-zone');
     const previewContainer = queryChilds(item, '.preview-container');
-
-    dropZone.addEventListener('dragover', function (e) {
-        e.preventDefault();
-    });
-    dropZone.addEventListener('drop', function (e) {
-        e.preventDefault();
-        input.files = e.dataTransfer.files;
-        dropZone.classList.add('hidden');
-        previewContainer.appendChild(createPreviewItem(input.files[0].name, previewContainer, dropZone));
-    });
+    
     input.addEventListener('change', function() {
         dropZone.classList.add('hidden');
         previewContainer.appendChild(createPreviewItem(input.files[0].name, previewContainer, dropZone));
     });
 }
 
-window.initComponent = initComponent;
+//window.initComponent = initComponent;

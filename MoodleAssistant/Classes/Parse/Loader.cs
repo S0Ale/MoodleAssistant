@@ -1,19 +1,20 @@
-﻿using MoodleAssistant.Classes.Models;
+﻿using Microsoft.AspNetCore.Components.Forms;
+using MoodleAssistant.Classes.Models;
 using MoodleAssistant.Classes.Utils;
 
 namespace MoodleAssistant.Classes.Parse;
 
-public class Loader{
-    public XmlFileModel LoadXml(IFormFile file){
+public class Loader(){
+    public async Task<XmlFileModel> LoadXml(IBrowserFile file){
         var model = new XmlFileModel{ XmlQuestion = file };
 
         if (null == file)
             throw new ValidationException(Error.NullFile);
         if (!model.IsXml())
             throw new ValidationException(Error.NonXmlFile);
-        if (model.IsEmpty())
+        if (await model.IsEmpty())
             throw new ValidationException(Error.EmptyFile);
-        if (!model.IsWellFormattedXml())
+        if (!(await model.IsWellFormattedXml()))
             throw new ValidationException(Error.XmlBadFormed);
         if (!model.HasOnlyOneQuestion())
             throw new ValidationException(Error.ZeroOrMoreQuestions);
@@ -24,7 +25,7 @@ public class Loader{
         return model;
     }
 
-    public IEnumerable<string[]> LoadCsv(IFormFile file, XmlFileModel xmlModel){
+    public IEnumerable<string[]> LoadCsv(IBrowserFile file, XmlFileModel xmlModel){
         var model = new CsvFileModel{
             CsvAnswers = file,
             QuestionParametersList = xmlModel.QuestionParametersList,

@@ -1,42 +1,33 @@
 ﻿@rendermode InteractiveServer
 @inject IJSRuntime Js
-@implements IAsyncDisposable
 
-<p class="px-3 py-2 mt-3 error-dialog">@Message</p>
-<button type="button" class="absolute top-0 right-0 py-0 px-1" id="close-error">
-    <span class="material-symbols-outlined text-lg text-red-600">close</span>
-</button>
+@if (_visible){
+    <p class="px-3 py-2 mt-3 error-dialog">@Message</p>
+    <button type="button" class="absolute top-0 right-0 py-0 px-1" id="close-error" @onclick="Close">
+        <span class="material-symbols-outlined text-lg text-red-600">close</span>
+    </button>
+}
 
 
 @code {
     private IJSObjectReference? module;
-    
+
+    private bool _visible = false;
+
     [Parameter]
     public string? Message { get; set; }
     [Parameter]
     public string? FormId { get; set; }
     
-    protected override async Task OnAfterRenderAsync(bool firstRender){
-        if (firstRender)
-        {
-            module = await Js.InvokeAsync<IJSObjectReference>("import",
-                "./Components/Upload/ErrorMsg.razor.js");
-            
-            await module.InvokeVoidAsync("initDialog", FormId);
-        }
+    public void Show(){
+        _visible = true;
     }
     
-    async ValueTask IAsyncDisposable.DisposeAsync()
-    {
-        if (module is not null)
-        {
-            try
-            {
-                await module.DisposeAsync();
-            }
-            catch (JSDisconnectedException)
-            {
-            }
-        }
+    private void Close(){
+        _visible = false;
+    }
+
+    public void Refresh(){
+        StateHasChanged();
     }
 }

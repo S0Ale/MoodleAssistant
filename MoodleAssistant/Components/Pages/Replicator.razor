@@ -1,16 +1,17 @@
 ﻿@page "/Replicator"
+@using System.IO.Pipelines
 @using MoodleAssistant.Components.Upload
 @using MoodleAssistant.Services
 @using Microsoft.AspNetCore.Components.Sections
 @using MoodleAssistant.Classes.Models
 @using MoodleAssistant.Classes.Parse
 @using MoodleAssistant.Classes.Utils
-@inject ReplicatorState replicatorState;
-@inject IJSRuntime Js
+@rendermode InteractiveServer
+@inject ReplicatorState ReplicatorState;
 
 @{
     var mainForm = "main-upload";
-    var show = _error != Error.NoErrors ? string.Empty : "hidden";
+    //var show = _error != Error.NoErrors ? string.Empty : "hidden";
 }
 
 <PageTitle>Replicator</PageTitle>
@@ -18,75 +19,74 @@
     <div class="flex items-center justify-center mx-auto">
         <div class="pb-9">
             <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
-            <EditForm id="@(mainForm)" Model="Form" FormName="main-upload" enctype="multipart/form-data" Enhance OnSubmit="Submit">
+            <form method="post" id="@(mainForm)" @formname="main-upload" @onsubmit="Submit">
                 <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row">
-                    <FileDropInput name="Form.Xml" id="xml-input"/>
+                    <FileDropInput name="Form.Xml" id="xml-input" multiple/>
                     <FileDropInput name="Form.Csv" id="csv-input"/>
                 </div>
                 <div class="flex flex-row mt-3">
                     <button type="submit" class="btn btn-primary py-1.5 px-6">Upload</button>
                 </div>
                 <div class="relative error-container">
-                    <p class="px-3 py-2 mt-3 error-dialog @show">@ErrorMessage.GetErrorMessage(_error)</p>
-                    <button type="button" class="absolute top-0 right-0 py-0 px-1 @show" id="close-error">
-                        <span class="material-symbols-outlined text-lg text-red-600">close</span>
-                    </button>
+                    <ErrorMsg @ref="dialog" Message="@(ErrorMessage.GetErrorMessage(_error))" FormId="@(mainForm)"></ErrorMsg>
                 </div>
-            </EditForm>
+            </form>
         </div>
     </div>
 </div>
+<!--
 <SectionContent SectionId="App.LocalScripts"> 
     <script src="js/replicator.js"></script>
 </SectionContent>
+-->
 
 @code{
-    [SupplyParameterFromForm] public FormModel Form{ get; set; }
+    //[SupplyParameterFromForm] public FormModel Form{ get; set; }
     private Error _error = Error.NoErrors;
+    private ErrorMsg dialog;
     
     protected override void OnInitialized(){
-        Form ??= new FormModel();
+        //Form ??= new FormModel();
     }
     
     // Uses HttpContext to do model binding, because I'm not using interactive render mode
-    private void Submit(){ 
-        _error = Error.NoErrors;
+    private async void Submit(){ 
+        var state = ReplicatorState;
         
-        //the dialog _visible doesn't reset to true after the entire parent re-renders
-        
-        var loader = new Loader();
-        if(Form.Xml == null || Form.Csv == null){
-            _error = Error.NoFiles;
+        if(state.Files.Count < 2){
+            SetError(Error.NoFiles);
             return;
         }
+        var loader = new Loader();
         
         XmlFileModel xmlModel;
-        try{ xmlModel = loader.LoadXml(Form.Xml); }
+        try{ xmlModel = await loader.LoadXml(state.Files["xml-input"]); }
         catch (ValidationException e){
-            _error = e.Error;
+            SetError(e.Error);
             return;
         }
         
-        List<string[]>? csvList;
-        try{ csvList = loader.LoadCsv(Form.Csv, xmlModel) as List<string[]>; }
-        catch (ValidationException e){
-            _error = e.Error;
-            return;
-        }
+        //List<string[]>? csvList;
+        //try{ csvList = loader.LoadCsv(state.Files["csv-input"], xmlModel) as List<string[]>; }
+        //catch (ValidationException e){
+        //    SetError(e.Error);
+        //   return;
+        //}
     }
 
     private void SetError(Error err){
         _error = err;
-        
+        dialog.Show();
+        dialog.Refresh();
     }
 
-    private void ClearForm(string formId){
-        Js.InvokeVoidAsync("clearForm", formId);
-    }
+    //private void ClearForm(string formId){
+        //Js.InvokeVoidAsync("clearForm", formId);
+    //}
 
-    public class FormModel
-    {
-        public IFormFile? Xml { get; set; }
-        public IFormFile? Csv { get; set; }
-    }
+    //public class FormModel
+    //{
+    //    public IFormFile? Xml { get; set; }
+    //    public IFormFile? Csv { get; set; }
+    //}
 }

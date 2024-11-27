@@ -38,4 +38,4 @@ function initReplicator(){
         closeDialog(form);
     });
 }
-initReplicator();
+//initReplicator();
