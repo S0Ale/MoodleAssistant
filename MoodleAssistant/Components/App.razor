@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Components.Sections
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <base href="/" />
+
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="stylesheet" href="css/output.css" />
+    <link rel="stylesheet" href="MoodleAssistant.styles.css" />
+    <link rel="icon" type="image/png" href="favicon.png" />
+    <HeadOutlet />
+</head>
+
+<body>
+<Routes />
+<script src="_framework/blazor.web.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/site.js"></script>
+<SectionOutlet SectionId="LocalScripts" />
+</body>
+
+</html>
+
+@code{
+
+    public static SectionOutlet LocalScripts = new();
+
+}

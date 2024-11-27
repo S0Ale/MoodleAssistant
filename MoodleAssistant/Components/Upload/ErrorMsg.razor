@@ -1,0 +1,30 @@
+﻿@rendermode InteractiveServer
+
+@if (_visible){
+    <p class="px-3 py-2 mt-3 error-dialog">@Message</p>
+    <button type="button" class="absolute top-0 right-0 py-0 px-1" id="close-error" @onclick="Close">
+        <span class="material-symbols-outlined text-lg text-red-600">close</span>
+    </button>
+}
+
+
+@code {
+    private bool _visible = false;
+
+    [Parameter]
+    public string? Message { get; set; }
+    [Parameter]
+    public string? FormId { get; set; }
+    
+    public void Show(){
+        _visible = true;
+    }
+    
+    private void Close(){
+        _visible = false;
+    }
+
+    public void Refresh(){
+        StateHasChanged();
+    }
+}

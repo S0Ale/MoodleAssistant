@@ -1,5 +1,0 @@
-# Dependency directories
-node_modules/
-
-# Output of tailwind build process
-css/output.css

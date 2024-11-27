@@ -1,0 +1,83 @@
+﻿@page "/Replicator"
+@using System.IO.Pipelines
+@using MoodleAssistant.Components.Upload
+@using MoodleAssistant.Services
+@using Microsoft.AspNetCore.Components.Sections
+@using MoodleAssistant.Classes.Models
+@using MoodleAssistant.Classes.Parse
+@using MoodleAssistant.Classes.Utils
+@rendermode InteractiveServer
+@inject ReplicatorState ReplicatorState;
+
+@{
+    var mainForm = "main-upload";
+    //var show = _error != Error.NoErrors ? string.Empty : "hidden";
+}
+
+<PageTitle>Replicator</PageTitle>
+<div id="content" class="pt-8 pb-8">
+    <div class="flex items-center justify-center mx-auto">
+        <div class="pb-9">
+            <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
+            <form method="post" id="@(mainForm)" @formname="main-upload" @onsubmit="Submit">
+                <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row">
+                    <FileDropInput name="Form.Xml" id="xml-input" multiple/>
+                    <FileDropInput name="Form.Csv" id="csv-input"/>
+                </div>
+                <div class="flex flex-row mt-3">
+                    <button type="submit" class="btn btn-primary py-1.5 px-6">Upload</button>
+                </div>
+                <div class="relative error-container">
+                    <ErrorMsg @ref="dialog" Message="@(ErrorMessage.GetErrorMessage(_error))" FormId="@(mainForm)"></ErrorMsg>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@if (show){
+    <p>Hello</p>
+}
+<!--
+<SectionContent SectionId="App.LocalScripts"> 
+    <script src="js/replicator.js"></script>
+</SectionContent>
+-->
+
+@code{
+    private Error _error = Error.NoErrors;
+    private ErrorMsg dialog;
+    private bool show = false;
+    
+    private async Task Submit(){
+        // reset all sections
+        var state = ReplicatorState;
+        
+        if(state.Files.Count < 2){
+            SetError(Error.NoFiles);
+            return;
+        }
+        var loader = new Loader();
+        
+        XmlFileModel xmlModel;
+        try{ xmlModel = await loader.LoadXml(state.Files["xml-input"]); }
+        catch (ValidationException e){
+            SetError(e.Error);
+            return;
+        }
+        
+        List<string[]>? csvList;
+        try{ csvList = await loader.LoadCsv(state.Files["csv-input"], xmlModel) as List<string[]>; }
+        catch (ValidationException e){
+            SetError(e.Error);
+            return;
+        }
+
+        show = true;
+    }
+
+    private void SetError(Error err){
+        _error = err;
+        dialog.Show();
+        dialog.Refresh();
+    }
+}
