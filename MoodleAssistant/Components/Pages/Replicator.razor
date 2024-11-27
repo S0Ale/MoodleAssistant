@@ -34,6 +34,9 @@
         </div>
     </div>
 </div>
+@if (show){
+    <p>Hello</p>
+}
 <!--
 <SectionContent SectionId="App.LocalScripts"> 
     <script src="js/replicator.js"></script>
@@ -43,6 +46,7 @@
 @code{
     private Error _error = Error.NoErrors;
     private ErrorMsg dialog;
+    private bool show = false;
     
     private async Task Submit(){
         // reset all sections
@@ -68,7 +72,7 @@
             return;
         }
 
-        var s = string.Empty;
+        show = true;
     }
 
     private void SetError(Error err){
