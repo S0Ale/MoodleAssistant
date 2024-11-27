@@ -9,6 +9,9 @@ public class ReplicatorState{
     //public IBrowserFile FormCsv{ get; set; }
     public IDictionary<string, IBrowserFile?> Files{ get; } = new Dictionary<string, IBrowserFile?>();
     
+    public PreviewModel Preview{ get; set; }
     public XmlFileModel XmlModel{ get; set; }
     public IEnumerable<string[]> CsvAsList{ get; set; }
+    
+    public XmlDocument Merged{ get; set; }
 }
