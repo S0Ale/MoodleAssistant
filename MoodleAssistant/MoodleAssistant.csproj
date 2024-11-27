@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="wwwroot\js\FileDropInputNew.js" />
     <None Include="wwwroot\js\replicator.js" />
   </ItemGroup>
 

@@ -25,7 +25,7 @@ public class Loader(){
         return model;
     }
 
-    public IEnumerable<string[]> LoadCsv(IBrowserFile file, XmlFileModel xmlModel){
+    public async Task<IEnumerable<string[]>> LoadCsv(IBrowserFile file, XmlFileModel xmlModel){
         var model = new CsvFileModel{
             CsvAnswers = file,
             QuestionParametersList = xmlModel.QuestionParametersList,
@@ -36,13 +36,13 @@ public class Loader(){
             throw new ValidationException(Error.NullFile);
         if (!model.IsCsv())
             throw new ValidationException(Error.NonCsvFile);
-        if (model.IsEmpty())
+        if (await model.IsEmpty())
             throw new ValidationException(Error.EmptyFile);
-        if (!model.HasValidHeader())
+        if (!(await model.HasValidHeader()))
             throw new ValidationException(Error.CsvInvalidHeader);
-        if (!model.IsWellFormed())
+        if (!(await model.IsWellFormed()))
             throw new ValidationException(Error.CsvBadFormed);
 
-        return model.ConvertCsvToListOfArrayString();
+        return await model.ConvertCsvToListOfArrayString();
     }
 }

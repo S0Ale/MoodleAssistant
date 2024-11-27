@@ -11,26 +11,29 @@ public class CsvFileModel{
 
     public IEnumerable<string> QuestionParametersList{ get; set; }
     public IEnumerable<string> AnswersParametersList{ get; set; }
+    
+    private async Task<StreamReader> GetReaderAsync(IBrowserFile file, Encoding? encoding){
+        var stream = new MemoryStream();
+        await file.OpenReadStream().CopyToAsync(stream);
+        stream.Position = 0;
+        return encoding == null ? new StreamReader(stream) : new StreamReader(stream, encoding);
+    }
 
     public bool IsCsv()
     {
         return _mimeTypes.Contains(CsvAnswers.ContentType);
     }
 
-    public bool IsEmpty()
+    public async Task<bool> IsEmpty()
     {
-        var stream = new MemoryStream();
-        CsvAnswers.OpenReadStream().CopyToAsync(stream);
-        using var streamReader = new StreamReader(stream, Encoding.UTF8);
-        return streamReader.EndOfStream;
+        using var reader = await GetReaderAsync(CsvAnswers, Encoding.UTF8);
+        return reader.EndOfStream;
     }
     
-    public bool HasValidHeader()
+    public async Task<bool> HasValidHeader()
     {
-        var stream = new MemoryStream();
-        CsvAnswers.OpenReadStream().CopyToAsync(stream);
-        using var streamReader = new StreamReader(stream);
-        using var csv = new CsvReader(streamReader, CultureInfo.InvariantCulture);
+        using var reader = await GetReaderAsync(CsvAnswers, null);
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Read();
         csv.ReadHeader();
         var headerRow = csv.HeaderRecord;
@@ -39,12 +42,10 @@ public class CsvFileModel{
         return headerRow.All(questionAndAnswerList.Contains) && Equals(headerRow.Count(), questionAndAnswerList.Count());
     }
 
-    public bool IsWellFormed()
+    public async Task<bool> IsWellFormed()
     {
-        var stream = new MemoryStream();
-        CsvAnswers.OpenReadStream().CopyToAsync(stream);
-        using var streamReader = new StreamReader(stream, Encoding.Default);
-        using var csv = new CsvReader(streamReader, CultureInfo.InvariantCulture);
+        using var reader = await GetReaderAsync(CsvAnswers, Encoding.Default);
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Read();
         csv.ReadHeader();
         var numOfHeaders = csv.Parser.Count;
@@ -60,14 +61,12 @@ public class CsvFileModel{
         return true;
     }
 
-    public IEnumerable<string[]> ConvertCsvToListOfArrayString()
+    public async Task<IEnumerable<string[]>> ConvertCsvToListOfArrayString()
     {
         var csvAsList = new List<string[]>();
         
-        var stream = new MemoryStream();
-        CsvAnswers.OpenReadStream().CopyToAsync(stream);
-        using var streamReader = new StreamReader(stream);
-        using var csv = new CsvReader(streamReader, CultureInfo.InvariantCulture);
+        using var reader = await GetReaderAsync(CsvAnswers, null);
+        using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Read();
         csv.ReadHeader();
         var numOfHeaders = csv.Parser.Count;

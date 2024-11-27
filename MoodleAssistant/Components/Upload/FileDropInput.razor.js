@@ -19,7 +19,10 @@
     removeButton.addEventListener('click', function () {
         container.removeChild(previewItem);
         dropZone.classList.remove('hidden');
-        queryChilds(dropZone, 'input').value = ''; // clear input
+        let input = queryChilds(dropZone, 'input');
+        
+        input.value = ''; // clear input
+        input.dispatchEvent(new Event('change'));
     });
 
     previewItem.appendChild(removeButton);
@@ -33,9 +36,19 @@ export function initComponent(id) {
     const dropZone = queryChilds(item, '.drop-zone');
     const previewContainer = queryChilds(item, '.preview-container');
     
+    dropZone.addEventListener('dragover', function (e) {
+        e.preventDefault();
+    });
+    dropZone.addEventListener('drop', function (e) {
+        e.preventDefault();
+        input.files = e.dataTransfer.files;
+        input.dispatchEvent(new Event('change'));
+    });
     input.addEventListener('change', function() {
-        dropZone.classList.add('hidden');
-        previewContainer.appendChild(createPreviewItem(input.files[0].name, previewContainer, dropZone));
+        if(input.value){
+            dropZone.classList.add('hidden');
+            previewContainer.appendChild(createPreviewItem(input.files[0].name, previewContainer, dropZone));
+        }
     });
 }
 

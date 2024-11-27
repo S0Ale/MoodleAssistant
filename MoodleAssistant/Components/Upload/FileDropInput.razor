@@ -24,7 +24,9 @@
     public required Dictionary<string, object> InputAttributes { get; set; }
     
     private void UploadFile(InputFileChangeEventArgs e){
-        replicatorState.Files[InputAttributes["id"] as string] = e.GetMultipleFiles()[0];
+        if (e.FileCount == 0){
+            replicatorState.Files.Remove(InputAttributes["id"] as string);
+        } else replicatorState.Files[InputAttributes["id"] as string] = e.GetMultipleFiles()[0];
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender){

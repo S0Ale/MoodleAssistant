@@ -15,7 +15,7 @@ public class XmlFileModel{
     public int AnswerCount { get; private set; }
     
     private async Task<StreamReader> GetReaderAsync(IBrowserFile file){
-        using var stream = new MemoryStream();
+        var stream = new MemoryStream();
         await file.OpenReadStream().CopyToAsync(stream);
         stream.Position = 0;
         return new StreamReader(stream, Encoding.UTF8);
