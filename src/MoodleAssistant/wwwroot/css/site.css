@@ -1,0 +1,66 @@
+﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
+for details on configuring this project to bundle and minify static web assets. */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+body {
+    background: #f9fafb;
+}
+
+nav, footer {
+    background: #fff;
+}
+
+p, span, div {
+    color: #374151;
+}
+
+.debug1 {
+    border: 1px solid red
+}
+.debug2 {
+    border: 1px solid orange
+}
+.debug3 {
+    border: 1px solid green
+}
+.debug4 {
+    border: 1px solid blue
+}
+.debug4 {
+    border: 1px solid purple
+}
+
+.material-symbols-outlined {
+     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24
+ }
+
+/* Global styles */
+.code {
+    color: hotpink;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: .9rem;
+    line-height: 1.5;
+}
+.btn {
+    cursor: pointer;
+}
+
+main {
+    min-height: calc(100vh - 134px);
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    /* Margin bottom by footer height */
+    margin-bottom: 60px;
+}
+
+footer {
+    white-space: nowrap;
+    line-height: 60px; /* Vertically center the text there */
+}
