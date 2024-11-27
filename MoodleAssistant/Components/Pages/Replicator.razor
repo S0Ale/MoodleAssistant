@@ -36,6 +36,9 @@
         </div>
     </div>
 </div>
+@if (showNext){
+    <p>Hello</p>
+}
 <SectionContent SectionId="App.LocalScripts"> 
     <script src="js/replicator.js"></script>
 </SectionContent>
@@ -43,6 +46,7 @@
 @code{
     [SupplyParameterFromForm] public FormModel Form{ get; set; }
     private Error _error = Error.NoErrors;
+    private bool showNext = false;
     
     protected override void OnInitialized(){
         Form ??= new FormModel();
@@ -73,6 +77,8 @@
             _error = e.Error;
             return;
         }
+        
+        showNext = true;
     }
 
     private void SetError(Error err){
