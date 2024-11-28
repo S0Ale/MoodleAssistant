@@ -7,6 +7,7 @@
 @using MoodleAssistant.Components.Sections
 @rendermode InteractiveServer
 @inject ReplicatorState ReplicatorState;
+@inject FileService FileService;
 
 @{
     var mainForm = "main-upload";
@@ -48,6 +49,7 @@
     private bool show = false;
     
     private async Task Submit(){ 
+        FileService.DeleteAllFiles();
         // reset all sections
         var state = ReplicatorState;
         
@@ -55,7 +57,7 @@
             SetError(Error.NoFiles);
             return;
         }
-        var loader = new Loader();
+        var loader = new Loader(FileService);
         
         XmlFileModel xmlModel;
         try{ xmlModel = await loader.LoadXml(state.Files["xml-input"]); }
@@ -64,6 +66,7 @@
             return;
         }
         ReplicatorState.XmlModel = xmlModel;
+        FileService.DeleteFile("XML");
         
         List<string[]>? csvList;
         try{ csvList = await loader.LoadCsv(state.Files["csv-input"], xmlModel) as List<string[]>; }
@@ -72,6 +75,7 @@
             return;
         }
         ReplicatorState.CsvAsList = csvList;
+        FileService.DeleteFile("CSV");
 
         show = true;
         //var fileModel = new FileParameterModel(xmlModel.XmlFile, csvList.Count() - 1);

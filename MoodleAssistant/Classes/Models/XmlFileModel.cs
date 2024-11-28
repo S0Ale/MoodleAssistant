@@ -3,17 +3,23 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.AspNetCore.Components.Forms;
+using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Classes.Models;
 
-public class XmlFileModel{
+public class XmlFileModel(FileService fileService){
     private const string Pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
     public IBrowserFile XmlQuestion{ get; init; }
+
     public XmlDocument XmlFile{ get; set; }
     public IEnumerable<string> QuestionParametersList{ get; private set; }
     public IEnumerable<string> AnswerParametersList{ get; private set; }
     public int AnswerCount { get; private set; }
     
+    public async Task<bool> SaveFile(){
+        return await fileService.SaveFile(XmlQuestion, "XML");
+    }
+
     private async Task<StreamReader> GetReaderAsync(IBrowserFile file){
         var stream = new MemoryStream();
         await file.OpenReadStream().CopyToAsync(stream);
@@ -25,17 +31,19 @@ public class XmlFileModel{
     {
         return System.Net.Mime.MediaTypeNames.Text.Xml == XmlQuestion.ContentType;
     }
-    public async Task<bool> IsEmpty(){
-        using var reader = await GetReaderAsync(XmlQuestion);
+    public bool IsEmpty(){
+        var stream = fileService.GetFile("XML");
+        using var reader = new StreamReader(stream, Encoding.UTF8);
         return reader.EndOfStream;
     }
-    public async Task<bool> IsWellFormattedXml(){
-        using var reader = await GetReaderAsync(XmlQuestion);
+    public bool IsWellFormattedXml(){
+        var stream = fileService.GetFile("XML");
+        using var reader = new StreamReader(stream, Encoding.UTF8);
                                                                                                
         try                                                                                    
         {                                                                                      
             XmlFile = new XmlDocument();                                                       
-            XmlFile.LoadXml(await reader.ReadToEndAsync());                                         
+            XmlFile.LoadXml(reader.ReadToEnd());                                         
             return true;                                                                       
         }                                                                                      
         catch (XmlException)                                                                   

@@ -2,15 +2,20 @@
 using System.Text;
 using CsvHelper;
 using Microsoft.AspNetCore.Components.Forms;
+using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Classes.Models;
 
-public class CsvFileModel{
-    public IBrowserFile CsvAnswers;
+public class CsvFileModel(FileService fileService){
+    public IBrowserFile CsvAnswers{ get; init; }
     private readonly string[] _mimeTypes = ["application/vnd.ms-excel", "text/csv"];
 
     public IEnumerable<string> QuestionParametersList{ get; set; }
     public IEnumerable<string> AnswersParametersList{ get; set; }
+    
+    public async Task<bool> SaveFile(){
+        return await fileService.SaveFile(CsvAnswers, "CSV");
+    }
     
     private async Task<StreamReader> GetReaderAsync(IBrowserFile file, Encoding? encoding){
         var stream = new MemoryStream();
@@ -24,15 +29,17 @@ public class CsvFileModel{
         return _mimeTypes.Contains(CsvAnswers.ContentType);
     }
 
-    public async Task<bool> IsEmpty()
+    public bool IsEmpty()
     {
-        using var reader = await GetReaderAsync(CsvAnswers, Encoding.UTF8);
+        var stream = fileService.GetFile("CSV");
+        using var reader = new StreamReader(stream, Encoding.UTF8);
         return reader.EndOfStream;
     }
     
-    public async Task<bool> HasValidHeader()
+    public bool HasValidHeader()
     {
-        using var reader = await GetReaderAsync(CsvAnswers, null);
+        var stream = fileService.GetFile("CSV");
+        using var reader = new StreamReader(stream);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Read();
         csv.ReadHeader();
@@ -42,9 +49,10 @@ public class CsvFileModel{
         return headerRow.All(questionAndAnswerList.Contains) && Equals(headerRow.Count(), questionAndAnswerList.Count());
     }
 
-    public async Task<bool> IsWellFormed()
+    public bool IsWellFormed()
     {
-        using var reader = await GetReaderAsync(CsvAnswers, Encoding.Default);
+        var stream = fileService.GetFile("CSV");
+        using var reader = new StreamReader(stream, Encoding.Default);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Read();
         csv.ReadHeader();
@@ -61,11 +69,12 @@ public class CsvFileModel{
         return true;
     }
 
-    public async Task<IEnumerable<string[]>> ConvertCsvToListOfArrayString()
+    public IEnumerable<string[]> ConvertCsvToListOfArrayString()
     {
         var csvAsList = new List<string[]>();
         
-        using var reader = await GetReaderAsync(CsvAnswers, null);
+        var stream = fileService.GetFile("CSV");
+        using var reader = new StreamReader(stream);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Read();
         csv.ReadHeader();
