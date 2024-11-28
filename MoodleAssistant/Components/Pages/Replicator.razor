@@ -39,6 +39,7 @@
 </div>
 @if (showNext){
     <Analysis />
+    <Preview />
 }
 <SectionContent SectionId="App.LocalScripts"> 
     <script src="js/replicator.js"></script>
@@ -80,6 +81,13 @@
             return;
         }
         ReplicatorState.CsvAsList = csvList;
+        
+        var merger = new Merger(ReplicatorState){
+            XmlFile = xmlModel.XmlFile,
+            CsvAsList = csvList
+        };
+        merger.MergeQuestion();
+        ReplicatorState.Preview = new PreviewModel(ReplicatorState.Merged, xmlModel.AnswerCount);
         
         showNext = true;
     }
