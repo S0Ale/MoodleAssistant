@@ -7,6 +7,7 @@
 @using MoodleAssistant.Components.Sections
 @using Microsoft.AspNetCore.Components.Sections
 @rendermode InteractiveServer
+@inject NavigationManager NavigationManager;
 @inject ReplicatorState ReplicatorState;
 @inject FileService FileService;
 @inject IJSRuntime Js;
@@ -23,7 +24,7 @@
             <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
             <form method="post" id="@(mainForm)" @formname="main-upload" @onsubmit="Submit">
                 <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row">
-                    <FileDropInput name="Xml" id="xml-input" multiple/>
+                    <FileDropInput name="Xml" id="xml-input"/>
                     <FileDropInput name="Csv" id="csv-input"/>
                 </div>
                 <div class="flex flex-row mt-3">
@@ -39,7 +40,11 @@
 </div>
 @if (show){
     <Analysis />
-    <Preview />
+    <FileParam />
+    
+    <div class="flex flex-row justify-center py-6 border-t border-zinc-200">
+        <button class="btn btn-secondary py-1.5 px-5" @onclick="Reset">Reset</button>
+    </div>
 }
 <SectionContent SectionId="App.LocalScripts"> 
     <script src="js/replicator.js"></script>
@@ -56,14 +61,14 @@
         // reset all sections
         var state = ReplicatorState;
         
-        if(state.Files.Count < 2){
+        if(state.MainFiles.Count < 2){
             SetError(Error.NoFiles);
             return;
         }
         var loader = new Loader(FileService);
         
-        XmlFileModel xmlModel;
-        try{ xmlModel = await loader.LoadXml(state.Files["xml-input"]); }
+        XmlFileModel? xmlModel;
+        try{ xmlModel = await loader.LoadXml(state.MainFiles["xml-input"]); }
         catch (ValidationException e){
             SetError(e.Error);
             return;
@@ -72,7 +77,7 @@
         FileService.DeleteFile("XML");
         
         List<string[]>? csvList;
-        try{ csvList = await loader.LoadCsv(state.Files["csv-input"], xmlModel) as List<string[]>; }
+        try{ csvList = await loader.LoadCsv(state.MainFiles["csv-input"], xmlModel) as List<string[]>; }
         catch (ValidationException e){
             SetError(e.Error);
             return;
@@ -80,20 +85,26 @@
         ReplicatorState.CsvAsList = csvList;
         FileService.DeleteFile("CSV");
         
+        /*
         var merger = new Merger(state){
             XmlFile = xmlModel.XmlFile,
             CsvAsList = csvList
         };
         merger.MergeQuestion();
         state.Preview = new PreviewModel(state.Merged, xmlModel.AnswerCount);
-        
+        */
+
         FileService.DeleteAllFiles();
+        state.FileParam = new FileParameterModel(xmlModel.XmlFile, csvList.Count() - 1);
         show = true;
-        //var fileModel = new FileParameterModel(xmlModel.XmlFile, csvList.Count() - 1);
     }
 
     private void ClearForm(){
         Js.InvokeVoidAsync("clearForm", "main-upload");
+    }
+    
+    private void Reset(){
+        NavigationManager.NavigateTo("/Replicator", true);
     }
 
     private void SetError(Error err){

@@ -6,7 +6,7 @@ using MoodleAssistant.Services;
 namespace MoodleAssistant.Classes.Parse;
 
 public class Loader(FileService fileService){
-    public async Task<XmlFileModel> LoadXml(IBrowserFile file){
+    public async Task<XmlFileModel?> LoadXml(IBrowserFile file){
         var model = new XmlFileModel(fileService){
             XmlQuestion = file
         };
@@ -29,7 +29,7 @@ public class Loader(FileService fileService){
         return model;
     }
 
-    public async Task<IEnumerable<string[]>> LoadCsv(IBrowserFile file, XmlFileModel xmlModel){
+    public async Task<IEnumerable<string[]>> LoadCsv(IBrowserFile file, XmlFileModel? xmlModel){
         var model = new CsvFileModel(fileService){
             CsvAnswers = file,
             QuestionParametersList = xmlModel.QuestionParametersList,

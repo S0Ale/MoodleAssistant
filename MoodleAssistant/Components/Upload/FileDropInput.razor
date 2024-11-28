@@ -23,8 +23,8 @@
     
     private void UploadFile(InputFileChangeEventArgs e){
         if (e.FileCount == 0){
-            ReplicatorState.Files.Remove(InputAttributes["id"] as string ?? throw new InvalidOperationException());
-        } else ReplicatorState.Files[InputAttributes["id"] as string ?? string.Empty] = e.GetMultipleFiles()[0];
+            ReplicatorState.MainFiles.Remove(InputAttributes["id"] as string ?? throw new InvalidOperationException());
+        } else ReplicatorState.MainFiles[InputAttributes["id"] as string ?? string.Empty] = e.GetMultipleFiles()[0];
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender){

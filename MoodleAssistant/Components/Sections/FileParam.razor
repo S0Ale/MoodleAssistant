@@ -1,0 +1,33 @@
+﻿@using MoodleAssistant.Services
+@using MoodleAssistant.Components.Upload
+@inject ReplicatorState State
+
+@{
+    var paramForm = "param-upload";
+    var @params = State.FileParam.GetFileParameters();
+    var s = @params.Count > 1 ? "s" : "";
+    var fileH3 = $"{@params.Count} file parameter{s} found.";
+}
+
+<div class="flex flex-col p-6 border-t border-zinc-200">
+    <h3 class="pb-4 text-gray-700 text-center">
+        <span class="font-semibold">@fileH3</span> Please upload @State.FileParam.NeededFiles files for every parameter:
+    </h3>
+    <form enctype="multipart/form-data" method="post" id="@paramForm">
+        <div class="flex flex-row w-max min-w-full justify-center space-x-4">
+            @foreach (var param in @params){
+                <FileDropInputMultiple FormId="@paramForm" ParamValue="@param.Match.Value" ParamName="@param.Name" name="@param.Name"/>
+            }
+        </div>
+        <div class="flex flex-row mt-3 justify-center">
+            <button type="submit" class="btn btn-primary py-1.5 px-6" id="upload-files">Upload</button>
+            <button class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files">Clear</button>
+        </div>
+        <div id="error-container" class="relative">
+        </div>
+    </form>
+</div>
+
+@code {
+    
+}

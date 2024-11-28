@@ -5,7 +5,7 @@ using MoodleAssistant.Services;
 namespace MoodleAssistant.Classes.Models;
 
 public class Merger(ReplicatorState state){
-    private readonly XmlDocument _xmlDoc;
+    private readonly XmlDocument? _xmlDoc;
     
     public XmlDocument XmlFile{
         init => _xmlDoc = value.Clone() as XmlDocument;
