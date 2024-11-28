@@ -1,11 +1,12 @@
 ﻿@page "/Replicator"
 @using MoodleAssistant.Components.Upload
-@using MoodleAssistant.Services
 @using Microsoft.AspNetCore.Components.Sections
 @using MoodleAssistant.Classes.Models
 @using MoodleAssistant.Classes.Parse
 @using MoodleAssistant.Classes.Utils
-@inject ReplicatorState replicatorState;
+@using MoodleAssistant.States
+@using MoodleAssistant.Components.Sections
+@inject ReplicatorState ReplicatorState;
 @inject IJSRuntime Js
 
 @{
@@ -37,7 +38,7 @@
     </div>
 </div>
 @if (showNext){
-    <p>Hello</p>
+    <Analysis />
 }
 <SectionContent SectionId="App.LocalScripts"> 
     <script src="js/replicator.js"></script>
@@ -70,6 +71,7 @@
             _error = e.Error;
             return;
         }
+        ReplicatorState.XmlModel = xmlModel;
         
         List<string[]>? csvList;
         try{ csvList = loader.LoadCsv(Form.Csv, xmlModel) as List<string[]>; }
@@ -77,6 +79,7 @@
             _error = e.Error;
             return;
         }
+        ReplicatorState.CsvAsList = csvList;
         
         showNext = true;
     }

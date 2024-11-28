@@ -1,0 +1,18 @@
+﻿@using MoodleAssistant.States
+@inject ReplicatorState ReplicatorState;
+
+<div class="flex justify-center pt-6 pb-6 border-t border-zinc-200">
+    <div id="answer-section" class="border rounded border-zinc-300 overflow-hidden">
+        <h3 class="py-2 bg-gray-100 border-b border-zinc-300 text-lg font-semibold text-gray-700 text-center">Questions</h3>
+        <div class="py-3 px-6 text-center">
+            @((MarkupString)ReplicatorState.XmlModel.GetFormattedQuestionText())
+        </div>
+        <h3 class="py-2 bg-gray-100 border-b border-t border-zinc-300 text-lg font-semibold text-gray-700 text-center">Answers</h3>
+        <div class="py-3 px-6 text-center">
+            @((MarkupString)ReplicatorState.XmlModel.GetFormattedAnswers())
+        </div>
+    </div>
+</div>
+
+@code {
+}
