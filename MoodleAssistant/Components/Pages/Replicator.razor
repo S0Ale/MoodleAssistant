@@ -5,9 +5,11 @@
 @using MoodleAssistant.Classes.Parse
 @using MoodleAssistant.Classes.Utils
 @using MoodleAssistant.Components.Sections
+@using Microsoft.AspNetCore.Components.Sections
 @rendermode InteractiveServer
 @inject ReplicatorState ReplicatorState;
 @inject FileService FileService;
+@inject IJSRuntime Js;
 
 @{
     var mainForm = "main-upload";
@@ -21,11 +23,12 @@
             <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
             <form method="post" id="@(mainForm)" @formname="main-upload" @onsubmit="Submit">
                 <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row">
-                    <FileDropInput name="Form.Xml" id="xml-input" multiple/>
-                    <FileDropInput name="Form.Csv" id="csv-input"/>
+                    <FileDropInput name="Xml" id="xml-input" multiple/>
+                    <FileDropInput name="Csv" id="csv-input"/>
                 </div>
                 <div class="flex flex-row mt-3">
                     <button type="submit" class="btn btn-primary py-1.5 px-6">Upload</button>
+                    <button type="button" class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files" @onclick="ClearForm">Clear</button>
                 </div>
                 <div class="relative error-container">
                     <ErrorMsg @ref="dialog" Message="@(ErrorMessage.GetErrorMessage(_error))" FormId="@(mainForm)"/>
@@ -36,16 +39,16 @@
 </div>
 @if (show){
     <Analysis />
+    <Preview />
 }
-<!--
 <SectionContent SectionId="App.LocalScripts"> 
     <script src="js/replicator.js"></script>
 </SectionContent>
--->
 
 @code{
     private Error _error = Error.NoErrors;
     private ErrorMsg dialog;
+    
     private bool show = false;
     
     private async Task Submit(){ 
@@ -76,10 +79,21 @@
         }
         ReplicatorState.CsvAsList = csvList;
         FileService.DeleteFile("CSV");
-
-        show = true;
+        
+        var merger = new Merger(state){
+            XmlFile = xmlModel.XmlFile,
+            CsvAsList = csvList
+        };
+        merger.MergeQuestion();
+        state.Preview = new PreviewModel(state.Merged, xmlModel.AnswerCount);
+        
         FileService.DeleteAllFiles();
+        show = true;
         //var fileModel = new FileParameterModel(xmlModel.XmlFile, csvList.Count() - 1);
+    }
+
+    private void ClearForm(){
+        Js.InvokeVoidAsync("clearForm", "main-upload");
     }
 
     private void SetError(Error err){

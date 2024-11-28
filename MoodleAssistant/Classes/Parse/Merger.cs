@@ -10,7 +10,7 @@ public class Merger(ReplicatorState state){
     public XmlDocument XmlFile{
         init => _xmlDoc = value.Clone() as XmlDocument;
     }
-    public IEnumerable<string[]> CsvAsList;
+    public IEnumerable<string[]> CsvAsList{ get; init; }
     
     public void MergeQuestion()
     {

@@ -1,11 +1,17 @@
+using Bunit;
+
 namespace MoodleAssistant.UnitTest;
 
 public class FileUploadTest{
-    [SetUp]
-    public void Setup(){ }
+    protected BunitContext Ctx;
 
-    [Test]
-    public void Test1(){
-        Assert.Pass();
+    [SetUp]
+    public void Setup(){
+        Ctx = new BunitContext();
+    }
+
+    [TearDown]
+    public void TearDown(){
+        Ctx.Dispose();
     }
 }

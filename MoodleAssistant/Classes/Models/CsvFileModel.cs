@@ -31,7 +31,7 @@ public class CsvFileModel(FileService fileService){
 
     public bool IsEmpty()
     {
-        var info = fileService.GetFileInfo("XML");
+        var info = fileService.GetFileInfo("CSV");
         return info.Length == 0;
     }
     
