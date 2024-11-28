@@ -31,9 +31,8 @@ public class CsvFileModel(FileService fileService){
 
     public bool IsEmpty()
     {
-        var stream = fileService.GetFile("CSV");
-        using var reader = new StreamReader(stream, Encoding.UTF8);
-        return reader.EndOfStream;
+        var info = fileService.GetFileInfo("XML");
+        return info.Length == 0;
     }
     
     public bool HasValidHeader()

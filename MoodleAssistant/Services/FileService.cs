@@ -4,13 +4,14 @@ using Microsoft.AspNetCore.Components.Forms;
 namespace MoodleAssistant.Services;
 
 public class FileService(IWebHostEnvironment env){
+    private const long MaxFileSize = 10000000;
     private readonly string _rootFolder = Path.Combine(env.WebRootPath, "Uploads");
     
     //Maps fixed file names to their trusted file names
     private Dictionary<string, string> _trustedFiles = new Dictionary<string, string>();
     
     public async Task<bool> SaveFile(IBrowserFile file, string fileName){
-        // if name exitst overwrite
+        // if name exists, overwrite
         if(_trustedFiles.ContainsKey(fileName)){
             DeleteFile(fileName);
         }
@@ -19,7 +20,7 @@ public class FileService(IWebHostEnvironment env){
         
         var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
         await using var fileStream = new FileStream(trustedFilePath, FileMode.Create);
-        await file.OpenReadStream().CopyToAsync(fileStream);
+        await file.OpenReadStream(MaxFileSize).CopyToAsync(fileStream);
         return true;
     }
     
