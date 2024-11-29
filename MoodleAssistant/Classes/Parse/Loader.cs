@@ -50,4 +50,13 @@ public class Loader(FileService fileService){
 
         return model.ConvertCsvToListOfArrayString();
     }
+    
+    public async Task<GenericFileModel> LoadFiles(IBrowserFile[] files, string name){
+        var model = new GenericFileModel(fileService){
+            Files = files
+        };
+        _ = await model.SaveFiles();
+
+        return model;
+    }
 }

@@ -1,10 +1,16 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Text;
+using System.Text.RegularExpressions;
 
 namespace MoodleAssistant.Classes.Parse;
 
 public class Parameter(Match m){
-    public string Name{ get; init; } = m.Groups[1].Value;
-    public Match Match { get; init; } = m;
-    public int StartI { get; init; } = m.Index;
+    public string Name{ get; protected init; } = m.Groups[1].Value;
+    public Match Match { get; } = m;
     public string Replacement{ get; set; } = string.Empty;
-}
+    
+    public virtual StringBuilder Replace(StringBuilder builder){
+        builder = builder.Remove(Match.Index, Match.Length);
+        builder = builder.Insert(Match.Index, Replacement);
+        return builder;
+    }
+} 

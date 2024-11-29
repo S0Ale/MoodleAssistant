@@ -38,11 +38,19 @@
         </div>
     </div>
 </div>
-@if (show){
+@if (successfulUpload){
     <Analysis />
-    <FileParam />
-    
+    @if (showFileParams){
+        <FileParam OnSubmit="SubmitFiles" />
+    }
+    @if (!showFileParams && showDownload){
+        <Preview />
+    }
+
     <div class="flex flex-row justify-center py-6 border-t border-zinc-200">
+        @if (showDownload){
+            <button class="btn btn-primary py-1.5 px-5 mr-4" @onclick="Download">Download</button>
+        }
         <button class="btn btn-secondary py-1.5 px-5" @onclick="Reset">Reset</button>
     </div>
 }
@@ -54,7 +62,9 @@
     private Error _error = Error.NoErrors;
     private ErrorMsg dialog;
     
-    private bool show = false;
+    private bool successfulUpload;
+    private bool showFileParams;
+    private bool showDownload;
     
     private async Task Submit(){ 
         FileService.DeleteAllFiles();
@@ -83,24 +93,47 @@
             return;
         }
         ReplicatorState.CsvAsList = csvList;
-        FileService.DeleteFile("CSV");
-        
-        /*
-        var merger = new Merger(state){
-            XmlFile = xmlModel.XmlFile,
-            CsvAsList = csvList
-        };
-        merger.MergeQuestion();
-        state.Preview = new PreviewModel(state.Merged, xmlModel.AnswerCount);
-        */
-
         FileService.DeleteAllFiles();
-        state.FileParam = new FileParameterModel(xmlModel.XmlFile, csvList.Count() - 1);
-        show = true;
+  
+        state.FileParam = new ParameterModel(xmlModel.XmlFile, csvList.Count() - 1);
+        if (state.FileParam.GetFileParameters().Count > 0){
+            showFileParams = true;
+        }else{
+            var merger = new Merger(state, FileService){
+                XmlFile = state.XmlModel.XmlFile,
+                CsvAsList = state.CsvAsList
+            };
+            merger.MergeQuestion();
+            state.Preview = new PreviewModel(state.Merged, state.XmlModel.AnswerCount);
+            showDownload = true;
+        }
+
+        successfulUpload = true;
     }
 
     private void ClearForm(){
         Js.InvokeVoidAsync("clearForm", "main-upload");
+    }
+    
+    private async Task SubmitFiles(){
+        FileService.DeleteAllFiles();
+        var state = ReplicatorState;
+        if (state == null) return;
+        
+        var loader = new Loader(FileService);
+        // load file parameters
+        foreach (var param in state.FileParam?.GetFileParameters() ?? []){
+            state.FileModels.Add(await loader.LoadFiles(state.ParamFiles[param.Name], param.Name));
+        }
+        
+        var merger = new Merger(state, FileService){
+            XmlFile = state.XmlModel.XmlFile,
+            CsvAsList = state.CsvAsList
+        };
+        merger.MergeQuestion();
+        FileService.DeleteAllFiles();
+        
+        showDownload = true;
     }
     
     private void Reset(){
@@ -111,5 +144,14 @@
         _error = err;
         dialog.Show();
         dialog.Refresh();
+    }
+    
+    private async Task Download(){
+        var stream = new MemoryStream();
+        ReplicatorState.Merged?.Save(stream);
+        stream.Flush();
+        stream.Position = 0;
+        using var streamRef = new DotNetStreamReference(stream);
+        await Js.InvokeVoidAsync("downloadFileFromStream", "Question.xml", streamRef);
     }
 }

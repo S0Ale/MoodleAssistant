@@ -3,7 +3,7 @@
 @inject ReplicatorState State
 
 @{
-    var paramForm = "param-upload";
+    const string paramForm = "param-upload";
     var @params = State.FileParam.GetFileParameters();
     var s = @params.Count > 1 ? "s" : "";
     var fileH3 = $"{@params.Count} file parameter{s} found.";
@@ -13,7 +13,7 @@
     <h3 class="pb-4 text-gray-700 text-center">
         <span class="font-semibold">@fileH3</span> Please upload @State.FileParam.NeededFiles files for every parameter:
     </h3>
-    <form enctype="multipart/form-data" method="post" id="@paramForm">
+    <form enctype="multipart/form-data" method="post" id="@paramForm" @onsubmit="() => OnSubmit.InvokeAsync()">
         <div class="flex flex-row w-max min-w-full justify-center space-x-4">
             @foreach (var param in @params){
                 <FileDropInputMultiple FormId="@paramForm" ParamValue="@param.Match.Value" ParamName="@param.Name" name="@param.Name"/>
@@ -29,5 +29,6 @@
 </div>
 
 @code {
-    
+    [Parameter]
+    public EventCallback<bool> OnSubmit { get; set; }
 }

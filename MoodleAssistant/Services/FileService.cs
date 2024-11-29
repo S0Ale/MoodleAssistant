@@ -1,4 +1,6 @@
 ﻿using System.IO.Pipelines;
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace MoodleAssistant.Services;
@@ -15,7 +17,7 @@ public class FileService(IWebHostEnvironment env){
         if(_trustedFiles.ContainsKey(fileName)){
             DeleteFile(fileName);
         }
-        var trustedFileName = Path.GetRandomFileName();
+        var trustedFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
         _trustedFiles.Add(fileName, trustedFileName);
         
         var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
@@ -49,5 +51,15 @@ public class FileService(IWebHostEnvironment env){
             File.Delete(trustedFilePath);
         }
         _trustedFiles = new Dictionary<string, string>();
+    }
+    
+    public string GetBase64(string fileName){
+        var trustedFileName = _trustedFiles[fileName];
+        var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
+        
+        using var fileStream = new FileStream(trustedFilePath, FileMode.Open, FileAccess.Read);
+        using var base64Stream = new CryptoStream(fileStream, new ToBase64Transform(), CryptoStreamMode.Read);
+        using var reader = new StreamReader(base64Stream);
+        return reader.ReadToEnd();
     }
 }
