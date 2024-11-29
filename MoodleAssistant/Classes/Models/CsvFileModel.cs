@@ -16,13 +16,6 @@ public class CsvFileModel(FileService fileService){
     public async Task<bool> SaveFile(){
         return await fileService.SaveFile(CsvAnswers, "CSV");
     }
-    
-    private async Task<StreamReader> GetReaderAsync(IBrowserFile file, Encoding? encoding){
-        var stream = new MemoryStream();
-        await file.OpenReadStream().CopyToAsync(stream);
-        stream.Position = 0;
-        return encoding == null ? new StreamReader(stream) : new StreamReader(stream, encoding);
-    }
 
     public bool IsCsv()
     {

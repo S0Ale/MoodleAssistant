@@ -40,7 +40,7 @@
     private void UploadFile(InputFileChangeEventArgs e){
         if (e.FileCount == 0){
             ReplicatorState.ParamFiles.Remove(_id);
-        } else ReplicatorState.ParamFiles[_id] = e.GetMultipleFiles().ToArray();
+        } else ReplicatorState.ParamFiles[ParamName] = e.GetMultipleFiles().ToArray();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender){

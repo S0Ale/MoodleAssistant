@@ -20,13 +20,6 @@ public class XmlFileModel(FileService fileService){
         return await fileService.SaveFile(XmlQuestion, "XML");
     }
 
-    private async Task<StreamReader> GetReaderAsync(IBrowserFile file){
-        var stream = new MemoryStream();
-        await file.OpenReadStream().CopyToAsync(stream);
-        stream.Position = 0;
-        return new StreamReader(stream, Encoding.UTF8);
-    }
-
     public bool IsXml()
     {
         return System.Net.Mime.MediaTypeNames.Text.Xml == XmlQuestion.ContentType;
@@ -68,8 +61,8 @@ public class XmlFileModel(FileService fileService){
         if (questiontextNode == null)                                                                                                                        
             return string.Empty;                                                                                                                             
                                                                                                                                                              
-        var htmlFormatted = "";                                                                                                                              
-        var questiontext = questiontextNode.SelectSingleNode("text").InnerText;                                                                              
+        var htmlFormatted = "";
+        var questiontext = questiontextNode.SelectSingleNode("text").InnerText;
         var rgx = new Regex(Pattern);                                                                                                                        
         foreach (Match match in rgx.Matches(questiontext))                                                                                                   
             questiontext = questiontext.Replace(match.Value, "<span class=\"code\">" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</span>");          
