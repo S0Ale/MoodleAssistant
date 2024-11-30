@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Components.Forms;
 
 namespace MoodleAssistant.Services;
 
-public class FileService(IWebHostEnvironment env){
+public class FileService(IWebHostEnvironment env) : IDisposable{
     private const long MaxFileSize = 10000000;
     private readonly string _rootFolder = Path.Combine(env.WebRootPath, "Uploads");
     
@@ -61,5 +61,9 @@ public class FileService(IWebHostEnvironment env){
         using var base64Stream = new CryptoStream(fileStream, new ToBase64Transform(), CryptoStreamMode.Read);
         using var reader = new StreamReader(base64Stream);
         return reader.ReadToEnd();
+    }
+
+    public void Dispose(){
+        DeleteAllFiles();
     }
 }

@@ -66,9 +66,12 @@
     private bool showFileParams;
     private bool showDownload;
     
+    protected override void OnInitialized(){
+        FileService.DeleteAllFiles();
+    }
+    
     private async Task Submit(){ 
         FileService.DeleteAllFiles();
-        // reset all sections
         var state = ReplicatorState;
         
         if(state.MainFiles.Count < 2){
@@ -108,6 +111,7 @@
             showDownload = true;
         }
 
+        ClearForm();
         successfulUpload = true;
     }
 
@@ -147,11 +151,15 @@
     }
     
     private async Task Download(){
+        FileService.DeleteAllFiles();
+        
         var stream = new MemoryStream();
         ReplicatorState.Merged?.Save(stream);
         stream.Flush();
         stream.Position = 0;
         using var streamRef = new DotNetStreamReference(stream);
         await Js.InvokeVoidAsync("downloadFileFromStream", "Question.xml", streamRef);
+        
+        FileService.DeleteAllFiles();
     }
 }
