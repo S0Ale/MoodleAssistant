@@ -9,9 +9,15 @@ public class FileService(IWebHostEnvironment env) : IDisposable{
     private const long MaxFileSize = 10000000;
     private readonly string _rootFolder = Path.Combine(env.WebRootPath, "Uploads");
     
-    //Maps fixed file names to their trusted file names
+    // Maps fixed file names to their trusted file names
     private Dictionary<string, string> _trustedFiles = new Dictionary<string, string>();
     
+    /// <summary>
+    /// Saves the specified file to the uploads folder with a secure name.
+    /// </summary>
+    /// <param name="file">The file to save</param>
+    /// <param name="fileName">The name of the file to save</param>
+    /// <returns></returns>
     public async Task<bool> SaveFile(IBrowserFile file, string fileName){
         // if name exists, overwrite
         if(_trustedFiles.ContainsKey(fileName)){
@@ -26,12 +32,22 @@ public class FileService(IWebHostEnvironment env) : IDisposable{
         return true;
     }
     
+    /// <summary>
+    /// Gets the file stream of the specified file.
+    /// </summary>
+    /// <param name="fileName">The name of the file</param>
+    /// <returns>The stream of the specified file</returns>
     public FileStream GetFile(string fileName){
         var trustedFileName = _trustedFiles[fileName];
         var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
         return new FileStream(trustedFilePath, FileMode.Open, FileAccess.Read);
     }
     
+    /// <summary>
+    /// Gets the file info of the specified file.
+    /// </summary>
+    /// <param name="fileName">The name of the file</param>
+    /// <returns>The info of the specified file</returns>
     public FileInfo GetFileInfo(string fileName){
         var trustedFileName = _trustedFiles[fileName];
         var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);

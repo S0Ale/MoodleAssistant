@@ -14,9 +14,9 @@ public class Merger(ReplicatorState state, FileService fileService){
     
     /// <summary>
     /// Searches the specified <c>question</c> node for CDATA sections and if not found, creates them
-    /// and adds a file tag for each file parameter
+    /// and adds a file tag for each file parameter.
     /// </summary>
-    /// <param name="questionNode">The XML <c>questionNode</c> node</param>
+    /// <param name="questionNode">The XML <c>questionNode</c> node.</param>
     private void LookForCData(XmlNode questionNode){
         //get all nodes containing a file parameter
         var allNodes = questionNode.SelectNodes("//*[text()]");
@@ -39,10 +39,10 @@ public class Merger(ReplicatorState state, FileService fileService){
     }
     
     /// <summary>
-    /// Creates a XML file tag with the specified name attribute
+    /// Creates a XML file tag with the specified name attribute.
     /// </summary>
-    /// <param name="name">The name attribute value</param>
-    /// <returns>A new file tag with the specified name</returns>
+    /// <param name="name">The name attribute value.</param>
+    /// <returns>A new file tag with the specified name.</returns>
     private XmlElement CreateFileTag(string name){
         var tag = _xmlDoc!.CreateElement("file");
         tag.SetAttribute("name", name);
@@ -53,9 +53,9 @@ public class Merger(ReplicatorState state, FileService fileService){
     }
 
     /// <summary>
-    /// Given a text node containing file parameters, add a file tag for each file parameter to its parent
+    /// Given a text node containing file parameters, add a file tag for each file parameter to its parent.
     /// </summary>
-    /// <param name="textNode">The XML node containing file parameters</param>
+    /// <param name="textNode">The XML node containing file parameters.</param>
     private void AddFileTags(XmlNode textNode){
         var parser = new ParameterParser(textNode.OuterXml);
         var parameters = parser.Match() as List<Parameter>;
@@ -68,8 +68,11 @@ public class Merger(ReplicatorState state, FileService fileService){
 
     /// <summary>
     /// This function creates a XML file with the replicated questions using the XML file as the template and the CSV file
-    /// to find the parameter values
+    /// to find the parameter values.
     /// </summary>
+
+    // File names need to be equal to the names inside the CSV file
+    // The CSV column order must be the same as the XML parameter order
     public void MergeQuestion(){
         XmlFileParamPhase();
         ReplaceParameters();
@@ -83,7 +86,7 @@ public class Merger(ReplicatorState state, FileService fileService){
 
     /// <summary>
     /// First phase of the XML file merging process. This function provides the correct values for the file tags
-    /// and clones the question node for each row in the CSV file
+    /// and clones the question node for each row in the CSV file.
     /// </summary>
     private void XmlFileParamPhase(){
         var headerRow = CsvAsList.ElementAt(0); // first row contains parameter names
@@ -113,7 +116,7 @@ public class Merger(ReplicatorState state, FileService fileService){
     }
 
     /// <summary>
-    /// Second phase of the XML file merging process. This function replaces the parameters in the XML file with their correct values
+    /// Second phase of the XML file merging process. This function replaces the parameters in the XML file with their correct values.
     /// </summary>
     private void ReplaceParameters(){
         var headerRow = CsvAsList.ElementAt(0); // first row contains parameter names
