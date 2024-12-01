@@ -31,7 +31,7 @@
                     <button type="button" class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files" @onclick="ClearForm">Clear</button>
                 </div>
                 <div class="relative error-container">
-                    <ErrorMsg @ref="dialog" Message="@(ErrorMessage.GetErrorMessage(_error))" FormId="@(mainForm)"/>
+                    <ErrorMsg @ref="dialog" Message="@(ErrorMessage.GetErrorMessage(Error))" FormId="@(mainForm)"/>
                 </div>
             </form>
         </div>
@@ -61,7 +61,8 @@
 </SectionContent>
 
 @code{
-    private Error _error = Error.NoErrors;
+    public Error Error{ get; private set; } = Error.NoErrors; // public for testing purposes
+
     private ErrorMsg dialog;
     
     private bool isUploading;
@@ -139,11 +140,13 @@
     }
     
     private void Reset(){
+        FileService.DeleteAllFiles();
         NavigationManager.NavigateTo("/Replicator", true);
     }
 
     private void SetError(Error err){
-        _error = err;
+        FileService.DeleteAllFiles();
+        Error = err;
         dialog.Show();
         dialog.Refresh();
     }
