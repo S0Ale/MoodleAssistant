@@ -22,8 +22,7 @@ public class XmlFileModel(IBrowserFileService fileService){
         return System.Net.Mime.MediaTypeNames.Text.Xml == file.ContentType;
     }
     public bool IsEmpty(){
-        var info = fileService.GetFileInfo(FileName);
-        return info.Length == 0;
+        return fileService.IsEmpty(FileName);
     }
     public bool IsWellFormattedXml(){
         var stream = fileService.GetFile(FileName);

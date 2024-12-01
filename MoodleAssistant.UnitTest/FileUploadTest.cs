@@ -25,8 +25,6 @@ public class FileUploadTest{
 
     [TearDown]
     public void TearDown(){
-        var fs = Ctx.Services.GetService<FileService>();
-        fs?.DeleteAllFiles();
         Ctx.Dispose();
     }
 }

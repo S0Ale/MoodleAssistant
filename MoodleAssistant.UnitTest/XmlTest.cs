@@ -3,6 +3,7 @@ using Bunit;
 using Microsoft.AspNetCore.Components.Forms;
 using MoodleAssistant.Classes.Utils;
 using MoodleAssistant.Components.Pages;
+using MoodleAssistant.Services;
 
 namespace MoodleAssistant.UnitTest;
 
@@ -46,7 +47,14 @@ public class XmlTest : FileUploadTest{
 
     [TearDown]
     public new void TearDown(){
-        base.TearDown();
+        var fs = Ctx.Services.GetService<FileService>();
+        fs?.DeleteAllFiles();
+        
+        Submit = null;
+        Xml.Dispose();
+        Csv.Dispose();
         Page.Dispose();
+        
+        base.TearDown();
     }
 }

@@ -21,8 +21,7 @@ public class CsvFileModel(IBrowserFileService fileService){
 
     public bool IsEmpty()
     {
-        var info = fileService.GetFileInfo(FileName);
-        return info.Length == 0;
+        return fileService.IsEmpty(FileName);
     }
     
     public bool HasValidHeader()
