@@ -37,6 +37,9 @@
         </div>
     </div>
 </div>
+@if (isUploading){
+    <p>Loading...</p>
+}
 @if (successfulUpload){
     <Analysis />
     @if (showFileParams){
@@ -61,16 +64,13 @@
     private Error _error = Error.NoErrors;
     private ErrorMsg dialog;
     
+    private bool isUploading;
     private bool successfulUpload;
     private bool showFileParams;
     private bool showDownload;
     
-    protected override void OnInitialized(){
-        FileService.DeleteAllFiles();
-    }
-    
     private async Task Submit(){ 
-        FileService.DeleteAllFiles();
+        isUploading = true;
         var state = ReplicatorState;
         
         if(state.MainFiles.Count < 2){
@@ -86,7 +86,6 @@
             return;
         }
         ReplicatorState.XmlModel = xmlModel;
-        FileService.DeleteFile("XML");
         
         List<string[]>? csvList;
         try{ csvList = await loader.LoadCsv(state.MainFiles["csv-input"], xmlModel) as List<string[]>; }
@@ -112,6 +111,7 @@
 
         ClearForm();
         successfulUpload = true;
+        isUploading = false;
     }
 
     private void ClearForm(){
@@ -119,7 +119,6 @@
     }
     
     private async Task SubmitFiles(){
-        FileService.DeleteAllFiles();
         var state = ReplicatorState;
         if (state == null) return;
         
@@ -150,8 +149,6 @@
     }
     
     private async Task Download(){
-        FileService.DeleteAllFiles();
-        
         var stream = new MemoryStream();
         ReplicatorState.Merged?.Save(stream);
         stream.Flush();
