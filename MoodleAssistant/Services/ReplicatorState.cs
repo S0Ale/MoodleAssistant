@@ -11,8 +11,7 @@ public class ReplicatorState{
     public PreviewModel? Preview{ get; set; }
     public ParameterModel? FileParam{ get; set; }
     public XmlFileModel? XmlModel{ get; set; }
-    
-    public List<GenericFileModel> FileModels{ get; set; } = new List<GenericFileModel>();
+
     public IEnumerable<string[]>? CsvAsList{ get; set; }
     
     public XmlDocument? Merged{ get; set; }

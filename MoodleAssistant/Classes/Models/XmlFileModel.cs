@@ -8,29 +8,25 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Classes.Models;
 
-public class XmlFileModel(FileService fileService){
+public class XmlFileModel(IBrowserFileService fileService){
+    public static string FileName => "XML";
     private const string Pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
-    public IBrowserFile XmlQuestion{ get; init; }
-
+    
     public XmlDocument XmlFile{ get; set; }
     public IEnumerable<string> QuestionParametersList{ get; private set; }
     public IEnumerable<string> AnswerParametersList{ get; private set; }
     public int AnswerCount { get; private set; }
-    
-    public async Task<bool> SaveFile(){
-        return await fileService.SaveFile(XmlQuestion, "XML");
-    }
 
-    public bool IsXml()
+    public static bool IsXml(IBrowserFile file)
     {
-        return System.Net.Mime.MediaTypeNames.Text.Xml == XmlQuestion.ContentType;
+        return System.Net.Mime.MediaTypeNames.Text.Xml == file.ContentType;
     }
     public bool IsEmpty(){
-        var info = fileService.GetFileInfo("XML");
+        var info = fileService.GetFileInfo(FileName);
         return info.Length == 0;
     }
     public bool IsWellFormattedXml(){
-        var stream = fileService.GetFile("XML");
+        var stream = fileService.GetFile(FileName);
         using var reader = new StreamReader(stream, Encoding.UTF8);
                                                                                                
         try                                                                                    

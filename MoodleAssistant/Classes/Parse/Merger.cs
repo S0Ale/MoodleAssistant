@@ -4,7 +4,7 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Classes.Models;
 
-public class Merger(ReplicatorState state, FileService fileService){
+public class Merger(ReplicatorState state, IBrowserFileService fileService){
     private readonly XmlDocument _xmlDoc;
     
     public XmlDocument XmlFile{
@@ -75,7 +75,7 @@ public class Merger(ReplicatorState state, FileService fileService){
     // The CSV column order must be the same as the XML parameter order
     public void MergeQuestion(){
         XmlFileParamPhase();
-        ReplaceParameters();
+        ReplaceParamPhase();
 
         // remove template question
         while(_xmlDoc.DocumentElement?.FirstChild?.NodeType == XmlNodeType.Comment)
@@ -118,7 +118,7 @@ public class Merger(ReplicatorState state, FileService fileService){
     /// <summary>
     /// Second phase of the XML file merging process. This function replaces the parameters in the XML file with their correct values.
     /// </summary>
-    private void ReplaceParameters(){
+    private void ReplaceParamPhase(){
         var headerRow = CsvAsList.ElementAt(0); // first row contains parameter names
         
         var xmlQuestionNodes = _xmlDoc.GetElementsByTagName("question").Cast<XmlNode>().ToArray();

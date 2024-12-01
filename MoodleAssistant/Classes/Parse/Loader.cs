@@ -5,16 +5,14 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Classes.Parse;
 
-public class Loader(FileService fileService){
+public class Loader(IBrowserFileService fileService){
     public async Task<XmlFileModel?> LoadXml(IBrowserFile file){
-        var model = new XmlFileModel(fileService){
-            XmlQuestion = file
-        };
-        _ = await model.SaveFile();
+        var model = new XmlFileModel(fileService);
+        await fileService.SaveFile(file, XmlFileModel.FileName);
 
         if (null == file)
             throw new ValidationException(Error.NullFile);
-        if (!model.IsXml())
+        if (!XmlFileModel.IsXml(file))
             throw new ValidationException(Error.NonXmlFile);
         if (model.IsEmpty())
             throw new ValidationException(Error.EmptyFile);
@@ -31,15 +29,14 @@ public class Loader(FileService fileService){
 
     public async Task<IEnumerable<string[]>> LoadCsv(IBrowserFile file, XmlFileModel? xmlModel){
         var model = new CsvFileModel(fileService){
-            CsvAnswers = file,
             QuestionParametersList = xmlModel.QuestionParametersList,
             AnswersParametersList = xmlModel.AnswerParametersList
         };
-        _ = await model.SaveFile();
+        _ = await fileService.SaveFile(file, CsvFileModel.FileName);
 
         if (null == file)
             throw new ValidationException(Error.NullFile);
-        if (!model.IsCsv())
+        if (!CsvFileModel.IsCsv(file))
             throw new ValidationException(Error.NonCsvFile);
         if (model.IsEmpty())
             throw new ValidationException(Error.EmptyFile);
@@ -51,12 +48,9 @@ public class Loader(FileService fileService){
         return model.ConvertCsvToListOfArrayString();
     }
     
-    public async Task<GenericFileModel> LoadFiles(IBrowserFile[] files, string name){
-        var model = new GenericFileModel(fileService){
-            Files = files
-        };
-        _ = await model.SaveFiles();
-
-        return model;
+    public async Task LoadFiles(IBrowserFile[] files){
+        foreach (var file in files){
+            _ = await fileService.SaveFile(file, file.Name); 
+        }
     }
 }

@@ -6,31 +6,28 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Classes.Models;
 
-public class CsvFileModel(FileService fileService){
-    public IBrowserFile CsvAnswers{ get; init; }
-    private readonly string[] _mimeTypes = ["application/vnd.ms-excel", "text/csv"];
+public class CsvFileModel(IBrowserFileService fileService){
+    public static string FileName => "CSV";
+    
+    private static readonly string[] MimeTypes = ["application/vnd.ms-excel", "text/csv"];
 
     public IEnumerable<string> QuestionParametersList{ get; set; }
     public IEnumerable<string> AnswersParametersList{ get; set; }
-    
-    public async Task<bool> SaveFile(){
-        return await fileService.SaveFile(CsvAnswers, "CSV");
-    }
 
-    public bool IsCsv()
+    public static bool IsCsv(IBrowserFile file)
     {
-        return _mimeTypes.Contains(CsvAnswers.ContentType);
+        return MimeTypes.Contains(file.ContentType);
     }
 
     public bool IsEmpty()
     {
-        var info = fileService.GetFileInfo("CSV");
+        var info = fileService.GetFileInfo(FileName);
         return info.Length == 0;
     }
     
     public bool HasValidHeader()
     {
-        var stream = fileService.GetFile("CSV");
+        var stream = fileService.GetFile(FileName);
         using var reader = new StreamReader(stream);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Read();
@@ -43,7 +40,7 @@ public class CsvFileModel(FileService fileService){
 
     public bool IsWellFormed()
     {
-        var stream = fileService.GetFile("CSV");
+        var stream = fileService.GetFile(FileName);
         using var reader = new StreamReader(stream, Encoding.Default);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Read();
@@ -65,7 +62,7 @@ public class CsvFileModel(FileService fileService){
     {
         var csvAsList = new List<string[]>();
         
-        var stream = fileService.GetFile("CSV");
+        var stream = fileService.GetFile(FileName);
         using var reader = new StreamReader(stream);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Read();

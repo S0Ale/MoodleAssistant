@@ -9,7 +9,7 @@
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager;
 @inject ReplicatorState ReplicatorState;
-@inject FileService FileService;
+@inject IBrowserFileService FileService;
 @inject IJSRuntime Js;
 
 @{
@@ -126,7 +126,7 @@
         var loader = new Loader(FileService);
         // load file parameters
         foreach (var param in state.FileParam?.GetFileParameters() ?? []){
-            state.FileModels.Add(await loader.LoadFiles(state.ParamFiles[param.Name], param.Name));
+            await loader.LoadFiles(state.ParamFiles[param.Name]);
         }
         
         var merger = new Merger(state, FileService){

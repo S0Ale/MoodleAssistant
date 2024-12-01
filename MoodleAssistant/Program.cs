@@ -8,7 +8,7 @@ builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
 builder.Services.AddScoped<ReplicatorState>();
-builder.Services.AddScoped<FileService>();
+builder.Services.AddScoped<IBrowserFileService, FileService>();
 
 var app = builder.Build();
 
