@@ -7,7 +7,7 @@ using Moq;
 namespace MoodleAssistant.UnitTest;
 
 [TestFixture]
-internal class FileUploadTest{
+internal abstract  class FileUploadTest{
     protected BunitContext Ctx;
 
     [SetUp]
