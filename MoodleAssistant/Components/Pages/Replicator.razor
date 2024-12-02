@@ -70,6 +70,9 @@
     private bool showFileParams;
     private bool showDownload;
     
+    public bool SuccessUpload => successfulUpload;
+    public bool IsUploading => isUploading;
+    
     private async Task Submit(){ 
         isUploading = true;
         var state = ReplicatorState;
@@ -145,6 +148,7 @@
     }
 
     private void SetError(Error err){
+        isUploading = false;
         FileService.DeleteAllFiles();
         Error = err;
         dialog.Show();

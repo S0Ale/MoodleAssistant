@@ -32,6 +32,7 @@ public class XmlTest : FileUploadTest{
         Csv.UploadFiles(mockCsv);
         
         Submit.Click();
+        Page.WaitForState(() => Page.Instance.IsUploading == false);
         Assert.That(Page.Instance.Error, Is.EqualTo(Error.NonXmlFile));
     }
 
@@ -42,7 +43,59 @@ public class XmlTest : FileUploadTest{
         Csv.UploadFiles(mockCsv);
         
         Submit.Click();
+        Page.WaitForState(() => Page.Instance.IsUploading == false);
         Assert.That(Page.Instance.Error, Is.EqualTo(Error.EmptyFile));
+    }
+
+    [Test]
+    [TestCase("XmlBadFormed.xml")]
+    [TestCase("XmlBadFormed-1.xml")]
+    [TestCase("XmlBadFormed-2.xml")]
+    public void UploadXML_XmlBadFormed(string name){
+        var xml = TestService.Create(name, System.Net.Mime.MediaTypeNames.Text.Xml);
+        Xml.UploadFiles(xml);
+        Csv.UploadFiles(mockCsv);
+        
+        Submit.Click();
+        Page.WaitForState(() => Page.Instance.IsUploading == false);
+        Assert.That(Page.Instance.Error, Is.EqualTo(Error.XmlBadFormed));
+    }
+
+    [Test]
+    public void UploadXML_XMLWithoutQuestions(){
+        var xml = TestService.Create("MoodleXMLWithoutQuestions.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
+        Xml.UploadFiles(xml);
+        Csv.UploadFiles(mockCsv);
+        
+        Submit.Click();
+        Page.WaitForState(() => Page.Instance.IsUploading == false);
+        Assert.That(Page.Instance.Error, Is.EqualTo(Error.ZeroOrMoreQuestions));
+    }
+
+    [Test]
+    public void UploadXML_XMLWithMoreThanOneQuestion(){
+        var xml = TestService.Create("MoodleXMLWithMoreThanOneQuestion.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
+        Xml.UploadFiles(xml);
+        Csv.UploadFiles(mockCsv);
+        
+        Submit.Click();
+        Page.WaitForState(() => Page.Instance.IsUploading == false);
+        Assert.That(Page.Instance.Error, Is.EqualTo(Error.ZeroOrMoreQuestions));
+    }
+
+    [Test]
+    public void UploadXML_CorrectXml(){
+        var xml = TestService.Create("MoodleQuestionOk.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
+        var csv = TestService.Create("MoodleQuestionOk.csv", System.Net.Mime.MediaTypeNames.Text.Csv);
+        Xml.UploadFiles(xml);
+        Csv.UploadFiles(csv);
+        
+        Submit.Click();
+        Page.WaitForState(() => Page.Instance.IsUploading == false);
+        Assert.Multiple(() => {
+            Assert.That(Page.Instance.Error, Is.EqualTo(Error.NoErrors));
+            Assert.That(Page.Instance.SuccessUpload, Is.True);
+        });
     }
 
     [TearDown]
