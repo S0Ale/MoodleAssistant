@@ -7,7 +7,8 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.UnitTest;
 
-public class XmlTest : FileUploadTest{
+[TestFixture]
+internal class XmlTest : FileUploadTest{
 
     private IRenderedComponent<Replicator> Page;
     private IRenderedComponent<InputFile> Xml;
