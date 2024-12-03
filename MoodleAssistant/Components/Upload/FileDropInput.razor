@@ -1,58 +1,49 @@
 ﻿@rendermode InteractiveServer
 @using MoodleAssistant.States
 @implements IAsyncDisposable
-@inject IJSRuntime JS
-@inject ReplicatorState replicatorState;
+@inject IJSRuntime Js
+@inject ReplicatorState ReplicatorState;
 
 <div class="file-input-item" id="@InputAttributes["id"]">
     <label class="drop-zone flex justify-center w-full border border-zinc-400 bg-gray-100 border-dashed rounded appearance-none cursor-pointer h-32 px-4 hover:border-zinc-500 focus:outline-none">
         <span class="flex items-center text-gray-500">
             Drop XML file here, or<span class="text-blue-500 underline ml-[4px]">browse</span>
         </span>
-        <InputFile class="hidden" @attributes="@InputAttributes" id=""></InputFile>
+        <InputFile class="hidden" @attributes="@InputAttributes" id="" OnChange="UploadFile"></InputFile>
     </label>
     <div class="preview-container"></div>
 </div>
 
 @code {
     //[Parameter]
-    //public string FileType { get; set; }
-
-    private IJSObjectReference? module;
+    //public string FileType { get; set; } 
+    private IJSObjectReference? _module;
     [Parameter(CaptureUnmatchedValues = true)]
     public required Dictionary<string, object> InputAttributes { get; set; }
     
-    /*
     private void UploadFile(InputFileChangeEventArgs e){
-        var file = e.File;
-        switch (FileType){
-            case "xml":
-                replicatorState.FormXml = file;
-                break;
-            case "csv":
-                replicatorState.FormCsv = file;
-                break;
-        }
+        if (e.FileCount == 0){
+            ReplicatorState.MainFiles.Remove(InputAttributes["id"] as string ?? throw new InvalidOperationException());
+        } else ReplicatorState.MainFiles[InputAttributes["id"] as string ?? string.Empty] = e.GetMultipleFiles()[0];
     }
-    */
 
     protected override async Task OnAfterRenderAsync(bool firstRender){
         if (firstRender)
         {
-            module = await JS.InvokeAsync<IJSObjectReference>("import",
+            _module = await Js.InvokeAsync<IJSObjectReference>("import",
                 "./Components/Upload/FileDropInput.razor.js");
 
-            await module.InvokeVoidAsync("initComponent", InputAttributes["id"]);
+            await _module.InvokeVoidAsync("initComponent", InputAttributes["id"]);
         }
     }
     
     async ValueTask IAsyncDisposable.DisposeAsync()
     {
-        if (module is not null)
+        if (_module is not null)
         {
             try
             {
-                await module.DisposeAsync();
+                await _module.DisposeAsync();
             }
             catch (JSDisconnectedException)
             {

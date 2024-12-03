@@ -1,17 +1,19 @@
 ﻿@page "/Replicator"
 @using MoodleAssistant.Components.Upload
-@using Microsoft.AspNetCore.Components.Sections
+@using MoodleAssistant.Services
 @using MoodleAssistant.Classes.Models
 @using MoodleAssistant.Classes.Parse
 @using MoodleAssistant.Classes.Utils
-@using MoodleAssistant.States
 @using MoodleAssistant.Components.Sections
+@using Microsoft.AspNetCore.Components.Sections
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager;
 @inject ReplicatorState ReplicatorState;
-@inject IJSRuntime Js
+@inject IBrowserFileService FileService;
+@inject IJSRuntime Js;
 
 @{
     var mainForm = "main-upload";
-    var show = _error != Error.NoErrors ? string.Empty : "hidden";
 }
 
 <PageTitle>Replicator</PageTitle>
@@ -19,91 +21,128 @@
     <div class="flex items-center justify-center mx-auto">
         <div class="pb-9">
             <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
-            <EditForm id="@(mainForm)" Model="Form" FormName="main-upload" enctype="multipart/form-data" Enhance OnSubmit="Submit">
+            <form method="post" id="@(mainForm)" @formname="main-upload" @onsubmit="Submit">
                 <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row">
-                    <FileDropInput name="Form.Xml" id="xml-input"/>
-                    <FileDropInput name="Form.Csv" id="csv-input"/>
+                    <FileDropInput name="Xml" id="xml-input"/>
+                    <FileDropInput name="Csv" id="csv-input"/>
                 </div>
                 <div class="flex flex-row mt-3">
-                    <button type="submit" class="btn btn-primary py-1.5 px-6">Upload</button>
+                    <button type="submit" class="btn btn-primary py-1.5 px-6" @onclick="() => isUploading = true">Upload</button>
+                    <button type="button" class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files" @onclick="ClearForm">Clear</button>
                 </div>
                 <div class="relative error-container">
-                    <p class="px-3 py-2 mt-3 error-dialog @show">@ErrorMessage.GetErrorMessage(_error)</p>
-                    <button type="button" class="absolute top-0 right-0 py-0 px-1 @show" id="close-error">
-                        <span class="material-symbols-outlined text-lg text-red-600">close</span>
-                    </button>
+                    <Message @ref="dialog" MsgText="@(ErrorMessage.GetErrorMessage(Error))" Type="MessageType.Error" CanClose="true"/>
+                    @if (isUploading){
+                        <Message MsgText="Uploading..." Type="MessageType.Info" CanClose="false" />
+                    }
                 </div>
-            </EditForm>
+            </form>
         </div>
     </div>
 </div>
-@if (showNext){
+@if (successfulUpload){
     <Analysis />
-    <Preview />
+    @if (showFileParams){
+        <FileParam OnSuccess="() => showDownload = true" />
+    }
+    @if (!showFileParams && showDownload){
+        <Preview />
+    }
+
+    <div class="flex flex-row justify-center py-6 border-t border-zinc-200">
+        @if (showDownload){
+            <button class="btn btn-primary py-1.5 px-5 mr-4" @onclick="Download">Download</button>
+        }
+        <button class="btn btn-secondary py-1.5 px-5" @onclick="Reset">Reset</button>
+    </div>
 }
 <SectionContent SectionId="App.LocalScripts"> 
     <script src="js/replicator.js"></script>
 </SectionContent>
 
 @code{
-    [SupplyParameterFromForm] public FormModel Form{ get; set; }
-    private Error _error = Error.NoErrors;
-    private bool showNext = false;
+    public Error Error{ get; private set; } = Error.NoErrors; // public for testing purposes
+
+    private Message dialog;
     
-    protected override void OnInitialized(){
-        Form ??= new FormModel();
-    }
+    private bool isUploading;
+    private bool successfulUpload;
+    private bool showFileParams;
+    private bool showDownload;
     
-    // Uses HttpContext to do model binding, because I'm not using interactive render mode
-    private void Submit(){ 
-        _error = Error.NoErrors;
+    public bool SuccessUpload => successfulUpload;
+    public bool IsUploading => isUploading;
+    
+    private async Task Submit(){ 
+        Thread.Sleep(1000);
+        var state = ReplicatorState;
         
-        //the dialog _visible doesn't reset to true after the entire parent re-renders
-        
-        var loader = new Loader();
-        if(Form.Xml == null || Form.Csv == null){
-            _error = Error.NoFiles;
+        if(state.MainFiles.Count < 2){
+            SetError(Error.NoFiles);
             return;
         }
+        var loader = new Loader(FileService);
         
-        XmlFileModel xmlModel;
-        try{ xmlModel = loader.LoadXml(Form.Xml); }
+        XmlFileModel? xmlModel;
+        try{ xmlModel = await loader.LoadXml(state.MainFiles["xml-input"]); }
         catch (ValidationException e){
-            _error = e.Error;
+            SetError(e.Error);
             return;
         }
         ReplicatorState.XmlModel = xmlModel;
         
         List<string[]>? csvList;
-        try{ csvList = loader.LoadCsv(Form.Csv, xmlModel) as List<string[]>; }
+        try{ csvList = await loader.LoadCsv(state.MainFiles["csv-input"], xmlModel) as List<string[]>; }
         catch (ValidationException e){
-            _error = e.Error;
+            SetError(e.Error);
             return;
         }
         ReplicatorState.CsvAsList = csvList;
-        
-        var merger = new Merger(ReplicatorState){
-            XmlFile = xmlModel.XmlFile,
-            CsvAsList = csvList
-        };
-        merger.MergeQuestion();
-        ReplicatorState.Preview = new PreviewModel(ReplicatorState.Merged, xmlModel.AnswerCount);
-        
-        showNext = true;
+        FileService.DeleteAllFiles();
+  
+        state.FileParam = new ParameterModel(xmlModel.XmlFile, csvList.Count() - 1);
+        if (state.FileParam.GetFileParameters().Count > 0){
+            showFileParams = true;
+        }else{
+            var merger = new Merger(state, FileService){
+                XmlFile = state.XmlModel.XmlFile,
+                CsvAsList = state.CsvAsList
+            };
+            merger.MergeQuestion();
+            state.Preview = new PreviewModel(state.Merged, state.XmlModel.AnswerCount);
+            showDownload = true;
+        }
+
+        ClearForm();
+        successfulUpload = true;
+        isUploading = false;
+    }
+
+    private void ClearForm(){
+        Js.InvokeVoidAsync("clearForm", "main-upload");
+    }
+    
+    private void Reset(){
+        FileService.DeleteAllFiles();
+        NavigationManager.NavigateTo("/Replicator", true);
     }
 
     private void SetError(Error err){
-        _error = err;
+        isUploading = false;
+        FileService.DeleteAllFiles();
+        Error = err;
+        dialog.Show();
+        dialog.Refresh();
+    }
+    
+    private async Task Download(){
+        var stream = new MemoryStream();
+        ReplicatorState.Merged?.Save(stream);
+        stream.Flush();
+        stream.Position = 0;
+        using var streamRef = new DotNetStreamReference(stream);
+        await Js.InvokeVoidAsync("downloadFileFromStream", "Question.xml", streamRef);
         
-    }
-
-    private void ClearForm(string formId){
-        Js.InvokeVoidAsync("clearForm", formId);
-    }
-
-    public class FormModel
-    {
-        public IFormFile? Xml { get; set; }
-        public IFormFile? Csv { get; set; }
+        FileService.DeleteAllFiles();
     }
 }

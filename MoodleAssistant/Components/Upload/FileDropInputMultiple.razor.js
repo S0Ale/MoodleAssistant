@@ -20,7 +20,7 @@
         container.removeChild(previewItem);
         dropZone.classList.remove('hidden');
         let input = queryChilds(dropZone, 'input');
-        
+
         input.value = ''; // clear input
         input.dispatchEvent(new Event('change'));
     });
@@ -30,12 +30,13 @@
     return previewItem;
 }
 
-export function initComponent(id) {
-    let item = query(`#${id}`);
+export function initComponent(formId, id) {
+    let form = query(`#${formId}`);
+    let item = queryChilds(form, `.${id}`);
     const input = queryChilds(item, 'input');
     const dropZone = queryChilds(item, '.drop-zone');
     const previewContainer = queryChilds(item, '.preview-container');
-    
+
     dropZone.addEventListener('dragover', function (e) {
         e.preventDefault();
     });
@@ -47,9 +48,10 @@ export function initComponent(id) {
     input.addEventListener('change', function() {
         if(input.value){
             dropZone.classList.add('hidden');
-            previewContainer.appendChild(createPreviewItem(input.files[0].name, previewContainer, dropZone));
+            const names = [];
+            for (const file of input.files)
+                names.push(file.name);
+            previewContainer.appendChild(createPreviewItem(names, previewContainer, dropZone));
         }
     });
 }
-
-//window.initComponent = initComponent;

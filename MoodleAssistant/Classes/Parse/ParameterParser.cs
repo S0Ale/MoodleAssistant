@@ -1,14 +1,17 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
+using System.Xml;
 
 namespace MoodleAssistant.Classes.Parse;
 
 public class ParameterParser(string str) {
     private const string Pattern = @"\[\*\[\[((?!FILE-)[^\]*\]]+?)\]\]\*\]|\[\*\[\[FILE-([^\]*\]]+?)\]\]\*\]";
 
+    public string Str{ get; set; } = str;
+
     public IEnumerable<Parameter> Match(){
         var list = new List<Parameter>();
-        var matches = Regex.Matches(str, Pattern);
+        var matches = Regex.Matches(Str, Pattern);
 
         foreach (Match match in matches){
             var p = match.Groups[2].Success ? new FileParameter(match) : new Parameter(match);
@@ -19,10 +22,9 @@ public class ParameterParser(string str) {
     }
 
     public string Replace(IEnumerable<Parameter> parameters) {
-        var builder = new StringBuilder(str);
+        var builder = new StringBuilder(Str);
         foreach (var parameter in parameters.Reverse()) { // don't need to update indexes
-            builder = builder.Remove(parameter.StartI, parameter.Match.Length);
-            builder = builder.Insert(parameter.StartI, parameter.Replacement);
+            builder = parameter.Replace(builder);
         }
         return builder.ToString();
     }
