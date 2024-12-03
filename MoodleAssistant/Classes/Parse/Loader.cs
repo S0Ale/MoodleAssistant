@@ -50,7 +50,15 @@ public class Loader(IBrowserFileService fileService){
     
     public async Task LoadFiles(IBrowserFile[] files){
         foreach (var file in files){
+            var model = new FileModel(fileService, file.Name);
             _ = await fileService.SaveFile(file, file.Name); 
+            
+            if (null == file)
+                throw new ValidationException(Error.NullFile);
+            if (model.IsEmpty())  
+                throw new ValidationException(Error.EmptyFile);
+            if (!model.IsImage(file))
+                throw new ValidationException(Error.NoImage);
         }
     }
 }

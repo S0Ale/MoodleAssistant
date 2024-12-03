@@ -75,7 +75,7 @@
     public bool IsUploading => _isUploading;
     
     private async Task Submit(){ 
-        Thread.Sleep(1000);
+        Thread.Sleep(500);
         var state = ReplicatorState;
         
         if(state.MainFiles.Count < 2){

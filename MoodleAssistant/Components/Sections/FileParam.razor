@@ -54,7 +54,7 @@
         if (state == null) return;
 
         var totalFiles = state.ParamFiles.Values.Sum(fileArray => fileArray.Length);
-        if (totalFiles < state.FileParam?.GetFileParameters().Count * state.FileParam?.NeededFiles){
+        if (totalFiles != state.FileParam?.GetFileParameters().Count * state.FileParam?.NeededFiles){
             SetError(Error.NoFiles);
             return;
         }

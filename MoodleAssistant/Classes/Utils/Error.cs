@@ -18,7 +18,10 @@ public static class ErrorMessage
     public const string NonCsvFile = "File type must be CSV.";
     public const string CsvInvalidHeader = "Please enter a valid CSV file. Use \",\" delimiter. One or more csv header missing.";
     public const string CsvBadFormed = "Please enter a valid CSV file. Check if there are missing fields or if each row contains the same number of columns.";
-
+    
+    // image errors
+    public const string NoImage = "Not Image file found.";
+    
     public static string GetErrorMessage(Error error)
     {
         return error switch
@@ -34,6 +37,7 @@ public static class ErrorMessage
             Error.NonCsvFile => NonCsvFile,
             Error.CsvInvalidHeader => CsvInvalidHeader,
             Error.CsvBadFormed => CsvBadFormed,
+            Error.NoImage => NoImage,
             _ => NoErrors
         };
     }
@@ -52,4 +56,5 @@ public enum Error
     NonCsvFile,
     CsvInvalidHeader,
     CsvBadFormed,
+    NoImage
 }
