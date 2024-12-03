@@ -27,23 +27,23 @@
                     <FileDropInput name="Csv" id="csv-input"/>
                 </div>
                 <div class="flex flex-row mt-3">
-                    <button type="submit" class="btn btn-primary py-1.5 px-6">Upload</button>
+                    <button type="submit" class="btn btn-primary py-1.5 px-6" @onclick="() => isUploading = true">Upload</button>
                     <button type="button" class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files" @onclick="ClearForm">Clear</button>
                 </div>
                 <div class="relative error-container">
-                    <ErrorMsg @ref="dialog" Message="@(ErrorMessage.GetErrorMessage(Error))" FormId="@(mainForm)"/>
+                    <Message @ref="dialog" MsgText="@(ErrorMessage.GetErrorMessage(Error))" Type="MessageType.Error" CanClose="true"/>
+                    @if (isUploading){
+                        <Message MsgText="Uploading..." Type="MessageType.Info" CanClose="false" />
+                    }
                 </div>
             </form>
         </div>
     </div>
 </div>
-@if (isUploading){
-    <p>Loading...</p>
-}
 @if (successfulUpload){
     <Analysis />
     @if (showFileParams){
-        <FileParam OnSubmit="SubmitFiles" />
+        <FileParam OnSuccess="() => showDownload = true" />
     }
     @if (!showFileParams && showDownload){
         <Preview />
@@ -63,7 +63,7 @@
 @code{
     public Error Error{ get; private set; } = Error.NoErrors; // public for testing purposes
 
-    private ErrorMsg dialog;
+    private Message dialog;
     
     private bool isUploading;
     private bool successfulUpload;
@@ -74,7 +74,7 @@
     public bool IsUploading => isUploading;
     
     private async Task Submit(){ 
-        isUploading = true;
+        Thread.Sleep(1000);
         var state = ReplicatorState;
         
         if(state.MainFiles.Count < 2){
@@ -120,26 +120,6 @@
 
     private void ClearForm(){
         Js.InvokeVoidAsync("clearForm", "main-upload");
-    }
-    
-    private async Task SubmitFiles(){
-        var state = ReplicatorState;
-        if (state == null) return;
-        
-        var loader = new Loader(FileService);
-        // load file parameters
-        foreach (var param in state.FileParam?.GetFileParameters() ?? []){
-            await loader.LoadFiles(state.ParamFiles[param.Name]);
-        }
-        
-        var merger = new Merger(state, FileService){
-            XmlFile = state.XmlModel.XmlFile,
-            CsvAsList = state.CsvAsList
-        };
-        merger.MergeQuestion();
-        FileService.DeleteAllFiles();
-        
-        showDownload = true;
     }
     
     private void Reset(){

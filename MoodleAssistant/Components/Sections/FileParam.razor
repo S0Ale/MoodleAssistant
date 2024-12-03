@@ -1,34 +1,80 @@
-﻿@using MoodleAssistant.Services
+﻿@using MoodleAssistant.Classes.Models
+@using MoodleAssistant.Classes.Parse
+@using MoodleAssistant.Classes.Utils
+@using MoodleAssistant.Services
 @using MoodleAssistant.Components.Upload
-@inject ReplicatorState State
+@inject ReplicatorState ReplicatorState
+@inject IBrowserFileService FileService;
 
 @{
     const string paramForm = "param-upload";
-    var @params = State.FileParam.GetFileParameters();
+    var @params = ReplicatorState.FileParam.GetFileParameters();
     var s = @params.Count > 1 ? "s" : "";
     var fileH3 = $"{@params.Count} file parameter{s} found.";
 }
 
 <div class="flex flex-col p-6 border-t border-zinc-200">
     <h3 class="pb-4 text-gray-700 text-center">
-        <span class="font-semibold">@fileH3</span> Please upload @State.FileParam.NeededFiles files for every parameter:
+        <span class="font-semibold">@fileH3</span> Please upload @ReplicatorState.FileParam.NeededFiles files for every parameter:
     </h3>
-    <form enctype="multipart/form-data" method="post" id="@paramForm" @onsubmit="() => OnSubmit.InvokeAsync()">
+    <form enctype="multipart/form-data" method="post" id="@paramForm" @onsubmit="Submit">
         <div class="flex flex-row w-max min-w-full justify-center space-x-4">
             @foreach (var param in @params){
                 <FileDropInputMultiple FormId="@paramForm" ParamValue="@param.Match.Value" ParamName="@param.Name" name="@param.Name"/>
             }
         </div>
         <div class="flex flex-row mt-3 justify-center">
-            <button type="submit" class="btn btn-primary py-1.5 px-6" id="upload-files">Upload</button>
+            <button type="submit" class="btn btn-primary py-1.5 px-6" @onclick="() => isUploading = true">Upload</button>
             <button class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files">Clear</button>
         </div>
         <div id="error-container" class="relative">
+            <Message @ref="dialog" MsgText="@(ErrorMessage.GetErrorMessage(Error))" Type="MessageType.Error" CanClose="true"/>
+            @if (isUploading){
+                <Message MsgText="Uploading..." Type="MessageType.Info" CanClose="false" />
+            }
         </div>
     </form>
 </div>
 
 @code {
     [Parameter]
-    public EventCallback<bool> OnSubmit { get; set; }
+    public EventCallback<bool> OnSuccess { get; set; }
+    
+    public Error Error{ get; private set; } = Error.NoErrors; // public for testing purposes
+    private Message dialog;
+    
+    private bool isUploading;
+
+    private async Task Submit(){
+        var state = ReplicatorState;
+        if (state == null) return;
+        
+        var loader = new Loader(FileService);
+        // load file parameters
+        try{
+            foreach (var param in state.FileParam?.GetFileParameters() ?? [])
+                await loader.LoadFiles(state.ParamFiles[param.Name]);
+        }catch (ValidationException e){
+            SetError(e.Error);
+            return;
+        }
+
+        var merger = new Merger(state, FileService){
+            XmlFile = state.XmlModel.XmlFile,
+            CsvAsList = state.CsvAsList
+        };
+        merger.MergeQuestion();
+        FileService.DeleteAllFiles();
+
+        isUploading = false;
+        await OnSuccess.InvokeAsync();
+    }
+    
+    private void SetError(Error err){
+        isUploading = false;
+        FileService.DeleteAllFiles();
+        Error = err;
+        dialog.Show();
+        dialog.Refresh();
+    }
 }
