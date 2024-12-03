@@ -23,12 +23,14 @@
 }
 
 @if (_visible){
-    <p class="px-3 py-2 mt-3 @(msgClass)">@MsgText</p>
-    @if (CanClose){
-        <button type="button" class="absolute top-0 right-0 py-0 px-1" @onclick="Close">
-            <span class="material-symbols-outlined text-lg @(textClass)">close</span>
-        </button>
-    }
+    <p class="relative px-3 py-2 pr-8 mt-3 @(msgClass)">
+        @MsgText
+        @if (CanClose){
+            <button type="button" class="absolute top-0 right-0 py-0 px-1" @onclick="Close">
+                <span class="material-symbols-outlined text-lg @(textClass)">close</span>
+            </button>
+        }
+    </p>
 }
 
 

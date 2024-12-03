@@ -8,14 +8,18 @@
 
 @{
     const string paramForm = "param-upload";
-    var @params = ReplicatorState.FileParam.GetFileParameters();
-    var s = @params.Count > 1 ? "s" : "";
-    var fileH3 = $"{@params.Count} file parameter{s} found.";
+    var @params = ReplicatorState.FileParam?.GetFileParameters();
+    var s = @params is{ Count: > 1 } ? "s" : "";
+    var fileH3 = $"{@params!.Count} file parameter{s} found.";
 }
 
 <div class="flex flex-col p-6 border-t border-zinc-200">
     <h3 class="pb-4 text-gray-700 text-center">
-        <span class="font-semibold">@fileH3</span> Please upload @ReplicatorState.FileParam.NeededFiles files for every parameter:
+        <span class="font-semibold">@fileH3</span> Please upload
+        @{
+            System.Diagnostics.Debug.Assert(ReplicatorState.FileParam != null, "ReplicatorState.FileParam != null");
+        }
+        @ReplicatorState.FileParam.NeededFiles files for every parameter:
     </h3>
     <form enctype="multipart/form-data" method="post" id="@paramForm" @onsubmit="Submit">
         <div class="flex flex-row w-max min-w-full justify-center space-x-4">
@@ -24,12 +28,12 @@
             }
         </div>
         <div class="flex flex-row mt-3 justify-center">
-            <button type="submit" class="btn btn-primary py-1.5 px-6" @onclick="() => isUploading = true">Upload</button>
+            <button type="submit" class="btn btn-primary py-1.5 px-6" @onclick="() => _isUploading = true">Upload</button>
             <button class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files">Clear</button>
         </div>
-        <div id="error-container" class="relative">
-            <Message @ref="dialog" MsgText="@(ErrorMessage.GetErrorMessage(Error))" Type="MessageType.Error" CanClose="true"/>
-            @if (isUploading){
+        <div class="flex flex-row md:w-fit md:mx-auto justify-center error-container">
+            <Message @ref="_dialog" MsgText="@(ErrorMessage.GetErrorMessage(Error))" Type="MessageType.Error" CanClose="true"/>
+            @if (_isUploading){
                 <Message MsgText="Uploading..." Type="MessageType.Info" CanClose="false" />
             }
         </div>
@@ -41,13 +45,19 @@
     public EventCallback<bool> OnSuccess { get; set; }
     
     public Error Error{ get; private set; } = Error.NoErrors; // public for testing purposes
-    private Message dialog;
+    private Message _dialog = null!;
     
-    private bool isUploading;
+    private bool _isUploading;
 
     private async Task Submit(){
         var state = ReplicatorState;
         if (state == null) return;
+
+        var totalFiles = state.ParamFiles.Values.Sum(fileArray => fileArray.Length);
+        if (totalFiles < state.FileParam?.GetFileParameters().Count * state.FileParam?.NeededFiles){
+            SetError(Error.NoFiles);
+            return;
+        }
         
         var loader = new Loader(FileService);
         // load file parameters
@@ -66,15 +76,15 @@
         merger.MergeQuestion();
         FileService.DeleteAllFiles();
 
-        isUploading = false;
+        _isUploading = false;
         await OnSuccess.InvokeAsync();
     }
     
     private void SetError(Error err){
-        isUploading = false;
+        _isUploading = false;
         FileService.DeleteAllFiles();
         Error = err;
-        dialog.Show();
-        dialog.Refresh();
+        _dialog.Show();
+        _dialog.Refresh();
     }
 }
