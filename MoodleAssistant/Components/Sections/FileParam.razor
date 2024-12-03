@@ -15,11 +15,7 @@
 
 <div class="flex flex-col p-6 border-t border-zinc-200">
     <h3 class="pb-4 text-gray-700 text-center">
-        <span class="font-semibold">@fileH3</span> Please upload
-        @{
-            System.Diagnostics.Debug.Assert(ReplicatorState.FileParam != null, "ReplicatorState.FileParam != null");
-        }
-        @ReplicatorState.FileParam.NeededFiles files for every parameter:
+        <span class="font-semibold">@fileH3</span> Please upload @ReplicatorState.FileParam!.NeededFiles files for every parameter:
     </h3>
     <form enctype="multipart/form-data" method="post" id="@paramForm" @onsubmit="Submit">
         <div class="flex flex-row w-max min-w-full justify-center space-x-4">
