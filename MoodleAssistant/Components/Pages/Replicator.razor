@@ -24,8 +24,12 @@
             <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
             <form method="post" id="@(mainForm)" @formname="main-upload" @onsubmit="Submit">
                 <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row">
+                    <!--
                     <FileDropInput name="Xml" id="xml-input"/>
                     <FileDropInput name="Csv" id="csv-input"/>
+                    -->
+                    <GenericFileInput @ref="_xmlInput" InputName="xml-input"/>
+                    <GenericFileInput @ref="_csvInput" InputName="csv-input"/>
                 </div>
                 <div class="flex flex-row mt-3">
                     <button type="submit" class="btn btn-primary py-1.5 px-6" @onclick="() => _isUploading = true">Upload</button>
@@ -65,6 +69,8 @@
     public Error Error{ get; private set; } = Error.NoErrors; // public for testing purposes
     
     private Message _dialog = null!;
+    private GenericFileInput _xmlInput = null!;
+    private GenericFileInput _csvInput = null!;
     
     private bool _isUploading;
     private bool _successfulUpload;
@@ -78,14 +84,15 @@
         Thread.Sleep(500);
         var state = ReplicatorState;
         
-        if(state.MainFiles.Count < 2){
+        var totalFiles = _xmlInput.UploadedFiles.Count + _csvInput.UploadedFiles.Count;
+        if(totalFiles < 2){
             SetError(Error.NoFiles);
             return;
         }
         var loader = new Loader(FileService);
         
         XmlFileModel? xmlModel;
-        try{ xmlModel = await loader.LoadXml(state.MainFiles["xml-input"]); }
+        try{ xmlModel = await loader.LoadXml(_xmlInput.UploadedFiles.FirstOrDefault()!); }
         catch (ValidationException e){
             SetError(e.Error);
             return;
@@ -93,7 +100,7 @@
         ReplicatorState.XmlModel = xmlModel;
         
         List<string[]>? csvList;
-        try{ csvList = await loader.LoadCsv(state.MainFiles["csv-input"], xmlModel) as List<string[]>; }
+        try{ csvList = await loader.LoadCsv(_csvInput.UploadedFiles.FirstOrDefault()!, xmlModel) as List<string[]>; }
         catch (ValidationException e){
             SetError(e.Error);
             return;
@@ -120,7 +127,9 @@
     }
 
     private void ClearForm(){
-        Js.InvokeVoidAsync("clearForm", "main-upload");
+        //Js.InvokeVoidAsync("clearForm", "main-upload");
+        _xmlInput.ClearFiles();
+        _csvInput.ClearFiles();
     }
     
     private void Reset(){
