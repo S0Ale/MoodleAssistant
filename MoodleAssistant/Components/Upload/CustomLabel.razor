@@ -1,0 +1,35 @@
+﻿@using System.ComponentModel.DataAnnotations
+@rendermode InteractiveServer
+
+@{
+    var hidden = !IsVisible ? "hidden" : "";
+}
+
+<label @attributes="AdditionalAttributes" class="min-w-64 py-10 px-6 w-full drop-zone @(hidden)">
+    <span class="flex flex-col items-center text-gray-500">
+        @if (UploadedFiles.Count < MaxFiles){
+            <p class="text-inherit">Drop XML file here, or <span class="text-blue-500 underline ml-[4px]">browse</span>.</p>
+            <p class="text-inherit">File limit: @MaxFiles</p>
+        }
+        else{
+            <p class="text-inherit">File limit reached.</p>
+        }
+    </span>
+    <InputFile class="hidden" OnChange="(e) => OnChange.InvokeAsync(e)"/>
+</label>
+
+@code {
+    [Parameter(CaptureUnmatchedValues = true)]
+    public IDictionary<string, object> AdditionalAttributes { get; set; }
+    [Parameter]
+    public string InputName { get; set; } = string.Empty;
+    [Required] [Parameter]
+    public int MaxFiles { get; init; }
+    [Required] [Parameter]
+    public Dictionary<int, IBrowserFile> UploadedFiles { get; set; }
+    [Parameter]
+    public bool IsVisible { get; set; }
+    [Parameter]
+    public EventCallback<InputFileChangeEventArgs> OnChange { get; set; }
+    
+}

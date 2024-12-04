@@ -3,6 +3,7 @@
 @using MoodleAssistant.Classes.Utils
 @using MoodleAssistant.Services
 @using MoodleAssistant.Components.Upload
+@using Parameter = System.Reflection.Metadata.Parameter
 @inject ReplicatorState ReplicatorState
 @inject IBrowserFileService FileService;
 
@@ -19,8 +20,18 @@
     </h3>
     <form enctype="multipart/form-data" method="post" id="@paramForm" @onsubmit="Submit">
         <div class="flex flex-row w-max min-w-full justify-center space-x-4">
+            <!--
             @foreach (var param in @params){
                 <FileDropInputMultiple FormId="@paramForm" ParamValue="@param.Match.Value" ParamName="@param.Name" name="@param.Name"/>
+            }
+            -->
+            @foreach (var param in @params){
+                <div class="flex flex-col justify-center">
+                    <span class="p-3 code text-center">@param.Match.Value</span>
+                    <div class="p-3">
+                        <DropFileInput @ref="_inputs[param.Name]" InputName="@($"{param.Name}-input")" MaxFiles="@ReplicatorState.FileParam!.NeededFiles"/>
+                    </div>
+                </div>
             }
         </div>
         <div class="flex flex-row mt-3 justify-center">
@@ -42,6 +53,7 @@
     
     public Error Error{ get; private set; } = Error.NoErrors; // public for testing purposes
     private Message _dialog = null!;
+    private Dictionary<string, DropFileInput> _inputs = [];
     
     private bool _isUploading;
 
@@ -49,7 +61,8 @@
         var state = ReplicatorState;
         if (state == null) return;
 
-        var totalFiles = state.ParamFiles.Values.Sum(fileArray => fileArray.Length);
+        //var totalFiles = state.ParamFiles.Values.Sum(fileArray => fileArray.Length);
+        var totalFiles = _inputs.Values.Sum(input => input.UploadedFiles.Count);
         if (totalFiles != state.FileParam?.GetFileParameters().Count * state.FileParam?.NeededFiles){
             SetError(Error.NoFiles);
             return;
@@ -59,7 +72,7 @@
         // load file parameters
         try{
             foreach (var param in state.FileParam?.GetFileParameters() ?? [])
-                await loader.LoadFiles(state.ParamFiles[param.Name]);
+                await loader.LoadFiles(_inputs[param.Name].UploadedFiles.Values.ToArray());
         }catch (ValidationException e){
             SetError(e.Error);
             return;
