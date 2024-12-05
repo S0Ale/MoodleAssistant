@@ -37,6 +37,9 @@
             @if (_isUploading){
                 <Message MsgText="Uploading..." Type="MessageType.Info" CanClose="false" />
             }
+            @if (_successfulUpload){
+                <Message MsgText="Files uploaded successfully." Type="MessageType.Success" CanClose="true" />
+            }
         </div>
     </form>
 </div>
@@ -50,8 +53,10 @@
     private Dictionary<string, DropFileInput> _inputs = [];
     
     private bool _isUploading;
+    private bool _successfulUpload;
 
     private async Task Submit(){
+        Thread.Sleep(250);
         var state = ReplicatorState;
         if (state == null) return;
         
@@ -79,6 +84,7 @@
         FileService.DeleteAllFiles();
 
         _isUploading = false;
+        _successfulUpload = true;
         await OnSuccess.InvokeAsync();
     }
     

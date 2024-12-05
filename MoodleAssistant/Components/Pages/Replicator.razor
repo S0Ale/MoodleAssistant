@@ -36,6 +36,9 @@
                     @if (_isUploading){
                         <Message MsgText="Uploading..." Type="MessageType.Info" CanClose="false" />
                     }
+                    @if (_successfulUpload){
+                        <Message MsgText="Files uploaded successfully." Type="MessageType.Success" CanClose="true" />
+                    }
                 </div>
             </form>
         </div>
@@ -73,11 +76,11 @@
     private bool _showFileParams;
     private bool _showDownload;
     
-    public bool SuccessUpload => _successfulUpload;
-    public bool IsUploading => _isUploading;
+    public bool SuccessUpload => _successfulUpload; // testing
+    public bool IsUploading => _isUploading; // testing
     
     private async Task Submit(){ 
-        Thread.Sleep(500);
+        Thread.Sleep(250);
         var state = ReplicatorState;
         
         var totalFiles = _xmlInput.UploadedFiles.Count + _csvInput.UploadedFiles.Count;
@@ -123,7 +126,6 @@
     }
 
     private void ClearForm(){
-        //Js.InvokeVoidAsync("clearForm", "main-upload");
         _xmlInput.ClearFiles();
         _csvInput.ClearFiles();
     }
