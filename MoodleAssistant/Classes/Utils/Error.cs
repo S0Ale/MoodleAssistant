@@ -8,6 +8,7 @@ public static class ErrorMessage
     private const string NoFiles = "Missing files. Please upload your files.";
     private const string NullFile = "Upload a file.";
     private const string EmptyFile = "File cannot be empty.";
+    private const string Unexpected = "An unexpected error occurred.";
 
     //xml errors
     private const string NonXmlFile = "File type must be XML.";
@@ -33,6 +34,8 @@ public static class ErrorMessage
             Error.NoErrors => NoErrors,
             Error.NoFiles => NoFiles,
             Error.NullFile => NullFile,
+            Error.Unexpected => Unexpected,
+            
             Error.NonXmlFile => NonXmlFile,
             Error.EmptyFile => EmptyFile,
             Error.XmlBadFormed => MalFormatted,
@@ -53,9 +56,10 @@ public static class ErrorMessage
 public enum Error
 {
     NoErrors,
-    
     NoFiles,
     NullFile,
+    Unexpected,
+    
     NonXmlFile,
     EmptyFile,
     XmlBadFormed,

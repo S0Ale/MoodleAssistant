@@ -90,7 +90,7 @@
         }
         var loader = new Loader(FileService);
         
-        XmlFileModel? xmlModel;
+        XmlFileModel xmlModel;
         try{ xmlModel = await loader.LoadXml(_xmlInput.UploadedFiles.Values.FirstOrDefault()!); }
         catch (ValidationException e){
             SetError(e.Error);
@@ -98,25 +98,35 @@
         }
         ReplicatorState.XmlModel = xmlModel;
         
-        List<string[]>? csvList;
-        try{ csvList = await loader.LoadCsv(_csvInput.UploadedFiles.Values.FirstOrDefault()!, xmlModel) as List<string[]>; }
+        List<string[]> csvList;
+        try{ csvList = await loader.LoadCsv(_csvInput.UploadedFiles.Values.FirstOrDefault()!, xmlModel) as List<string[]> ?? []; }
         catch (ValidationException e){
             SetError(e.Error);
             return;
         }
         ReplicatorState.CsvAsList = csvList;
         FileService.DeleteAllFiles();
-  
+
         state.FileParam = new ParameterModel(xmlModel.XmlFile, csvList.Count() - 1);
+        
         if (state.FileParam.GetFileParameters().Count > 0){
             _showFileParams = true;
         }else{
-            var merger = new Merger(state, FileService){
-                XmlFile = state.XmlModel.XmlFile,
+            if (state.XmlModel?.XmlFile == null){
+                SetError(Error.Unexpected);
+                return;
+            }
+            var merger = new Merger(state, FileService, state.XmlModel.XmlFile){
                 CsvAsList = state.CsvAsList
             };
             merger.MergeQuestion();
-            state.Preview = new PreviewModel(state.Merged, state.XmlModel.AnswerCount);
+
+            if (state is{ XmlModel: not null, Merged: not null }) state.Preview = new PreviewModel(state.Merged, state.XmlModel.AnswerCount);
+            else{
+                SetError(Error.Unexpected);
+                return;
+            }
+
             _showDownload = true;
         }
 

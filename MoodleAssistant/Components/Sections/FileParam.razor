@@ -76,8 +76,11 @@
             return;
         }
 
-        var merger = new Merger(state, FileService){
-            XmlFile = state.XmlModel.XmlFile,
+        if (state.XmlModel?.XmlFile == null){
+            SetError(Error.Unexpected);
+            return;
+        }
+        var merger = new Merger(state, FileService, state.XmlModel.XmlFile){
             CsvAsList = state.CsvAsList
         };
 

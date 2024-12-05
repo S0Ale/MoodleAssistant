@@ -11,8 +11,8 @@ public class CsvFileModel(IBrowserFileService fileService){
     
     private static readonly string[] MimeTypes = ["application/vnd.ms-excel", "text/csv"];
 
-    public IEnumerable<string> QuestionParametersList{ get; set; }
-    public IEnumerable<string> AnswersParametersList{ get; set; }
+    public IEnumerable<string> QuestionParametersList{ get; init; } = [];
+    public IEnumerable<string> AnswersParametersList{ get; init; } = [];
 
     public static bool IsCsv(IBrowserFile file)
     {
@@ -31,10 +31,9 @@ public class CsvFileModel(IBrowserFileService fileService){
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Read();
         csv.ReadHeader();
-        var headerRow = csv.HeaderRecord;
-        var questionAndAnswerList = (QuestionParametersList ?? Enumerable.Empty<string>())
-            .Concat(AnswersParametersList ?? Enumerable.Empty<string>()).Distinct().ToList();
-        return headerRow.All(questionAndAnswerList.Contains) && Equals(headerRow.Count(), questionAndAnswerList.Count());
+        var headerRow = csv.HeaderRecord ?? [];
+        var questionAndAnswerList = QuestionParametersList.Concat(AnswersParametersList).Distinct().ToList();
+        return headerRow.All(questionAndAnswerList.Contains) && Equals(headerRow.Length, questionAndAnswerList.Count);
     }
 
     public bool IsWellFormed()
@@ -67,12 +66,12 @@ public class CsvFileModel(IBrowserFileService fileService){
         csv.Read();
         csv.ReadHeader();
         var numOfHeaders = csv.Parser.Count;
-        csvAsList.Add(csv.HeaderRecord);
+        if (csv.HeaderRecord != null) csvAsList.Add(csv.HeaderRecord);
         while (csv.Read())
         {
             var temp = new string[numOfHeaders];
             for (var i = 0; i < numOfHeaders; i++)
-                temp[i] = csv.GetField<string>(i);
+                temp[i] = csv.GetField<string>(i)!;
             csvAsList.Add(temp);
         }
         return csvAsList;

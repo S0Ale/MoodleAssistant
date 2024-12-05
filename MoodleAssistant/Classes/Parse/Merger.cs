@@ -1,17 +1,13 @@
 ﻿using System.Xml;
-using MoodleAssistant.Classes.Parse;
 using MoodleAssistant.Classes.Utils;
 using MoodleAssistant.Services;
 
-namespace MoodleAssistant.Classes.Models;
+namespace MoodleAssistant.Classes.Parse;
 
-public class Merger(ReplicatorState state, IBrowserFileService fileService){
-    private readonly XmlDocument _xmlDoc;
+public class Merger(ReplicatorState state, IBrowserFileService fileService, XmlDocument xmlDoc){
+    private readonly XmlDocument _xmlDoc = xmlDoc.Clone() as XmlDocument ?? new XmlDocument();
     
-    public XmlDocument XmlFile{
-        init => _xmlDoc = value.Clone() as XmlDocument ?? new XmlDocument();
-    }
-    public IEnumerable<string[]> CsvAsList{ get; init; }
+    public required IEnumerable<string[]> CsvAsList{ get; init; }
     
     /// <summary>
     /// Searches the specified <c>question</c> node for CDATA sections and if not found, creates them
@@ -45,7 +41,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
     /// <param name="name">The name attribute value.</param>
     /// <returns>A new file tag with the specified name.</returns>
     private XmlElement CreateFileTag(string name){
-        var tag = _xmlDoc!.CreateElement("file");
+        var tag = _xmlDoc.CreateElement("file");
         tag.SetAttribute("name", name);
         tag.SetAttribute("path", "/");
         tag.SetAttribute("encoding", "base64");
@@ -59,7 +55,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
     /// <param name="textNode">The XML node containing file parameters.</param>
     private void AddFileTags(XmlNode textNode){
         var parser = new ParameterParser(textNode.OuterXml);
-        var parameters = parser.Match() as List<Parameter>;
+        var parameters = parser.Match() as List<Parameter> ?? [];
         var fileParams = parameters.Where(p => p is FileParameter).ToList();
         foreach (var fileParam in fileParams){
             var tag = CreateFileTag(fileParam.Name); // I can then find the correct tag later
@@ -78,14 +74,15 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
         try{
             XmlFileParamPhase();
             ReplaceParamPhase();
-        }catch(KeyNotFoundException e){
+        }catch(KeyNotFoundException){
             throw new ReplicatorException(Error.FileMismatch);
         }
 
         // remove template question
         while(_xmlDoc.DocumentElement?.FirstChild?.NodeType == XmlNodeType.Comment)
             _xmlDoc.DocumentElement.RemoveChild(_xmlDoc.DocumentElement.FirstChild);
-        _xmlDoc.DocumentElement?.RemoveChild(_xmlDoc.DocumentElement.FirstChild);
+        if (_xmlDoc.DocumentElement?.FirstChild != null)
+            _xmlDoc.DocumentElement?.RemoveChild(_xmlDoc.DocumentElement.FirstChild);
         state.Merged = _xmlDoc;
     }
 
@@ -106,7 +103,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
             var parser = new ParameterParser(xmlQuestionNode.InnerXml);
             var parameters = parser.Match() as List<Parameter>;
             for (var i = 0; i < headerRow.Length; i++){
-                var param = parameters[i];
+                var param = parameters?[i];
                 if (param is FileParameter fileParam){
                     var filename = CsvAsList.ElementAt(j)[i];
                     var base64 = fileService.GetBase64(filename);
@@ -134,11 +131,12 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
             var parser = new ParameterParser(xmlQuestionNode.InnerXml);
             var parameters = parser.Match() as List<Parameter>;
             for (var i = 0; i < headerRow.Length; i++){
+                if (parameters == null) continue;
                 var param = parameters[i];
                 param.Replacement = CsvAsList.ElementAt(j)[i]; // put replacements for each parameter
             }
             
-            xmlQuestionNode.InnerXml = parser.Replace(parameters);
+            xmlQuestionNode.InnerXml = parser.Replace(parameters ?? []);
         }
     }
 }
