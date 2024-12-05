@@ -71,7 +71,7 @@
         try{
             foreach (var param in state.FileParam?.GetFileParameters() ?? [])
                 await loader.LoadFiles(_inputs[param.Name].UploadedFiles.Values.ToArray());
-        }catch (ValidationException e){
+        }catch (ReplicatorException e){
             SetError(e.Error);
             return;
         }
@@ -80,7 +80,15 @@
             XmlFile = state.XmlModel.XmlFile,
             CsvAsList = state.CsvAsList
         };
-        merger.MergeQuestion();
+
+        try{
+            merger.MergeQuestion();
+        }
+        catch (ReplicatorException e){
+            SetError(e.Error);
+            return;
+        }
+
         FileService.DeleteAllFiles();
 
         _isUploading = false;

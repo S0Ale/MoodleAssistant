@@ -4,8 +4,8 @@ using System.Text.RegularExpressions;
 namespace MoodleAssistant.Classes.Parse;
 
 public class FileParameter : Parameter{
-    private static readonly string ImageTagOpen = "<img src=\"@@PLUGINFILE@@";
-    private static readonly string ImageTagClose = "\" />";
+    private const string ImageTagOpen = "<img src=\"@@PLUGINFILE@@";
+    private const string ImageTagClose = "\" />";
     
     public FileParameter(Match m) : base(m){
         Name = m.Groups[2].Value;

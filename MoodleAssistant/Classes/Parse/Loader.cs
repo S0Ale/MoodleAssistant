@@ -11,17 +11,17 @@ public class Loader(IBrowserFileService fileService){
         await fileService.SaveFile(file, XmlFileModel.FileName);
 
         if (null == file)
-            throw new ValidationException(Error.NullFile);
+            throw new ReplicatorException(Error.NullFile);
         if (!XmlFileModel.IsXml(file))
-            throw new ValidationException(Error.NonXmlFile);
+            throw new ReplicatorException(Error.NonXmlFile);
         if (model.IsEmpty())
-            throw new ValidationException(Error.EmptyFile);
+            throw new ReplicatorException(Error.EmptyFile);
         if (!model.IsWellFormattedXml())
-            throw new ValidationException(Error.XmlBadFormed);
+            throw new ReplicatorException(Error.XmlBadFormed);
         if (!model.HasOnlyOneQuestion())
-            throw new ValidationException(Error.ZeroOrMoreQuestions);
+            throw new ReplicatorException(Error.ZeroOrMoreQuestions);
         if (!model.HasQuestionText())
-            throw new ValidationException(Error.ZeroOrMoreQuestions);
+            throw new ReplicatorException(Error.ZeroOrMoreQuestions);
 
         model.TakeParameters();
         return model;
@@ -35,15 +35,15 @@ public class Loader(IBrowserFileService fileService){
         _ = await fileService.SaveFile(file, CsvFileModel.FileName);
 
         if (null == file)
-            throw new ValidationException(Error.NullFile);
+            throw new ReplicatorException(Error.NullFile);
         if (!CsvFileModel.IsCsv(file))
-            throw new ValidationException(Error.NonCsvFile);
+            throw new ReplicatorException(Error.NonCsvFile);
         if (model.IsEmpty())
-            throw new ValidationException(Error.EmptyFile);
+            throw new ReplicatorException(Error.EmptyFile);
         if (!model.HasValidHeader())
-            throw new ValidationException(Error.CsvInvalidHeader);
+            throw new ReplicatorException(Error.CsvInvalidHeader);
         if (!model.IsWellFormed())
-            throw new ValidationException(Error.CsvBadFormed);
+            throw new ReplicatorException(Error.CsvBadFormed);
 
         return model.ConvertCsvToListOfArrayString();
     }
@@ -54,11 +54,11 @@ public class Loader(IBrowserFileService fileService){
             _ = await fileService.SaveFile(file, file.Name); 
             
             if (null == file)
-                throw new ValidationException(Error.NullFile);
+                throw new ReplicatorException(Error.NullFile);
             if (model.IsEmpty())  
-                throw new ValidationException(Error.EmptyFile);
+                throw new ReplicatorException(Error.EmptyFile);
             if (!model.IsImage(file))
-                throw new ValidationException(Error.NoImage);
+                throw new ReplicatorException(Error.NoImage);
         }
     }
 }

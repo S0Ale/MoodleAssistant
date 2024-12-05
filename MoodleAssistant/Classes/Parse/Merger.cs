@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using MoodleAssistant.Classes.Parse;
+using MoodleAssistant.Classes.Utils;
 using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Classes.Models;
@@ -74,8 +75,12 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
     // File names need to be equal to the names inside the CSV file
     // The CSV column order must be the same as the XML parameter order
     public void MergeQuestion(){
-        XmlFileParamPhase();
-        ReplaceParamPhase();
+        try{
+            XmlFileParamPhase();
+            ReplaceParamPhase();
+        }catch(KeyNotFoundException e){
+            throw new ReplicatorException(Error.FileMismatch);
+        }
 
         // remove template question
         while(_xmlDoc.DocumentElement?.FirstChild?.NodeType == XmlNodeType.Comment)

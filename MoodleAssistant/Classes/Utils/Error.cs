@@ -2,25 +2,29 @@
 
 public static class ErrorMessage
 {
+    // Validation errors
     //common
-    public const string NoErrors = "";
-    public const string NoFiles = "Missing files. Please upload your files.";
-    public const string NullFile = "Upload a file.";
-    public const string EmptyFile = "File cannot be empty.";
+    private const string NoErrors = "";
+    private const string NoFiles = "Missing files. Please upload your files.";
+    private const string NullFile = "Upload a file.";
+    private const string EmptyFile = "File cannot be empty.";
 
     //xml errors
-    public const string NonXmlFile = "File type must be XML.";
-    public const string MalFormatted = "XML file is bad formed.";
-    public const string ZeroOrMoreQuestions = "XML file must contains only one question.";
-    public const string ZeroAnswers = "XML quiz must contains answers.";
+    private const string NonXmlFile = "File type must be XML.";
+    private const string MalFormatted = "XML file is bad formed.";
+    private const string ZeroOrMoreQuestions = "XML file must contains only one question.";
+    private const string ZeroAnswers = "XML quiz must contains answers.";
 
     //csv errors
-    public const string NonCsvFile = "File type must be CSV.";
-    public const string CsvInvalidHeader = "Please enter a valid CSV file. Use \",\" delimiter. One or more csv header missing.";
-    public const string CsvBadFormed = "Please enter a valid CSV file. Check if there are missing fields or if each row contains the same number of columns.";
+    private const string NonCsvFile = "File type must be CSV.";
+    private const string CsvInvalidHeader = "Please enter a valid CSV file. Use \",\" delimiter. One or more csv header missing.";
+    private const string CsvBadFormed = "Please enter a valid CSV file. Check if there are missing fields or if each row contains the same number of columns.";
     
     // image errors
-    public const string NoImage = "Not Image file found.";
+    private const string NoImage = "Not Image file found.";
+    
+    // Merge errors
+    private const string FileMismatch = "File names need to be equal to the names inside the CSV file.";
     
     public static string GetErrorMessage(Error error)
     {
@@ -38,6 +42,9 @@ public static class ErrorMessage
             Error.CsvInvalidHeader => CsvInvalidHeader,
             Error.CsvBadFormed => CsvBadFormed,
             Error.NoImage => NoImage,
+            
+            Error.FileMismatch => FileMismatch,
+            
             _ => NoErrors
         };
     }
@@ -46,6 +53,7 @@ public static class ErrorMessage
 public enum Error
 {
     NoErrors,
+    
     NoFiles,
     NullFile,
     NonXmlFile,
@@ -56,5 +64,7 @@ public enum Error
     NonCsvFile,
     CsvInvalidHeader,
     CsvBadFormed,
-    NoImage
+    NoImage,
+    
+    FileMismatch
 }
