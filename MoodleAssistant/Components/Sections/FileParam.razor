@@ -8,14 +8,14 @@
 
 @{
     const string paramForm = "param-upload";
-    var @params = ReplicatorState.FileParam?.GetFileParameters();
+    var @params = ReplicatorState.Parameters?.GetFileParameters();
     var s = @params is{ Count: > 1 } ? "s" : "";
     var fileH3 = $"{@params!.Count} file parameter{s} found.";
 }
 
 <div class="flex flex-col p-6 border-t border-zinc-200">
     <h3 class="pb-4 text-gray-700 text-center">
-        <span class="font-semibold">@fileH3</span> Please upload @ReplicatorState.FileParam!.NeededFiles files for every parameter:
+        <span class="font-semibold">@fileH3</span> Please upload @ReplicatorState.Parameters!.NeededFiles files for every parameter:
     </h3>
     <form enctype="multipart/form-data" method="post" id="@paramForm" @onsubmit="Submit">
         <div class="flex flex-row w-max min-w-full justify-center space-x-4">
@@ -23,7 +23,7 @@
                 <div class="flex flex-col justify-center">
                     <span class="p-3 code text-center">@param.Match.Value</span>
                     <div class="p-3">
-                        <DropFileInput @ref="_inputs[param.Name]" InputName="@($"{param.Name}-input")" MaxFiles="@ReplicatorState.FileParam!.NeededFiles"/>
+                        <DropFileInput @ref="_inputs[param.Name]" InputName="@($"{param.Name}-input")" MaxFiles="@ReplicatorState.Parameters!.NeededFiles"/>
                     </div>
                 </div>
             }
@@ -58,24 +58,28 @@
     private async Task Submit(){
         Thread.Sleep(250);
         var state = ReplicatorState;
-        if (state == null) return;
-        
+        if (state == null){
+            SetError(Error.Unexpected);
+            return;
+        }
+
+        // Check if all needed files are uploaded
         var totalFiles = _inputs.Values.Sum(input => input.UploadedFiles.Count);
-        if (totalFiles != state.FileParam?.GetFileParameters().Count * state.FileParam?.NeededFiles){
+        if (totalFiles != state.Parameters?.GetFileParameters().Count * state.Parameters?.NeededFiles){
             SetError(Error.NoFiles);
             return;
         }
         
+        // Load file parameters
         var loader = new Loader(FileService);
-        // load file parameters
         try{
-            foreach (var param in state.FileParam?.GetFileParameters() ?? [])
+            foreach (var param in state.Parameters?.GetFileParameters() ?? [])
                 await loader.LoadFiles(_inputs[param.Name].UploadedFiles.Values.ToArray());
         }catch (ReplicatorException e){
             SetError(e.Error);
             return;
         }
-
+        
         if (state.XmlModel?.XmlFile == null){
             SetError(Error.Unexpected);
             return;
@@ -84,6 +88,7 @@
             CsvAsList = state.CsvAsList
         };
 
+        // Merge question
         try{
             merger.MergeQuestion();
         }
@@ -91,7 +96,6 @@
             SetError(e.Error);
             return;
         }
-
         FileService.DeleteAllFiles();
 
         _isUploading = false;

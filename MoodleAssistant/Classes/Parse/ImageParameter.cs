@@ -3,14 +3,10 @@ using System.Text.RegularExpressions;
 
 namespace MoodleAssistant.Classes.Parse;
 
-public class FileParameter : Parameter{
-    public FileParameter(Match m) : base(m){
-        Name = m.Groups[2].Value;
-    }
-    
+public class ImageParameter(Match m) : FileParameter(m){
     public override StringBuilder Replace(StringBuilder builder){
         builder = builder.Remove(Match.Index, Match.Length);
-        builder = builder.Insert(Match.Index, $"<a href=\"@@PLUGINFILE@@/{Replacement}\">{Replacement}</a>");
+        builder = builder.Insert(Match.Index, $"<img src=\"@@PLUGINFILE@@/{Replacement}\" />");
         return builder;
     }
 }

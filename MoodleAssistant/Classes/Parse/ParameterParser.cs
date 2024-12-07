@@ -5,17 +5,26 @@ using System.Xml;
 namespace MoodleAssistant.Classes.Parse;
 
 public class ParameterParser(string str) {
-    private const string Pattern = @"\[\*\[\[((?!FILE-)[^\]*\]]+?)\]\]\*\]|\[\*\[\[FILE-([^\]*\]]+?)\]\]\*\]";
+    //private const string Pattern = @"\[\*\[\[((?!FILE-)[^\]*\]]+?)\]\]\*\]|\[\*\[\[FILE-([^\]*\]]+?)\]\]\*\]";
 
-    public string Str{ get; set; } = str;
+    private const string Pattern =
+        @"\[\*\[\[((?!FILE-|IMAGE-)[^\]*\]]+?)\]\]\*\]|\[\*\[\[FILE-([^\]*\]]+?)\]\]\*\]|\[\*\[\[IMAGE-([^\]*\]]+?)\]\]\*\]";
+
+    private string Str{ get; set; } = str;
 
     public IEnumerable<Parameter> Match(){
         var list = new List<Parameter>();
         var matches = Regex.Matches(Str, Pattern);
 
         foreach (Match match in matches){
-            var p = match.Groups[2].Success ? new FileParameter(match) : new Parameter(match);
-            list.Add(p);
+            //var p = match.Groups[2].Success ? new FileParameter(match) : new Parameter(match);
+            if (match.Groups[3].Success){
+                list.Add(new ImageParameter(match));
+            }else if(match.Groups[2].Success){
+                list.Add(new FileParameter(match));
+            }else{
+                list.Add(new Parameter(match));
+            }
         }
 
         return list;

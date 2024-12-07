@@ -20,7 +20,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService, XmlD
         if (allNodes == null) return;
         var nodes = allNodes.Cast<XmlNode>();
         var fileNodes = nodes.Where(n =>
-            n.InnerText.Contains("[*[[FILE-")
+            (n.InnerText.Contains("[*[[FILE-") || n.InnerText.Contains("[*[[IMAGE-"))
             && n.InnerText.Contains("]]*]")
         ).ToList();
         
@@ -56,7 +56,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService, XmlD
     private void AddFileTags(XmlNode textNode){
         var parser = new ParameterParser(textNode.OuterXml);
         var parameters = parser.Match() as List<Parameter> ?? [];
-        var fileParams = parameters.Where(p => p is FileParameter).ToList();
+        var fileParams = parameters.Where(p => p is FileParameter or ImageParameter).ToList();
         foreach (var fileParam in fileParams){
             var tag = CreateFileTag(fileParam.Name); // I can then find the correct tag later
             textNode.ParentNode?.AppendChild(tag);
@@ -104,11 +104,11 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService, XmlD
             var parameters = parser.Match() as List<Parameter>;
             for (var i = 0; i < headerRow.Length; i++){
                 var param = parameters?[i];
-                if (param is FileParameter fileParam){
+                if (param is FileParameter or ImageParameter){
                     var filename = CsvAsList.ElementAt(j)[i];
                     var base64 = fileService.GetBase64(filename);
                     var tag = xmlQuestionNode.SelectSingleNode(
-                        $"//file[@name='{fileParam.Name}']"); // select the correct file tag
+                        $"//file[@name='{param.Name}']"); // select the correct file tag
                     tag.Attributes["name"].Value = filename;
                     tag.InnerText = base64;
                 }
