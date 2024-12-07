@@ -4,9 +4,12 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Classes.Parse;
 
-public class Merger(ReplicatorState state, IBrowserFileService fileService, XmlDocument xmlDoc){
-    private readonly XmlDocument _xmlDoc = xmlDoc.Clone() as XmlDocument ?? new XmlDocument();
-    
+public class Merger(ReplicatorState state, IBrowserFileService fileService){
+    private XmlDocument _xmlDoc = null!;
+
+    public required XmlDocument XmlFile{
+        set => _xmlDoc = value.Clone() as XmlDocument ?? new XmlDocument();
+    }
     public required IEnumerable<string[]> CsvAsList{ get; init; }
     
     /// <summary>
