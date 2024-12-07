@@ -9,7 +9,7 @@ public class ReplicatorState{
     public Dictionary<string, IBrowserFile[]> ParamFiles{ get; private set; } = new Dictionary<string, IBrowserFile[]>();
     
     public PreviewModel? Preview{ get; set; }
-    public ParameterModel? FileParam{ get; set; }
+    public ParameterModel? Parameters{ get; set; }
     public XmlFileModel? XmlModel{ get; set; }
 
     public IEnumerable<string[]> CsvAsList{ get; set; } = [];

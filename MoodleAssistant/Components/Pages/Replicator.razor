@@ -60,9 +60,6 @@
         <button class="btn btn-secondary py-1.5 px-5" @onclick="Reset">Reset</button>
     </div>
 }
-<SectionContent SectionId="App.LocalScripts"> 
-    <script src="js/replicator.js"></script>
-</SectionContent>
 
 @code{
     public Error Error{ get; private set; } = Error.NoErrors; // public for testing purposes
@@ -83,6 +80,7 @@
         Thread.Sleep(250);
         var state = ReplicatorState;
         
+        // Check if both files are uploaded
         var totalFiles = _xmlInput.UploadedFiles.Count + _csvInput.UploadedFiles.Count;
         if(totalFiles < 2){
             SetError(Error.NoFiles);
@@ -90,6 +88,7 @@
         }
         var loader = new Loader(FileService);
         
+        // Load XML file
         XmlFileModel xmlModel;
         try{ xmlModel = await loader.LoadXml(_xmlInput.UploadedFiles.Values.FirstOrDefault()!); }
         catch (ValidationException e){
@@ -98,6 +97,7 @@
         }
         ReplicatorState.XmlModel = xmlModel;
         
+        // Load CSV file
         List<string[]> csvList;
         try{ csvList = await loader.LoadCsv(_csvInput.UploadedFiles.Values.FirstOrDefault()!, xmlModel) as List<string[]> ?? []; }
         catch (ValidationException e){
@@ -107,9 +107,9 @@
         ReplicatorState.CsvAsList = csvList;
         FileService.DeleteAllFiles();
 
-        state.FileParam = new ParameterModel(xmlModel.XmlFile, csvList.Count() - 1);
-        
-        if (state.FileParam.GetFileParameters().Count > 0){
+        // Load parameters
+        state.Parameters = new ParameterModel(xmlModel.XmlFile, csvList.Count() - 1);
+        if (state.Parameters.GetFileParameters().Count > 0){
             _showFileParams = true;
         }else{
             if (state.XmlModel?.XmlFile == null){

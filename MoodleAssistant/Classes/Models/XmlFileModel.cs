@@ -6,11 +6,11 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Classes.Models;
 
-public class XmlFileModel(IBrowserFileService fileService){
+public partial class XmlFileModel(IBrowserFileService fileService){
     public static string FileName => "XML";
     private const string Pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
     [GeneratedRegex(Pattern)]
-    private static Regex ParameterRegex() => new Regex(Pattern);
+    private static partial Regex ParameterRegex();
     
     public XmlDocument? XmlFile{ get; private set; }
     public IEnumerable<string> QuestionParametersList{ get; private set; } = [];
@@ -58,12 +58,12 @@ public class XmlFileModel(IBrowserFileService fileService){
             return string.Empty;                                                                                                                             
                                                                                                                                                              
         var htmlFormatted = "";
-        var questiontext = questionTextNode.SelectSingleNode("text")?.InnerText ?? "";
+        var questionText = questionTextNode.SelectSingleNode("text")?.InnerText ?? "";
         var rgx = ParameterRegex();                                                                                                                        
-        foreach (Match match in rgx.Matches(questiontext))                                                                                                   
-            questiontext = questiontext.Replace(match.Value, "<span class=\"code\">" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</span>");          
-        htmlFormatted += questiontext;                                                                                                                       
-        return htmlFormatted;                                                                                                                                
+        foreach (Match match in rgx.Matches(questionText))                                                                                                   
+            questionText = questionText.Replace(match.Value, "<span class=\"code\">" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</span>");          
+        htmlFormatted += questionText;                                                                                                                       
+        return htmlFormatted;                                                                                                                       
                                                                                                                                                              
     }
     
