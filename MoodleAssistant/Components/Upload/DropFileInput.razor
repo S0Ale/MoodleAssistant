@@ -2,10 +2,6 @@
 @rendermode InteractiveServer
 @inject IJSRuntime Js
 
-@{
-    //var i = 0;
-}
-
 <div class="file-input-item w-full" id="@InputName">
     @for (var i = 1; i <= MaxFiles; i++){
         <CustomLabel IsVisible="@(_current == i)" OnChange="UploadFile" InputName="@InputName" MaxFiles="@MaxFiles" UploadedFiles="UploadedFiles" 
@@ -26,31 +22,33 @@
 </div>
 
 @code {
-    [Parameter] 
-    public string InputName{ get; set; } = string.Empty;
-    [Parameter]
-    public int MaxFiles { get; init; } = 1;
-    
+    [Parameter] public string InputName{ get; set; } = string.Empty;
+    [Parameter] public int MaxFiles{ get; init; } = 1;
+
     private int _current = 1;
 
     private IJSObjectReference? _module;
-    public Dictionary<int, IBrowserFile> UploadedFiles{ get; private set; } = [];
-    
+    public Dictionary<int, IBrowserFile> UploadedFiles{ get; private set; } =[];
+
     private async Task UploadFile(InputFileChangeEventArgs e){
-        if (UploadedFiles.Count < MaxFiles){
-            UploadedFiles.Add(_current, e.File);
-            // set current to the next available index
-            for (var i = 1; i <= MaxFiles; i++){
-                if (!UploadedFiles.ContainsKey(i)){
-                    _current = i;
-                    break;
-                }
+        if (e.FileCount != 0 && UploadedFiles.Count < MaxFiles){
+            //UploadedFiles.Add(_current, e.File); // need to handle the case of multiple files uploaded at once
+            foreach (var file in e.GetMultipleFiles()){
+                UploadedFiles.Add(_current, file);
+                // set current to the next available index
+                _current = FindNext();
             }
-            
+
             StateHasChanged();
         }
     }
-    
+
+    private int FindNext(){
+        var i = 1;
+        for (;i <= MaxFiles && UploadedFiles.ContainsKey(i); i++);
+        return i;
+    }
+
     public void RemoveFile(string name, int index){
         UploadedFiles.Remove(index);
         _current = index;
