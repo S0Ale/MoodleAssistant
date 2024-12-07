@@ -21,8 +21,8 @@ public static class ErrorMessage
     private const string CsvInvalidHeader = "Please enter a valid CSV file. Use \",\" delimiter. One or more csv header missing.";
     private const string CsvBadFormed = "Please enter a valid CSV file. Check if there are missing fields or if each row contains the same number of columns.";
     
-    // image errors
-    private const string NoImage = "Not Image file found.";
+    // file errors
+    private const string NoValidFile = "No valid file found.";
     
     // Merge errors
     private const string FileMismatch = "File names need to be equal to the names inside the CSV file.";
@@ -44,7 +44,7 @@ public static class ErrorMessage
             Error.NonCsvFile => NonCsvFile,
             Error.CsvInvalidHeader => CsvInvalidHeader,
             Error.CsvBadFormed => CsvBadFormed,
-            Error.NoImage => NoImage,
+            Error.NoValidFile => NoValidFile,
             
             Error.FileMismatch => FileMismatch,
             
@@ -68,7 +68,8 @@ public enum Error
     NonCsvFile,
     CsvInvalidHeader,
     CsvBadFormed,
-    NoImage,
+    
+    NoValidFile,
     
     FileMismatch
 }

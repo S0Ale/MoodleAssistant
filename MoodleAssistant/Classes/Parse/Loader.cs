@@ -57,8 +57,8 @@ public class Loader(IBrowserFileService fileService){
                 throw new ReplicatorException(Error.NullFile);
             if (model.IsEmpty())  
                 throw new ReplicatorException(Error.EmptyFile);
-            if (!model.IsImage(file))
-                throw new ReplicatorException(Error.NoImage);
+            if (!model.IsImage(file) && !model.IsOfficeFile(file))
+                throw new ReplicatorException(Error.NoValidFile);
         }
     }
 }
