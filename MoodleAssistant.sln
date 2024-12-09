@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MoodleAssistant", "MoodleAs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodleAssistant.UnitTest", "MoodleAssistant.UnitTest\MoodleAssistant.UnitTest.csproj", "{095BB1D5-4497-44B2-B7E6-8EDDCB354EED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MoodleAssistant.IntegrationTest", "MoodleAssistant.IntegrationTest\MoodleAssistant.IntegrationTest.csproj", "{2C11D433-3A7A-4CFE-B8BC-AA2701C160FA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{095BB1D5-4497-44B2-B7E6-8EDDCB354EED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{095BB1D5-4497-44B2-B7E6-8EDDCB354EED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{095BB1D5-4497-44B2-B7E6-8EDDCB354EED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C11D433-3A7A-4CFE-B8BC-AA2701C160FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C11D433-3A7A-4CFE-B8BC-AA2701C160FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C11D433-3A7A-4CFE-B8BC-AA2701C160FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C11D433-3A7A-4CFE-B8BC-AA2701C160FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
