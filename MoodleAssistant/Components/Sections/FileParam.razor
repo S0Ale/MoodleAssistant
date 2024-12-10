@@ -54,6 +54,9 @@
     
     private bool _isUploading;
     private bool _successfulUpload;
+    
+    public bool IsUploading => _isUploading;
+    public bool SuccessUpload => _successfulUpload;
 
     private async Task Submit(){
         Thread.Sleep(250);

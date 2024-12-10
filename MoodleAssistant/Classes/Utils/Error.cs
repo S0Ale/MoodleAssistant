@@ -22,7 +22,7 @@ public static class ErrorMessage
     private const string CsvBadFormed = "Please enter a valid CSV file. Check if there are missing fields or if each row contains the same number of columns.";
     
     // file errors
-    private const string NoValidFile = "No valid file found.";
+    private const string NoValidFile = "Invalid file found.";
     
     // Merge errors
     private const string FileMismatch = "File names need to be equal to the names inside the CSV file.";
