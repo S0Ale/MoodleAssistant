@@ -5,8 +5,6 @@
 @using MoodleAssistant.Classes.Parse
 @using MoodleAssistant.Classes.Utils
 @using MoodleAssistant.Components.Sections
-@using Microsoft.AspNetCore.Components.Sections
-@using ValidationException = MoodleAssistant.Classes.Utils.ReplicatorException
 @rendermode InteractiveServer
 @inject NavigationManager NavigationManager;
 @inject ReplicatorState ReplicatorState;
@@ -20,7 +18,7 @@
 <PageTitle>Replicator</PageTitle>
 <div id="content" class="pt-8 pb-8">
     <div class="flex items-center justify-center mx-auto">
-        <div class="pb-9">
+        <div>
             <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
             <form method="post" id="@(mainForm)" @formname="main-upload" @onsubmit="Submit">
                 <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row">
@@ -93,7 +91,7 @@
         // Load XML file
         XmlFileModel xmlModel;
         try{ xmlModel = await loader.LoadXml(_xmlInput.UploadedFiles.Values.FirstOrDefault()!); }
-        catch (ValidationException e){
+        catch (ReplicatorException e){
             SetError(e.Error);
             return;
         }
@@ -102,7 +100,7 @@
         // Load CSV file
         List<string[]> csvList;
         try{ csvList = await loader.LoadCsv(_csvInput.UploadedFiles.Values.FirstOrDefault()!, xmlModel) as List<string[]> ?? []; }
-        catch (ValidationException e){
+        catch (ReplicatorException e){
             SetError(e.Error);
             return;
         }
@@ -122,10 +120,15 @@
                 XmlFile = state.XmlModel.XmlFile,
                 CsvAsList = state.CsvAsList
             };
-            merger.MergeQuestion();
 
-            if (state is{ XmlModel: not null, Merged: not null }) state.Preview = new PreviewModel(state.Merged, state.XmlModel.AnswerCount);
-            else{
+            // Todo: logger
+            try{
+                state.Preview = new PreviewModel(merger.PreviewMerge(), state.XmlModel.AnswerCount);
+                merger.MergeQuestion();
+            }catch (ReplicatorException e){
+                SetError(e.Error);
+                return;
+            }catch (Exception){
                 SetError(Error.Unexpected);
                 return;
             }

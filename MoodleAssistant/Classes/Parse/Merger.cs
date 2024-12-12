@@ -147,6 +147,10 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
         }
     }
 
+    /// <summary>
+    /// Merge function that returns a preview of the merged XML file.
+    /// </summary>
+    /// <returns>The preview XML document.</returns>
     public XmlDocument PreviewMerge(){
         var xml = _xmlDoc.Clone() as XmlDocument ?? new XmlDocument();
         var headerRow = CsvAsList.ElementAt(0);
