@@ -4,7 +4,7 @@ using System.Xml;
 
 namespace MoodleAssistant.Classes.Parse;
 
-public partial class ParameterParser(string str) {
+public partial class ParameterParser(string str, bool previewMode = false){
     private const string Pattern =
         @"\[\*\[\[((?!FILE-|IMAGE-)[^\]*\]]+?)\]\]\*\]|\[\*\[\[FILE-([^\]*\]]+?)\]\]\*\]|\[\*\[\[IMAGE-([^\]*\]]+?)\]\]\*\]";
     [GeneratedRegex(Pattern)]
@@ -17,14 +17,13 @@ public partial class ParameterParser(string str) {
         var matches = ParameterPattern().Matches(Str);
 
         foreach (Match match in matches){
-            //var p = match.Groups[2].Success ? new FileParameter(match) : new Parameter(match);
-            if (match.Groups[3].Success){
-                list.Add(new ImageParameter(match));
-            }else if(match.Groups[2].Success){
-                list.Add(new FileParameter(match));
-            }else{
-                list.Add(new Parameter(match));
-            }
+            if (!previewMode){
+                if (match.Groups[3].Success){
+                    list.Add(new ImageParameter(match));
+                }else if (match.Groups[2].Success){
+                    list.Add(new FileParameter(match));
+                }else list.Add(new Parameter(match));
+            } else list.Add(new Parameter(match));
         }
 
         return list;

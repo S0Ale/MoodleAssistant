@@ -10,8 +10,9 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
     public required XmlDocument XmlFile{
         set => _xmlDoc = value.Clone() as XmlDocument ?? new XmlDocument();
     }
+
     public required IEnumerable<string[]> CsvAsList{ get; init; }
-    
+
     /// <summary>
     /// Searches the specified <c>question</c> node for CDATA sections and if not found, creates them
     /// and adds a file tag for each file parameter.
@@ -26,18 +27,18 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
             (n.InnerText.Contains("[*[[FILE-") || n.InnerText.Contains("[*[[IMAGE-"))
             && n.InnerText.Contains("]]*]")
         ).ToList();
-        
+
         // for each node, replace the text with a CDATA section
         foreach (var node in fileNodes){
             AddFileTags(node); // append a file tag to its parent
-            
+
             if (node.FirstChild is{ NodeType: XmlNodeType.CDATA }) continue;
             var cdata = _xmlDoc.CreateCDataSection(node.InnerText);
             node.RemoveAll();
             node.AppendChild(cdata);
         }
     }
-    
+
     /// <summary>
     /// Creates a XML file tag with the specified name attribute.
     /// </summary>
@@ -58,7 +59,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
     /// <param name="textNode">The XML node containing file parameters.</param>
     private void AddFileTags(XmlNode textNode){
         var parser = new ParameterParser(textNode.OuterXml);
-        var parameters = parser.Match() as List<Parameter> ?? [];
+        var parameters = parser.Match() as List<Parameter> ??[];
         var fileParams = parameters.Where(p => p is FileParameter or ImageParameter).ToList();
         foreach (var fileParam in fileParams){
             var tag = CreateFileTag(fileParam.Name); // I can then find the correct tag later
@@ -77,12 +78,13 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
         try{
             XmlFileParamPhase();
             ReplaceParamPhase();
-        }catch(KeyNotFoundException){
+        }
+        catch (KeyNotFoundException){
             throw new ReplicatorException(Error.FileMismatch);
         }
 
         // remove template question
-        while(_xmlDoc.DocumentElement?.FirstChild?.NodeType == XmlNodeType.Comment)
+        while (_xmlDoc.DocumentElement?.FirstChild?.NodeType == XmlNodeType.Comment)
             _xmlDoc.DocumentElement.RemoveChild(_xmlDoc.DocumentElement.FirstChild);
         if (_xmlDoc.DocumentElement?.FirstChild != null)
             _xmlDoc.DocumentElement?.RemoveChild(_xmlDoc.DocumentElement.FirstChild);
@@ -98,7 +100,8 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
 
         for (var j = 1; j < CsvAsList.Count(); j++){
             // CDATA replace, add file tag Phase
-            var xmlQuestionNode = _xmlDoc.GetElementsByTagName("question").Item(0)?.Clone(); // not appending the node to the document
+            var xmlQuestionNode =
+                _xmlDoc.GetElementsByTagName("question").Item(0)?.Clone(); // not appending the node to the document
             if (xmlQuestionNode == null) continue;
             LookForCData(xmlQuestionNode);
 
@@ -116,6 +119,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
                     tag.InnerText = base64;
                 }
             }
+
             _xmlDoc.DocumentElement?.AppendChild(xmlQuestionNode.Clone());
         }
     }
@@ -125,7 +129,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
     /// </summary>
     private void ReplaceParamPhase(){
         var headerRow = CsvAsList.ElementAt(0); // first row contains parameter names
-        
+
         var xmlQuestionNodes = _xmlDoc.GetElementsByTagName("question").Cast<XmlNode>().ToArray();
         for (var j = 1; j < CsvAsList.Count(); j++){
             var xmlQuestionNode = xmlQuestionNodes[j];
@@ -138,8 +142,52 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
                 var param = parameters[i];
                 param.Replacement = CsvAsList.ElementAt(j)[i]; // put replacements for each parameter
             }
-            
-            xmlQuestionNode.InnerXml = parser.Replace(parameters ?? []);
+
+            xmlQuestionNode.InnerXml = parser.Replace(parameters ??[]);
         }
     }
+
+    public XmlDocument PreviewMerge(){
+        var xml = _xmlDoc.Clone() as XmlDocument ?? new XmlDocument();
+        var headerRow = CsvAsList.ElementAt(0);
+
+        for (var j = 1; j < CsvAsList.Count(); j++){
+            var xmlQuestionNode =
+                xml.GetElementsByTagName("question").Item(0)?.Clone();
+            if (xmlQuestionNode == null) continue;
+            
+            var allNodes = xmlQuestionNode.SelectNodes("//*[text()]");
+            var nodes = allNodes.Cast<XmlNode>();
+            var fileNodes = nodes.Where(n =>
+                n.InnerText.Contains("[*[[") && n.InnerText.Contains("]]*]")
+            ).ToList();
+            
+            foreach (var node in fileNodes){
+                if (node.FirstChild is{ NodeType: XmlNodeType.CDATA }) continue;
+                var cdata = xml.CreateCDataSection(node.InnerText);
+                node.RemoveAll();
+                node.AppendChild(cdata);
+            }
+            
+            var parser = new ParameterParser(xmlQuestionNode.InnerXml, true);
+            var parameters = parser.Match() as List<Parameter>;
+            for (var i = 0; i < headerRow.Length; i++){
+                if (parameters == null) continue;
+                var param = parameters[i];
+                param.Replacement = $"<span class=\"code\">[{CsvAsList.ElementAt(j)[i]}]</span>";
+            }
+
+            xmlQuestionNode.InnerXml = parser.Replace(parameters ?? []);
+            xml.DocumentElement?.AppendChild(xmlQuestionNode);
+        }
+        
+        // remove template question
+        while (xml.DocumentElement?.FirstChild?.NodeType == XmlNodeType.Comment)
+            xml.DocumentElement.RemoveChild(xml.DocumentElement.FirstChild);
+        if (xml.DocumentElement?.FirstChild != null)
+            xml.DocumentElement?.RemoveChild(xml.DocumentElement.FirstChild);
+
+        return xml;
+    }
+    
 }

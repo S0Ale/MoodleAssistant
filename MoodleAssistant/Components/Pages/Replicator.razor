@@ -49,7 +49,7 @@
     @if (_showFileParams){
         <FileParam OnSuccess="() => _showDownload = true" />
     }
-    @if (!_showFileParams && _showDownload){
+    @if (_showDownload){
         <Preview />
     }
 
@@ -70,6 +70,7 @@
     
     private bool _isUploading;
     private bool _successfulUpload;
+    private bool _showPreview;
     private bool _showFileParams;
     private bool _showDownload;
     
