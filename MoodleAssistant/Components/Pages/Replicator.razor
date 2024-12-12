@@ -10,6 +10,7 @@
 @inject ReplicatorState ReplicatorState;
 @inject IBrowserFileService FileService;
 @inject IJSRuntime Js;
+@inject ILogger<Replicator> Logger;
 
 @{
     var mainForm = "main-upload";
@@ -68,7 +69,6 @@
     
     private bool _isUploading;
     private bool _successfulUpload;
-    private bool _showPreview;
     private bool _showFileParams;
     private bool _showDownload;
     
@@ -99,9 +99,14 @@
         
         // Load CSV file
         List<string[]> csvList;
-        try{ csvList = await loader.LoadCsv(_csvInput.UploadedFiles.Values.FirstOrDefault()!, xmlModel) as List<string[]> ?? []; }
-        catch (ReplicatorException e){
+        try{
+            csvList = await loader.LoadCsv(_csvInput.UploadedFiles.Values.FirstOrDefault()!, xmlModel) as List<string[]> ?? []; 
+        }catch (ReplicatorException e){
             SetError(e.Error);
+            return;
+        }catch (Exception e){
+            Logger.LogError(e, e.Message);
+            SetError(Error.Unexpected);
             return;
         }
         ReplicatorState.CsvAsList = csvList;
@@ -128,7 +133,8 @@
             }catch (ReplicatorException e){
                 SetError(e.Error);
                 return;
-            }catch (Exception){
+            }catch (Exception e){
+                Logger.LogError(e, e.Message);
                 SetError(Error.Unexpected);
                 return;
             }

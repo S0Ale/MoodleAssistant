@@ -8,7 +8,7 @@ public static class ErrorMessage
     private const string NoFiles = "Missing files. Please upload your files.";
     private const string NullFile = "Upload a file.";
     private const string EmptyFile = "File cannot be empty.";
-    private const string Unexpected = "An unexpected error occurred.";
+    private const string Unexpected = "An unexpected error occurred. Try reloading the page.";
 
     //xml errors
     private const string NonXmlFile = "File type must be XML.";

@@ -5,6 +5,7 @@
 @using MoodleAssistant.Components.Upload
 @inject ReplicatorState ReplicatorState
 @inject IBrowserFileService FileService;
+@inject ILogger<FileParam> Logger;
 
 @{
     const string paramForm = "param-upload";
@@ -81,7 +82,8 @@
         }catch (ReplicatorException e){
             SetError(e.Error);
             return;
-        }catch (Exception){
+        }catch (Exception e){
+            Logger.LogError(e, e.Message);
             SetError(Error.Unexpected);
             return;
         }
@@ -102,7 +104,8 @@
         }catch (ReplicatorException e){
             SetError(e.Error);
             return;
-        }catch (Exception){
+        }catch (Exception e){
+            Logger.LogError(e, e.Message);
             SetError(Error.Unexpected);
             return;
         }
