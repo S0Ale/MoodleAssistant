@@ -15,7 +15,7 @@
             <p class="text-inherit">File limit reached.</p>
         }
     </span>
-    <InputFile class="hidden" OnChange="(e) => OnChange.InvokeAsync(e)"/>
+    <InputFile class="hidden" OnChange="(e) => OnChange.InvokeAsync(e)" data-testid="@InputName"/>
 </label>
 
 @code {

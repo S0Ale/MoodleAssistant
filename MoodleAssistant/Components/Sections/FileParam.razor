@@ -19,6 +19,7 @@
         <span class="font-semibold">@fileH3</span> Please upload @ReplicatorState.Parameters!.NeededFiles files for every parameter:
     </h3>
     <form enctype="multipart/form-data" method="post" id="@paramForm" @onsubmit="Submit">
+        <AntiforgeryToken />
         <div class="flex flex-row w-max min-w-full justify-center space-x-4">
             @foreach (var param in @params){
                 <div class="flex flex-col justify-center">
@@ -30,16 +31,16 @@
             }
         </div>
         <div class="flex flex-row mt-3 justify-center">
-            <button type="submit" class="btn btn-primary py-1.5 px-6" @onclick="() => _isUploading = true">Upload</button>
+            <button type="submit" class="btn btn-primary py-1.5 px-6" @onclick="() => _isUploading = true" data-testid="snd-submit">Upload</button>
             <button class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files">Clear</button>
         </div>
         <div class="flex flex-row md:w-fit md:mx-auto justify-center error-container">
             <Message @ref="_dialog" MsgText="@(ErrorMessage.GetErrorMessage(Error))" Type="MessageType.Error" CanClose="true"/>
             @if (_isUploading){
-                <Message MsgText="Uploading..." Type="MessageType.Info" CanClose="false" />
+                <Message MsgText="Uploading..." Type="MessageType.Info" CanClose="false"/>
             }
             @if (_successfulUpload){
-                <Message MsgText="Files uploaded successfully." Type="MessageType.Success" CanClose="true" />
+                <Message MsgText="Files uploaded successfully." Type="MessageType.Success" CanClose="true"/>
             }
         </div>
     </form>

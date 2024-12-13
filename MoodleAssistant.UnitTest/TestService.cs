@@ -2,7 +2,7 @@
 
 namespace MoodleAssistant.UnitTest;
 
-internal class TestService{
+internal abstract class TestService{
     private const string _assetsDir = @"C:\Users\user\Desktop\UNI\MoodleAssistant\MoodleAssistant.UnitTest\assets";
     
     private static byte[] GetBytes(string fileName){

@@ -22,21 +22,22 @@
         <div>
             <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
             <form method="post" id="@(mainForm)" @formname="main-upload" @onsubmit="Submit">
+                <AntiforgeryToken />
                 <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row">
                     <DropFileInput @ref="_xmlInput" InputName="xml-input"/>
                     <DropFileInput @ref="_csvInput" InputName="csv-input"/>
                 </div>
                 <div class="flex flex-row mt-3">
-                    <button type="submit" class="btn btn-primary py-1.5 px-6" @onclick="() => _isUploading = true">Upload</button>
+                    <button type="submit" class="btn btn-primary py-1.5 px-6" @onclick="() => _isUploading = true" data-testid="main-submit">Upload</button>
                     <button type="button" class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files" @onclick="ClearForm">Clear</button>
                 </div>
                 <div class="error-container">
                     <Message @ref="_dialog" MsgText="@(ErrorMessage.GetErrorMessage(Error))" Type="MessageType.Error" CanClose="true"/>
                     @if (_isUploading){
-                        <Message MsgText="Uploading..." Type="MessageType.Info" CanClose="false" />
+                        <Message MsgText="Uploading..." Type="MessageType.Info" CanClose="false"/>
                     }
                     @if (_successfulUpload){
-                        <Message MsgText="Files uploaded successfully." Type="MessageType.Success" CanClose="true" />
+                        <Message MsgText="Files uploaded successfully." Type="MessageType.Success" CanClose="true"/>
                     }
                 </div>
             </form>
@@ -54,7 +55,7 @@
 
     <div class="flex flex-row justify-center py-6 border-t border-zinc-200">
         @if (_showDownload){
-            <button class="btn btn-primary py-1.5 px-5 mr-4" @onclick="Download">Download</button>
+            <button class="btn btn-primary py-1.5 px-5 mr-4" @onclick="Download" data-testid="download">Download</button>
         }
         <button class="btn btn-secondary py-1.5 px-5" @onclick="Reset">Reset</button>
     </div>
@@ -126,7 +127,6 @@
                 CsvAsList = state.CsvAsList
             };
 
-            // Todo: logger
             try{
                 state.Preview = new PreviewModel(merger.PreviewMerge(), state.XmlModel.AnswerCount);
                 merger.MergeQuestion();
