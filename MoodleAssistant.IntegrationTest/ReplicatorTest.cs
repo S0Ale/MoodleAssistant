@@ -12,10 +12,14 @@ public class ReplicatorTest : PageTest{
     private string _url = "https://localhost:7085/replicator";
     //private string _main
     //private const string _screenDir = @"C:\Users\user\Desktop\UNI\MoodleAssistant\MoodleAssistant.IntegrationTest\screenshots";
+    
+    [SetUp]
+    public async Task Setup(){
+        await Page.GotoAsync(_url);
+    }
 
     [Test]
     public async Task UploadFiles_BasicFiles(){
-        await Page.GotoAsync(_url);
         var xml = Page.GetByTestId("xml-input");
         var csv = Page.GetByTestId("csv-input");
         
@@ -34,4 +38,7 @@ public class ReplicatorTest : PageTest{
 
         Assert.That(await downloadBtn.IsVisibleAsync(), Is.True);
     }
+    
+    [Test]
+    
 }
