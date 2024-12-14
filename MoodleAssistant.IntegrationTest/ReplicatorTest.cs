@@ -11,7 +11,7 @@ public class ReplicatorTest : PageTest{
     
     private string _url = "https://localhost:7085/replicator";
     //private string _main
-    private const string _screenDir = @"C:\Users\user\Desktop\UNI\MoodleAssistant\MoodleAssistant.IntegrationTest\screenshots";
+    //private const string _screenDir = @"C:\Users\user\Desktop\UNI\MoodleAssistant\MoodleAssistant.IntegrationTest\screenshots";
 
     [Test]
     public async Task UploadFiles_BasicFiles(){
@@ -23,18 +23,12 @@ public class ReplicatorTest : PageTest{
         await csv.SetInputFilesAsync(TestService.GetPath("MoodleQuestionOk.csv"));
         
         await Page.GetByTestId("main-submit").ClickAsync();
-        
-        await Page.ScreenshotAsync(new()
-        {
-            Path = Path.Combine(_screenDir, "screenshot-submit.png"),
-        });
         // Wait for the download button to appear, with a 10-second timeout
         IElementHandle? downloadBtn = null;
         try{
             downloadBtn = await Page.WaitForSelectorAsync("[data-testid=download]",
                 new PageWaitForSelectorOptions{ Timeout = 10000 });
-        }
-        catch{
+        }catch{
             Assert.Fail("Download button did not appear");
         }
 

@@ -32,7 +32,7 @@
         </div>
         <div class="flex flex-row mt-3 justify-center">
             <button type="submit" class="btn btn-primary py-1.5 px-6" @onclick="() => _isUploading = true" data-testid="snd-submit">Upload</button>
-            <button class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files">Clear</button>
+            <button type="button" class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files" @onclick="ClearForm">Clear</button>
         </div>
         <div class="flex flex-row md:w-fit md:mx-auto justify-center error-container">
             <Message @ref="_dialog" MsgText="@(ErrorMessage.GetErrorMessage(Error))" Type="MessageType.Error" CanClose="true"/>
@@ -61,6 +61,9 @@
     public bool SuccessUpload => _successfulUpload;
 
     private async Task Submit(){
+        _successfulUpload = false;
+        await OnSuccess.InvokeAsync(false);
+        
         Thread.Sleep(250);
         var state = ReplicatorState;
         if (state == null){
@@ -114,9 +117,15 @@
 
         _isUploading = false;
         _successfulUpload = true;
-        await OnSuccess.InvokeAsync();
+        await OnSuccess.InvokeAsync(true);
     }
-    
+
+    private void ClearForm(){
+        foreach (var input in _inputs.Values){
+            input.ClearFiles();
+        }
+    }
+
     private void SetError(Error err){
         _isUploading = false;
         FileService.DeleteAllFiles();
