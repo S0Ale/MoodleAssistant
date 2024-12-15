@@ -11,34 +11,45 @@ public class ReplicatorTest : PageTest{
     
     private string _url = "https://localhost:7085/replicator";
     //private string _main
-    //private const string _screenDir = @"C:\Users\user\Desktop\UNI\MoodleAssistant\MoodleAssistant.IntegrationTest\screenshots";
-    
-    [SetUp]
-    public async Task Setup(){
-        await Page.GotoAsync(_url);
-    }
 
-    [Test]
-    public async Task UploadFiles_BasicFiles(){
+    [TestCase("MoodleQuestionOk.xml", "MoodleQuestionOk.csv")]
+    [TestCase("multichoice.xml", "multichoice.csv")]
+    [TestCase("Multichoice1.xml", "Multichoice1.csv")]
+    [TestCase("trueFalse.xml", "trueFalse.csv")]
+    public async Task UploadFiles_BasicQuestion(string xmlName, string csvName){
+        await Page.GotoAsync(_url);
         var xml = Page.GetByTestId("xml-input");
         var csv = Page.GetByTestId("csv-input");
         
-        await xml.SetInputFilesAsync(TestService.GetPath("MoodleQuestionOk.xml"));
-        await csv.SetInputFilesAsync(TestService.GetPath("MoodleQuestionOk.csv"));
+        await xml.SetInputFilesAsync(TestService.GetPath(xmlName));
+        await csv.SetInputFilesAsync(TestService.GetPath(csvName));
         
         await Page.GetByTestId("main-submit").ClickAsync();
         // Wait for the download button to appear, with a 10-second timeout
-        IElementHandle? downloadBtn = null;
+        await TestService.Screenshot(Page, $"upload-{Path.GetFileNameWithoutExtension(xmlName)}");
+        /*
         try{
             downloadBtn = await Page.WaitForSelectorAsync("[data-testid=download]",
                 new PageWaitForSelectorOptions{ Timeout = 10000 });
         }catch{
+            await TestService.Screenshot(Page, $"error-{Path.GetFileNameWithoutExtension(xmlName)}");
             Assert.Fail("Download button did not appear");
         }
+        */
 
-        Assert.That(await downloadBtn.IsVisibleAsync(), Is.True);
+        await TestService.Screenshot(Page, $"success-{Path.GetFileNameWithoutExtension(xmlName)}");
+        await Expect(Page.GetByTestId("download")).ToBeVisibleAsync(new(){Timeout = 10000});
     }
-    
-    [Test]
-    
+
+    [Test][Ignore("This test is not working")]
+    public async Task UploadFiles_QuestionWithImage(){
+        var xml = Page.GetByTestId("xml-input");
+        var csv = Page.GetByTestId("csv-input");
+        
+        await xml.SetInputFilesAsync(TestService.GetPath("MoodleOkWithImage.xml"));
+        await csv.SetInputFilesAsync(TestService.GetPath("MoodleOkWithImage.csv"));
+        
+        await Page.GetByTestId("main-submit").ClickAsync();
+    }
+
 }
