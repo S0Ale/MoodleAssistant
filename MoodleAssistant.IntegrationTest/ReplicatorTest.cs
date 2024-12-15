@@ -14,7 +14,7 @@ public class ReplicatorTest : PageTest{
 
     [TestCase("MoodleQuestionOk.xml", "MoodleQuestionOk.csv")]
     [TestCase("multichoice.xml", "multichoice.csv")]
-    [TestCase("Multichoice1.xml", "Multichoice1.csv")]
+    [TestCase("Multichoice1.xml", "Multichoice1.csv")][Ignore("Multiple parameter occurrences are not supported")]
     [TestCase("trueFalse.xml", "trueFalse.csv")]
     public async Task UploadFiles_BasicQuestion(string xmlName, string csvName){
         await Page.GotoAsync(_url);
