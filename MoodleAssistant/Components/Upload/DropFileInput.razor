@@ -5,7 +5,10 @@
 <div class="file-input-item w-full" id="@InputName">
     @for (var i = 1; i <= MaxFiles; i++){
         <CustomLabel IsVisible="@(_current == i)" OnChange="UploadFile" InputName="@InputName" MaxFiles="@MaxFiles" UploadedFiles="UploadedFiles" 
-                     id="@($"{InputName}-{i}")"/>
+                     id="@($"{InputName}-{i}")">
+            @ChildContent
+            <p class="text-inherit">File limit: @MaxFiles</p>
+        </CustomLabel>
     }
     @if (_current > MaxFiles){
         <div class="min-w-64 py-10 px-6 w-full drop-zone">
@@ -22,6 +25,8 @@
 </div>
 
 @code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; }
     [Parameter] public string InputName{ get; set; } = string.Empty;
     [Parameter] public int MaxFiles{ get; init; } = 1;
 

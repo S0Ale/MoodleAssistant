@@ -24,8 +24,12 @@
             <form method="post" id="@(mainForm)" @formname="main-upload" @onsubmit="Submit">
                 <AntiforgeryToken />
                 <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row">
-                    <DropFileInput @ref="_xmlInput" InputName="xml-input"/>
-                    <DropFileInput @ref="_csvInput" InputName="csv-input"/>
+                    <DropFileInput @ref="_xmlInput" InputName="xml-input">
+                        <p class="text-inherit">Drop XML here, or <span class="text-blue-500 underline ml-[4px]">browse</span>.</p>
+                    </DropFileInput>
+                    <DropFileInput @ref="_csvInput" InputName="csv-input">
+                        <p class="text-inherit">Drop CSV here, or <span class="text-blue-500 underline ml-[4px]">browse</span>.</p>
+                    </DropFileInput>
                 </div>
                 <div class="flex flex-row mt-3">
                     <button type="submit" class="btn btn-primary py-1.5 px-6" @onclick="() => _isUploading = true" data-testid="main-submit">Upload</button>
