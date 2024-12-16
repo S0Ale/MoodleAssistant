@@ -137,14 +137,26 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
             // Get Parameters
             var parser = new ParameterParser(xmlQuestionNode.InnerXml);
             var parameters = parser.Match() as List<Parameter>;
-            for (var i = 0; i < headerRow.Length; i++){
+            for(var i = 0; i < headerRow.Length; i++){
                 if (parameters == null) continue;
                 var param = parameters[i];
                 param.Replacement = CsvAsList.ElementAt(j)[i]; // put replacements for each parameter
             }
+            //support for multiple params occurrences
+            //if (parameters == null) continue;
+            //foreach (var param in parameters){
+                //param.Replacement = FindInCsv(CsvAsList, j, param.Name);
+            //}
 
             xmlQuestionNode.InnerXml = parser.Replace(parameters ??[]);
         }
+    }
+
+    private string FindInCsv(IEnumerable<string[]> csv, int i, string paramName){
+        var headerRow = csv.ElementAt(0);
+        var index = Array.IndexOf(headerRow, paramName);
+        if (index == -1) throw new KeyNotFoundException();
+        return csv.ElementAt(i)[index];
     }
 
     /// <summary>
@@ -180,6 +192,11 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
                 var param = parameters[i];
                 param.Replacement = $"<span class=\"code\">[{CsvAsList.ElementAt(j)[i]}]</span>";
             }
+            //support for multiple params occurrences
+            //if (parameters == null) continue;
+            //foreach (var param in parameters){
+                //param.Replacement = $"<span class=\"code\">[{FindInCsv(CsvAsList, j, param.Name)}]</span>";
+            //}
 
             xmlQuestionNode.InnerXml = parser.Replace(parameters ?? []);
             xml.DocumentElement?.AppendChild(xmlQuestionNode);
