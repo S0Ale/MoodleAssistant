@@ -103,6 +103,13 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
             var xmlQuestionNode =
                 _xmlDoc.GetElementsByTagName("question").Item(0)?.Clone(); // not appending the node to the document
             if (xmlQuestionNode == null) continue;
+            
+            //Look for the name tag, if it is not present, create it
+            var questionName = xmlQuestionNode.SelectSingleNode("//name");
+            if (questionName != null){
+                questionName.InnerText = $"{questionName.InnerText}-{j}";
+            }
+            
             LookForCData(xmlQuestionNode);
 
             // Tag Replace Phase
