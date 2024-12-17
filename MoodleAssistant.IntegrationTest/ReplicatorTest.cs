@@ -26,7 +26,7 @@ public class ReplicatorTest : PageTest{
         
         await Page.GetByTestId("main-submit").ClickAsync();
         // Wait for the download button to appear, with a 10-second timeout
-        await TestService.Screenshot(Page, $"upload-{Path.GetFileNameWithoutExtension(xmlName)}");
+        await TestService.Screenshot(Page, $"upload-{Path.GetFileNameWithoutExtension(xmlName)}", 0);
         /*
         try{
             downloadBtn = await Page.WaitForSelectorAsync("[data-testid=download]",
@@ -37,7 +37,7 @@ public class ReplicatorTest : PageTest{
         }
         */
 
-        await TestService.Screenshot(Page, $"success-{Path.GetFileNameWithoutExtension(xmlName)}");
+        await TestService.Screenshot(Page, $"success-{Path.GetFileNameWithoutExtension(xmlName)}", 0);
         await Expect(Page.GetByTestId("download")).ToBeVisibleAsync(new(){Timeout = 10000});
     }
 
@@ -50,6 +50,17 @@ public class ReplicatorTest : PageTest{
         await csv.SetInputFilesAsync(TestService.GetPath("MoodleOkWithImage.csv"));
         
         await Page.GetByTestId("main-submit").ClickAsync();
+    }
+
+    [Test]
+    public async Task Screen_Test(){
+        await Page.GotoAsync(_url);
+        var xml = Page.GetByTestId("xml-input");
+        var csv = Page.GetByTestId("csv-input");
+
+        await TestService.Screenshot(Page, "Start-file-upload", 0);
+
+        Assert.Pass();
     }
 
 }
