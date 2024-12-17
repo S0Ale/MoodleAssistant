@@ -137,16 +137,22 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
             // Get Parameters
             var parser = new ParameterParser(xmlQuestionNode.InnerXml);
             var parameters = parser.Match() as List<Parameter>;
+            /*
             for(var i = 0; i < headerRow.Length; i++){
                 if (parameters == null) continue;
                 var param = parameters[i];
                 param.Replacement = CsvAsList.ElementAt(j)[i]; // put replacements for each parameter
             }
+            */
+            
             //support for multiple params occurrences
-            //if (parameters == null) continue;
-            //foreach (var param in parameters){
-                //param.Replacement = FindInCsv(CsvAsList, j, param.Name);
-            //}
+            if (parameters == null) continue;
+            foreach (var param in parameters){
+                var name = param.Name;
+                name = param is FileParameter ? $"FILE-{param.Name}" : name;
+                name = param is ImageParameter ? $"IMAGE-{param.Name}" : name;
+                param.Replacement = FindInCsv(CsvAsList, j, name);
+            }
 
             xmlQuestionNode.InnerXml = parser.Replace(parameters ??[]);
         }
@@ -187,16 +193,23 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
             
             var parser = new ParameterParser(xmlQuestionNode.InnerXml, true);
             var parameters = parser.Match() as List<Parameter>;
+            
+            /*
             for (var i = 0; i < headerRow.Length; i++){
                 if (parameters == null) continue;
                 var param = parameters[i];
                 param.Replacement = $"<span class=\"code\">[{CsvAsList.ElementAt(j)[i]}]</span>";
             }
+            */
+
             //support for multiple params occurrences
-            //if (parameters == null) continue;
-            //foreach (var param in parameters){
-                //param.Replacement = $"<span class=\"code\">[{FindInCsv(CsvAsList, j, param.Name)}]</span>";
-            //}
+            if (parameters == null) continue;
+            foreach (var param in parameters){
+                var name = param.Name;
+                name = param is FileParameter ? $"FILE-{param.Name}" : name;
+                name = param is ImageParameter ? $"IMAGE-{param.Name}" : name;
+                param.Replacement = $"<span class=\"code\">[{FindInCsv(CsvAsList, j, name)}]</span>";
+            }
 
             xmlQuestionNode.InnerXml = parser.Replace(parameters ?? []);
             xml.DocumentElement?.AppendChild(xmlQuestionNode);

@@ -23,7 +23,12 @@ public partial class ParameterParser(string str, bool previewMode = false){
                 }else if (match.Groups[2].Success){
                     list.Add(new FileParameter(match));
                 }else list.Add(new Parameter(match));
-            } else list.Add(new Parameter(match));
+            }else{
+                var name = match.Groups[1].Value;
+                name = match.Groups[2].Success ? $"FILE-{match.Groups[2].Value}" : name;
+                name = match.Groups[3].Success ? $"IMAGE-{match.Groups[3].Value}" : name;
+                list.Add(new Parameter(match, name));
+            }
         }
 
         return list;
