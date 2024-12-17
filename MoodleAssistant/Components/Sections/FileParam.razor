@@ -12,6 +12,18 @@
     var @params = ReplicatorState.Parameters?.GetFileParameters();
     var s = @params is{ Count: > 1 } ? "s" : "";
     var fileH3 = $"{@params!.Count} file parameter{s} found.";
+    
+    // Get needed file names for each parameter
+    Dictionary<string, string[]> neededFileNames = new();
+    var headerRow = ReplicatorState.CsvAsList.ElementAt(0);
+    foreach (var param in @params){
+        var files = new string[ReplicatorState.Parameters!.NeededFiles];
+        for (int i = 0; i < ReplicatorState.Parameters!.NeededFiles; i++){
+            var index = Array.IndexOf(headerRow, param.Name);
+            files[i] = ReplicatorState.CsvAsList.ElementAt(i + 1)[index];
+        }
+        neededFileNames.Add(param.Name, files);
+    }
 }
 
 <div class="flex flex-col p-6 border-t border-zinc-200">
@@ -24,6 +36,15 @@
             @foreach (var param in @params){
                 <div class="flex flex-col justify-center">
                     <span class="p-3 code text-center">@param.Match.Value</span>
+                    <p>
+                        <span class="font-semibold">Needed names:</span>
+                        @for(int i = 0; i < neededFileNames[param.Name].Length; i++){
+                            var name = neededFileNames[param.Name][i];
+                            if(i != neededFileNames[param.Name].Length - 1)
+                                name = $"{name}, ";
+                            <span>@name</span>
+                        }
+                    </p>
                     <div class="p-3">
                         <DropFileInput @ref="_inputs[param.Name]" InputName="@($"{param.Name}-input")" MaxFiles="@ReplicatorState.Parameters!.NeededFiles">
                             <p class="text-inherit">Drop files here, or <span class="text-blue-500 underline ml-[4px]">browse</span>.</p>
@@ -59,8 +80,8 @@
     private bool _isUploading;
     private bool _successfulUpload;
     
-    public bool IsUploading => _isUploading;
-    public bool SuccessUpload => _successfulUpload;
+    public bool IsUploading => _isUploading; // testing
+    public bool SuccessUpload => _successfulUpload; // testing
 
     private async Task Submit(){
         _successfulUpload = false;

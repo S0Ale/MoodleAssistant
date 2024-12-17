@@ -5,7 +5,7 @@ namespace MoodleAssistant.Classes.Parse;
 
 public class FileParameter : Parameter{
     public FileParameter(Match m) : base(m){
-        Name = m.Groups[2].Value;
+        Name = $"FILE-{m.Groups[2].Value}";
     }
     
     public override StringBuilder Replace(StringBuilder builder){

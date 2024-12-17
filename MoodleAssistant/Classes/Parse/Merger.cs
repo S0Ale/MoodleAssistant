@@ -143,10 +143,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
             var parser = new ParameterParser(xmlQuestionNode.InnerXml);
             if (parser.Match() is not List<Parameter> parameters) continue;
             foreach (var param in parameters){
-                var name = param.Name;
-                name = param is FileParameter ? $"FILE-{param.Name}" : name;
-                name = param is ImageParameter ? $"IMAGE-{param.Name}" : name;
-                param.Replacement = FindInCsv(CsvAsList, j, name);
+                param.Replacement = FindInCsv(CsvAsList, j, param.Name);
             }
 
             xmlQuestionNode.InnerXml = parser.Replace(parameters);
@@ -198,10 +195,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
             var parser = new ParameterParser(xmlQuestionNode.InnerXml, true);
             if (parser.Match() is not List<Parameter> parameters) continue;
             foreach (var param in parameters){
-                var name = param.Name;
-                name = param is FileParameter ? $"FILE-{param.Name}" : name;
-                name = param is ImageParameter ? $"IMAGE-{param.Name}" : name;
-                param.Replacement = $"<span class=\"code\">[{FindInCsv(CsvAsList, j, name)}]</span>";
+                param.Replacement = $"<span class=\"code\">[{FindInCsv(CsvAsList, j, param.Name)}]</span>";
             }
 
             xmlQuestionNode.InnerXml = parser.Replace(parameters);

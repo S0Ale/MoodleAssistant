@@ -5,7 +5,7 @@ namespace MoodleAssistant.Classes.Parse;
 
 public class ImageParameter : FileParameter{
     public ImageParameter(Match m) : base(m){
-        Name = m.Groups[3].Value;
+        Name = $"IMAGE-{m.Groups[3].Value}";
     }
     
     public override StringBuilder Replace(StringBuilder builder){
