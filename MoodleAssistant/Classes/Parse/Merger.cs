@@ -137,13 +137,6 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
             // Get Parameters
             var parser = new ParameterParser(xmlQuestionNode.InnerXml);
             var parameters = parser.Match() as List<Parameter>;
-            /*
-            for(var i = 0; i < headerRow.Length; i++){
-                if (parameters == null) continue;
-                var param = parameters[i];
-                param.Replacement = CsvAsList.ElementAt(j)[i]; // put replacements for each parameter
-            }
-            */
             
             //support for multiple params occurrences
             if (parameters == null) continue;
@@ -158,6 +151,14 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
         }
     }
 
+    /// <summary>
+    /// Finds the value of a parameter in the CSV file.
+    /// </summary>
+    /// <param name="csv">The contents of the csv file.</param>
+    /// <param name="i">Index of the corresponding csv line.</param>
+    /// <param name="paramName">The name of the parameter.</param>
+    /// <returns>The value associated with the specified parameter name.</returns>
+    /// <exception cref="KeyNotFoundException">Parameter name is not present in the csv.</exception>
     private string FindInCsv(IEnumerable<string[]> csv, int i, string paramName){
         var headerRow = csv.ElementAt(0);
         var index = Array.IndexOf(headerRow, paramName);
@@ -194,14 +195,6 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
             var parser = new ParameterParser(xmlQuestionNode.InnerXml, true);
             var parameters = parser.Match() as List<Parameter>;
             
-            /*
-            for (var i = 0; i < headerRow.Length; i++){
-                if (parameters == null) continue;
-                var param = parameters[i];
-                param.Replacement = $"<span class=\"code\">[{CsvAsList.ElementAt(j)[i]}]</span>";
-            }
-            */
-
             //support for multiple params occurrences
             if (parameters == null) continue;
             foreach (var param in parameters){
