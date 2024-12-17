@@ -128,18 +128,13 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
     /// Second phase of the XML file merging process. This function replaces the parameters in the XML file with their correct values.
     /// </summary>
     private void ReplaceParamPhase(){
-        var headerRow = CsvAsList.ElementAt(0); // first row contains parameter names
-
         var xmlQuestionNodes = _xmlDoc.GetElementsByTagName("question").Cast<XmlNode>().ToArray();
         for (var j = 1; j < CsvAsList.Count(); j++){
             var xmlQuestionNode = xmlQuestionNodes[j];
 
             // Get Parameters
             var parser = new ParameterParser(xmlQuestionNode.InnerXml);
-            var parameters = parser.Match() as List<Parameter>;
-            
-            //support for multiple params occurrences
-            if (parameters == null) continue;
+            if (parser.Match() is not List<Parameter> parameters) continue;
             foreach (var param in parameters){
                 var name = param.Name;
                 name = param is FileParameter ? $"FILE-{param.Name}" : name;
@@ -147,7 +142,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
                 param.Replacement = FindInCsv(CsvAsList, j, name);
             }
 
-            xmlQuestionNode.InnerXml = parser.Replace(parameters ??[]);
+            xmlQuestionNode.InnerXml = parser.Replace(parameters);
         }
     }
 
@@ -159,11 +154,12 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
     /// <param name="paramName">The name of the parameter.</param>
     /// <returns>The value associated with the specified parameter name.</returns>
     /// <exception cref="KeyNotFoundException">Parameter name is not present in the csv.</exception>
-    private string FindInCsv(IEnumerable<string[]> csv, int i, string paramName){
-        var headerRow = csv.ElementAt(0);
+    private static string FindInCsv(IEnumerable<string[]> csv, int i, string paramName){
+        var stringsEnumerable = csv.ToList();
+        var headerRow = stringsEnumerable.ElementAt(0);
         var index = Array.IndexOf(headerRow, paramName);
         if (index == -1) throw new KeyNotFoundException();
-        return csv.ElementAt(i)[index];
+        return stringsEnumerable.ElementAt(i)[index];
     }
 
     /// <summary>
@@ -193,10 +189,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
             }
             
             var parser = new ParameterParser(xmlQuestionNode.InnerXml, true);
-            var parameters = parser.Match() as List<Parameter>;
-            
-            //support for multiple params occurrences
-            if (parameters == null) continue;
+            if (parser.Match() is not List<Parameter> parameters) continue;
             foreach (var param in parameters){
                 var name = param.Name;
                 name = param is FileParameter ? $"FILE-{param.Name}" : name;
@@ -204,7 +197,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
                 param.Replacement = $"<span class=\"code\">[{FindInCsv(CsvAsList, j, name)}]</span>";
             }
 
-            xmlQuestionNode.InnerXml = parser.Replace(parameters ?? []);
+            xmlQuestionNode.InnerXml = parser.Replace(parameters);
             xml.DocumentElement?.AppendChild(xmlQuestionNode);
         }
         
