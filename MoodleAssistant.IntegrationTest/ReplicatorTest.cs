@@ -58,7 +58,12 @@ public class ReplicatorTest : PageTest{
         var xml = Page.GetByTestId("xml-input");
         var csv = Page.GetByTestId("csv-input");
 
-        await TestService.Screenshot(Page, "Start-file-upload", 0);
+        await TestService.Screenshot(Page, "start-file-upload", 0);
+        
+        await xml.SetInputFilesAsync(TestService.GetPath("MoodleQuestionOk.xml"));
+        await csv.SetInputFilesAsync(TestService.GetPath("MoodleQuestionOk.csv"));
+        
+        await TestService.Screenshot(Page, "after-file-upload", 0);
 
         Assert.Pass();
     }

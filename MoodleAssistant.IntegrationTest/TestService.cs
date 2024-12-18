@@ -18,7 +18,9 @@ internal abstract class TestService{
     public static async Task Screenshot(IPage page, string name, float y){
         var c = new Clip(){
             X = 0,
-            Y = y
+            Y = y,
+            Width = 1920,
+            Height = 1080
         };
         await page.ScreenshotAsync(new(){
             Path = Path.Combine(_screenDir, $"screen-{name}.png"),
