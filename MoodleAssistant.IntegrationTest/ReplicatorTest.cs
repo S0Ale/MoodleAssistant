@@ -60,11 +60,11 @@ public class ReplicatorTest : PageTest{
 
         await TestService.Screenshot(Page, "start-file-upload");
         
-        await xml.SetInputFilesAsync(TestService.GetPath("MoodleQuestionOk.xml"));
-        await csv.SetInputFilesAsync(TestService.GetPath("MoodleQuestionOk.csv"));
+        await xml.SetInputFilesAsync(TestService.GetPath("MoodleOkWithImage.xml"));
+        await csv.SetInputFilesAsync(TestService.GetPath("MoodleOkWithImage.csv"));
         
         await Page.GetByTestId("main-submit").ClickAsync();
-        var downloadBtn = await Page.WaitForSelectorAsync("[data-testid=download]",
+        var reset = await Page.WaitForSelectorAsync("[data-testid=reset]",
             new PageWaitForSelectorOptions{ Timeout = 10000 });
         
         await TestService.Screenshot(Page, "after-file-upload", true);
