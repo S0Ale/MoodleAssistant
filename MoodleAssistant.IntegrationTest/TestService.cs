@@ -15,16 +15,10 @@ internal abstract class TestService{
         return File.ReadAllBytes(Path.Combine(_assetsDir, fileName));
     }
 
-    public static async Task Screenshot(IPage page, string name, float y){
-        var c = new Clip(){
-            X = 0,
-            Y = y,
-            Width = 1920,
-            Height = 1080
-        };
+    public static async Task Screenshot(IPage page, string name, bool fullPage = false){
         await page.ScreenshotAsync(new(){
             Path = Path.Combine(_screenDir, $"screen-{name}.png"),
-            Clip = c
+            FullPage = fullPage
         });
     }
 
