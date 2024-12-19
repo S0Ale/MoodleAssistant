@@ -2,6 +2,7 @@
 
 namespace MoodleAssistant.Services;
 
+// Represents a service that manages the uploaded BrowserFiles during a user session.
 public interface IBrowserFileService{
     public Task<bool> SaveFile(IBrowserFile file, string fileName);
 

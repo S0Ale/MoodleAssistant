@@ -6,6 +6,7 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Classes.Models;
 
+// This class is used to handle the CSV file uploaded by the user, mostly validation.
 public class CsvFileModel(IBrowserFileService fileService){
     public static string FileName => "CSV";
     

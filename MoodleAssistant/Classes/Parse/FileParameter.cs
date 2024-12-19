@@ -3,6 +3,9 @@ using System.Text.RegularExpressions;
 
 namespace MoodleAssistant.Classes.Parse;
 
+/// <summary>
+/// Represents a file-type parameter in a template question.
+/// </summary>
 public class FileParameter : Parameter{
     public FileParameter(Match m) : base(m){
         Name = $"FILE-{m.Groups[2].Value}";

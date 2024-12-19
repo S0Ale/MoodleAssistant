@@ -4,6 +4,11 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Classes.Parse;
 
+/// <summary>
+/// Represents a class that merges the template XML file with the CSV file to create a new XML file.
+/// </summary>
+/// <param name="state">The current state of the program, during the current user session.</param>
+/// <param name="fileService">A service to manage saved files</param>
 public class Merger(ReplicatorState state, IBrowserFileService fileService){
     private XmlDocument _xmlDoc = null!;
 

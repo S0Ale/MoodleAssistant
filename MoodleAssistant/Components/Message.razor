@@ -9,6 +9,10 @@
             msgClass = "error-dialog";
             textClass = "text-red-600";
             break;
+        case MessageType.Warning:
+            msgClass = "warning-dialog";
+            textClass = "text-amber-600";
+            break;
         case MessageType.Info:
             msgClass = "info-dialog";
             textClass = "text-blue-600";
@@ -46,8 +50,7 @@
     
     protected override void OnInitialized(){
         _visible = Type != MessageType.Error;
-    } 
-    
+    }
     
     public void Show(){
         _visible = true;

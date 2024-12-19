@@ -5,6 +5,7 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Classes.Parse;
 
+// This class is used to load the files uploaded by the user (save, validation).
 public class Loader(IBrowserFileService fileService){
     public async Task<XmlFileModel> LoadXml(IBrowserFile file){
         var model = new XmlFileModel(fileService);

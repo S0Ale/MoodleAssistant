@@ -4,6 +4,9 @@ using MoodleAssistant.Classes.Models;
 
 namespace MoodleAssistant.Services;
 
+/// <summary>
+/// Represents the current state of the program, during the current user session.
+/// </summary>
 public class ReplicatorState{
     public Dictionary<string, IBrowserFile> MainFiles{ get; private set; } = new Dictionary<string, IBrowserFile>();
     public Dictionary<string, IBrowserFile[]> ParamFiles{ get; private set; } = new Dictionary<string, IBrowserFile[]>();

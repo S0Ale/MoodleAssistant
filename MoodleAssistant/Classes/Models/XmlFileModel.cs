@@ -6,6 +6,7 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Classes.Models;
 
+// This class is used to manage the XML file uploaded by the user: format parts for analysis, validation.
 public partial class XmlFileModel(IBrowserFileService fileService){
     public static string FileName => "XML";
     private const string Pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
