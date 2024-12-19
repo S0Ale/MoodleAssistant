@@ -105,7 +105,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
             if (xmlQuestionNode == null) continue;
             
             //Look for the name tag, if it is not present, create it
-            var questionName = xmlQuestionNode.SelectSingleNode("//name");
+            var questionName = xmlQuestionNode.SelectSingleNode("//name/text");
             if (questionName != null){
                 questionName.InnerText = $"{questionName.InnerText}-{j}";
             }
