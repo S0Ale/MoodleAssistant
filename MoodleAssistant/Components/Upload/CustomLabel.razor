@@ -9,13 +9,6 @@
     <span class="flex flex-col items-center text-gray-500">
         @if (UploadedFiles.Count < MaxFiles){
             @ChildContent
-            <!--Need to put custom text here
-            <p class="text-inherit">Drop file here, or <span class="text-blue-500 underline ml-[4px]">browse</span>.</p>
-            <p class="text-inherit">File limit: @MaxFiles</p>
-            -->
-        }
-        else{
-            <p class="text-inherit">File limit reached.</p>
         }
     </span>
     <InputFile class="hidden" OnChange="(e) => OnChange.InvokeAsync(e)" data-testid="@InputName"/>

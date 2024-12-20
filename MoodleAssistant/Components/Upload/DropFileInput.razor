@@ -19,25 +19,24 @@
     }
     <div class="mt-1 flex flex-col flex-wrap bg-transparent preview-container">
         @foreach (var filePair in UploadedFiles){
-            <FileInputPreview FileName="@filePair.Value.Name" OnClose="(name) => RemoveFile(name, filePair.Key)"/>
+            <FileInputPreview FileName="@filePair.Value.Name" OnClose="() => RemoveFile(filePair.Key)"/>
         }
     </div>
 </div>
 
 @code {
     [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    public RenderFragment? ChildContent { get; set; }
     [Parameter] public string InputName{ get; set; } = string.Empty;
     [Parameter] public int MaxFiles{ get; init; } = 1;
 
     private int _current = 1;
 
     private IJSObjectReference? _module;
-    public Dictionary<int, IBrowserFile> UploadedFiles{ get; private set; } =[];
+    public Dictionary<int, IBrowserFile> UploadedFiles{ get; private set; } = [];
 
     private async Task UploadFile(InputFileChangeEventArgs e){
-        if (e.FileCount != 0 && UploadedFiles.Count < MaxFiles){
-            //UploadedFiles.Add(_current, e.File); // need to handle the case of multiple files uploaded at once
+        if (e.FileCount != 0 && UploadedFiles.Count < MaxFiles && _current <= MaxFiles){
             foreach (var file in e.GetMultipleFiles()){
                 UploadedFiles.Add(_current, file);
                 // set current to the next available index
@@ -54,7 +53,7 @@
         return i;
     }
 
-    public void RemoveFile(string name, int index){
+    public void RemoveFile(int index){
         UploadedFiles.Remove(index);
         _current = index;
         StateHasChanged();

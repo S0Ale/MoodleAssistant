@@ -24,7 +24,7 @@
     }
     
     .drop-zone{
-        @apply relative flex justify-center border border-zinc-400 bg-gray-100 border-dashed rounded appearance-none cursor-pointer hover:border-zinc-500 focus:outline-none
+        @apply relative flex justify-center border border-zinc-400 bg-gray-100 border-dashed rounded appearance-none cursor-pointer focus:border-teal-800 focus:outline-none
     }
 
     .error-dialog {
