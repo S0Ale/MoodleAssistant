@@ -15,13 +15,12 @@
     <div class="mt-20">
         <h2 class="text-center text-3xl text-gray-700">1. First of all you need a Moodle question in Moodle XML Format.</h2>
         <p class="mt-3">
-            When you create a question, where possible, you must put into question and answers textarea some <i>parameters</i>.<br />
-            Parameter format is <span class="code">[*[[what-you-want]]*]</span> and are used by MoodleAssistant to find which word you want to replace.
-            Now you must export the question in Moodle XML Format
+            When creating a question, where possible, you should include some <i>parameters</i> in the question and answer text areas.<br /> The parameter format is <span class="code">[*[[identifier]]*]</span> and is used by MoodleAssistant to identify the words you want to replace.
+            Next, export the question in Moodle XML format
             (<a class="text-blue-500" href="https://docs.moodle.org/310/en/Export_questions" target="_blank">How to export questions in Moodle?</a>).
-            Make sure do not check "write category to file".
-            If it is not possible to edit directly in Moodle you must find your identifiers and add <span class="code">[*[[</span> and <span class="code">]]*]</span> in file previously exported.<br />
-            In our example we had:
+            Make sure not to check the "Write category to file" option.
+            If direct editing in Moodle is not possible, you need to find your identifiers and add <span class="code">[*[[</span> and <span class="code">]]*]</span> in the previously exported file.<br />
+            In our example, we have:
         </p>
     </div>
     
@@ -37,12 +36,10 @@
         <h2 class="text-center text-3xl text-gray-700">2. Upload XML and CSV file.</h2>
         <p class="mt-3">
             Go to <span class="font-semibold">Expand a Question</span> tab, and upload the previously downloaded XML file.
-            Then upload the CSV example below. You can browse the file or drop inside the drop zone. Each line represents a different question, along with the values of the parameters to replace.
+            Then upload the CSV example below. You can browse the file or drop it inside the drop zone. Each line represents a different question, along with the values of the parameters to replace.
         </p>
-        <p class="mt-3 px-3 pb-2 pt-1 warning-dialog text-left">
-            The CSV's first line (header) must contain all the
-            identifiers we used as parameters. Make sure, opening it with a text editor, that does not contain empty fields
-            or extra commas.
+        <p class="mt-3 px-3 py-2 warning-dialog text-left">
+            The first line of the CSV (header) must include all the identifiers used as parameters. When opening it with a text editor, ensure it does not contain empty fields or extra commas.
         </p>
         
         <img src="res/start-file-upload.png" alt="Upload question page." class="mx-auto mt-6 text-center border rounded border-zinc-200 md:w-[640px]" />
@@ -76,15 +73,15 @@
     <div class="mt-8">
         <h2 class="text-center text-2xl text-gray-700">2.1. File-type parameters.</h2>
         <p class="mt-3">
-            You can put parameters that represents files: the format is <span class="code">[*[[IMAGE-what-you-want]]*]</span> for images and
-            <span class="code">[*[[FILE-what-you-want]]*]</span> for downloadable files.
+            You can include parameters that represent files: use the format <span class="code">[*[[IMAGE-identifier]]*]</span>
+            for images and <span class="code">[*[[FILE-identifier]]*]</span> for downloadable files.
         </p>
-        <p class="w-fit mx-auto mt-1 px-3 pb-2 pt-1 warning-dialog text-left">
-            The names of the uploaded files must be the exact same as the values of the corresponding parameter name.
+        <p class="w-fit mx-auto mt-1 px-3 py-2 warning-dialog text-left">
+            The names of the uploaded files must match exactly the values of their corresponding parameter names.
         </p>
 
         <p class="mt-6 text-center">
-            For example, if we have the parameter <span class="code">[*[[IMAGE-number]]*]</span>, and the CSV file is like this:
+            For example, if the parameter is <span class="code">[*[[IMAGE-number]]*]</span>, and the CSV file looks like this:
         </p>
         <div class="mt-3">
             <table class="mx-auto border-collapse table-auto border border-zinc-300">
