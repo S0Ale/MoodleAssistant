@@ -12,7 +12,7 @@ public class FileModel(IBrowserFileService fileService, string name){
         MediaTypeNames.Image.Webp,
         MediaTypeNames.Image.Bmp,
     ];
-    private static readonly string[] MSMimeTypes = [
+    private static readonly string[] MsMimeTypes = [
         // Word
         "application/msword",
         "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -43,7 +43,7 @@ public class FileModel(IBrowserFileService fileService, string name){
         return ImageMimeTypes.Contains(file.ContentType);
     }
     public bool IsOfficeFile(IBrowserFile file){
-        return MSMimeTypes.Contains(file.ContentType);
+        return MsMimeTypes.Contains(file.ContentType);
     }
     public bool IsEmpty(){
         return fileService.IsEmpty(_fileName);

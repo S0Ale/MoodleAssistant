@@ -3,7 +3,7 @@
 namespace MoodleAssistant.Classes.Models;
 
 public class PreviewModel{
-    public IEnumerable<PreviewItem> Items{ get; private set; } = new List<PreviewItem>();
+    public List<PreviewItem> Items{ get; } = [];
     //public IEnumerable<string> QuestPreviews; // more than 1 question is not allowed
 
 
@@ -18,18 +18,17 @@ public class PreviewModel{
         using var e1 = e as IDisposable;
 
         for (var i = 0; i < questions.Count; i++){
-            var item = new PreviewItem{ QuestionText = questions[i]?.InnerText };
+            var item = new PreviewItem(questions[i]?.InnerText ?? string.Empty);
 
             var answerStrings = new string[answerCount];
             for (var j = 0; j < answerCount; j++) {
                 e.MoveNext();
                 var node = e.Current as XmlNode;
-                answerStrings[j] = node.InnerText;
+                answerStrings[j] = node?.InnerText ?? string.Empty;
             }
 
             item.Answers = answerStrings;
-            var list = Items as List<PreviewItem>;
-            list.Add(item);
+            Items.Add(item);
         }
     }
 }

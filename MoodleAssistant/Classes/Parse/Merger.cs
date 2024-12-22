@@ -1,4 +1,5 @@
-﻿using System.Xml;
+﻿using System.Diagnostics;
+using System.Xml;
 using MoodleAssistant.Classes.Utils;
 using MoodleAssistant.Services;
 
@@ -24,7 +25,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
     /// </summary>
     /// <param name="questionNode">The XML <c>questionNode</c> node.</param>
     private void LookForCData(XmlNode questionNode){
-        //get all nodes containing a file parameter
+        //get all nodes containing text and a file parameter
         var allNodes = questionNode.SelectNodes("//*[text()]");
         if (allNodes == null) return;
         var nodes = allNodes.Cast<XmlNode>();
@@ -127,7 +128,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
                     var base64 = fileService.GetBase64(filename);
                     var tag = xmlQuestionNode.SelectSingleNode(
                         $"//file[@name='{param.Name}']"); // select the correct file tag
-                    tag.Attributes["name"].Value = filename;
+                    tag!.Attributes!["name"]!.Value = filename;
                     tag.InnerText = base64;
                 }
             }
@@ -177,19 +178,20 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
     /// <returns>The preview XML document.</returns>
     public XmlDocument PreviewMerge(){
         var xml = _xmlDoc.Clone() as XmlDocument ?? new XmlDocument();
-        var headerRow = CsvAsList.ElementAt(0);
 
         for (var j = 1; j < CsvAsList.Count(); j++){
             var xmlQuestionNode =
                 xml.GetElementsByTagName("question").Item(0)?.Clone();
             if (xmlQuestionNode == null) continue;
             
-            var allNodes = xmlQuestionNode.SelectNodes("//*[text()]");
-            var nodes = allNodes.Cast<XmlNode>();
+            var allNodes = xmlQuestionNode.SelectNodes("//*[text()]"); // nodes that contain text 
+            
+            var nodes = allNodes!.Cast<XmlNode>();
             var fileNodes = nodes.Where(n =>
                 n.InnerText.Contains("[*[[") && n.InnerText.Contains("]]*]")
-            ).ToList();
+            ).ToList(); // nodes that contain any parameter
             
+            // for each node, replace the text with a CDATA section
             foreach (var node in fileNodes){
                 if (node.FirstChild is{ NodeType: XmlNodeType.CDATA }) continue;
                 var cdata = xml.CreateCDataSection(node.InnerText);

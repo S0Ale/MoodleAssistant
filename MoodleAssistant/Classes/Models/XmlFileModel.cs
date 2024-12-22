@@ -12,8 +12,8 @@ public partial class XmlFileModel(IBrowserFileService fileService){
     private const string Pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
     [GeneratedRegex(Pattern)]
     private static partial Regex ParameterRegex();
-    
-    public XmlDocument? XmlFile{ get; private set; }
+
+    public XmlDocument XmlFile{ get; private set; } = new XmlDocument();
     public IEnumerable<string> QuestionParametersList{ get; private set; } = [];
     public IEnumerable<string> AnswerParametersList{ get; private set; } = [];
     public int AnswerCount { get; private set; }
@@ -42,19 +42,19 @@ public partial class XmlFileModel(IBrowserFileService fileService){
     }
     
     public bool HasOnlyOneQuestion(){                                                                                                                                                        
-        var questionList = XmlFile?.GetElementsByTagName("question");                                                                                         
+        var questionList = XmlFile.GetElementsByTagName("question");                                                                                         
         return questionList is {Count: 1};                                                                                                                      
     }  
     
     public bool HasQuestionText(){                                                                                                                                                        
-        var questionTextNodeList = XmlFile?.GetElementsByTagName("questiontext");                                                                             
+        var questionTextNodeList = XmlFile.GetElementsByTagName("questiontext");                                                                             
         return questionTextNodeList is {Count: 1};                                                                                                              
     } 
     
     public string GetFormattedQuestionText(){                                                                                                                                                        
         if(!HasQuestionText())                                                                                                                               
             return string.Empty;                                                                                                                             
-        var questionTextNode = XmlFile?.GetElementsByTagName("questiontext").Item(0);                                                                         
+        var questionTextNode = XmlFile.GetElementsByTagName("questiontext").Item(0);                                                                         
         if (questionTextNode == null)                                                                                                                        
             return string.Empty;                                                                                                                             
                                                                                                                                                              
@@ -72,9 +72,8 @@ public partial class XmlFileModel(IBrowserFileService fileService){
         if (!HasAnswer())                                                                                                                                    
             return string.Empty;                                                                                                                             
         var htmlFormatted = "";                                                                                                                              
-        var answerTextNodeList = XmlFile?.GetElementsByTagName("answer");                                                                                     
+        var answerTextNodeList = XmlFile.GetElementsByTagName("answer");                                                                                     
         var rgx = ParameterRegex();
-        if (answerTextNodeList == null) return htmlFormatted;
         foreach (XmlNode answerTextNode in answerTextNodeList){
             if (answerTextNode == null)
                 continue;
@@ -94,18 +93,17 @@ public partial class XmlFileModel(IBrowserFileService fileService){
     }
 
     private bool HasAnswer(){                                                                                                                                                        
-        var answerList = XmlFile?.GetElementsByTagName("answer");                                                                                             
+        var answerList = XmlFile.GetElementsByTagName("answer");                                                                                             
         return answerList is {Count: > 0};                                                                                                                         
     }   
     
     public void TakeParameters(){                                                                                                                                                        
-        var questionTextNodeList = XmlFile?.GetElementsByTagName("questiontext");
-        if (questionTextNodeList != null)
-            QuestionParametersList = GetParametersFromXmlNode(questionTextNodeList.Item(0)!).Distinct();
+        var questionTextNodeList = XmlFile.GetElementsByTagName("questiontext");
+        QuestionParametersList = GetParametersFromXmlNode(questionTextNodeList.Item(0)!).Distinct();
 
         //for matching questions                                                                                                                             
-        var subQuestionNodeList = XmlFile?.GetElementsByTagName("subquestion");                                                                               
-        if (subQuestionNodeList != null && subQuestionNodeList.Count != 0)                                                                                                                  
+        var subQuestionNodeList = XmlFile.GetElementsByTagName("subquestion");                                                                               
+        if (subQuestionNodeList.Count != 0)                                                                                                                  
         {                                                                                                                                                    
             var subQuestionParametersList = new List<string>();                                                                                              
             foreach (XmlNode subQuestion in subQuestionNodeList)                                                                                             
@@ -115,10 +113,10 @@ public partial class XmlFileModel(IBrowserFileService fileService){
         }                                                                                                                                                    
                                                                                                                                                              
         var answerParametersList = new List<string>();                                                                                                       
-        var answerList = XmlFile?.GetElementsByTagName("answer");                                                                                             
-        AnswerCount = answerList?.Count ?? 0;
-        if (answerList != null)
-            foreach (XmlNode answer in answerList) answerParametersList.AddRange(GetParametersFromXmlNode(answer));
+        var answerList = XmlFile.GetElementsByTagName("answer");                                                                                             
+        AnswerCount = answerList.Count;
+        foreach (XmlNode answer in answerList) 
+            answerParametersList.AddRange(GetParametersFromXmlNode(answer));
         AnswerParametersList = answerParametersList.Distinct();                                                                                              
     }
     

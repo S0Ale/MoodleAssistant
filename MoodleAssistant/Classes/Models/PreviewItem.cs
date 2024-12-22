@@ -1,6 +1,6 @@
 ﻿namespace MoodleAssistant.Classes.Models;
 
-public class PreviewItem{
-    public string QuestionText{ get; set; }
-    public string[] Answers{ get; set; }
+public class PreviewItem(string questionText){
+    public string QuestionText{ get; } = questionText;
+    public string[] Answers{ get; set; } = [];
 }
