@@ -3,6 +3,13 @@
 namespace MoodleAssistant;
 
 public static class ExtensionMethods{
+    
+    /// <summary>
+    /// Checks if the file is empty.
+    /// </summary>
+    /// <param name="service">The <see cref="IBrowserFileService"/> instance to get the file.</param>
+    /// <param name="name">The specified file name.</param>
+    /// <returns>If the file with the specified file name is empty.</returns>
     public static bool IsEmpty(this IBrowserFileService service, string name){
         var info = service.GetFileInfo(name);
         switch (info.Length){

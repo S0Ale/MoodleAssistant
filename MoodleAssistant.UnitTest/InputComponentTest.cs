@@ -17,7 +17,7 @@ internal class InputComponentTest : FileUploadTest{
     }
 
     [Test]
-    public void Upload_CorrectAllAtOnce(){
+    public void Upload_AllAtOnce(){
         var word1 = TestService.Create("Test1.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word2 = TestService.Create("Test2.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word3 = TestService.Create("Test3.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
@@ -29,7 +29,7 @@ internal class InputComponentTest : FileUploadTest{
     }
     
     [Test]
-    public void Upload_CorrectOneAtATime(){
+    public void Upload_OneAtATime(){
         var word1 = TestService.Create("Test1.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word2 = TestService.Create("Test2.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word3 = TestService.Create("Test3.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
