@@ -1,0 +1,190 @@
+﻿@page "/Replicator"
+@using MoodleAssistant.Components.Upload
+@using MoodleAssistant.Services
+@using MoodleAssistant.Classes.Models
+@using MoodleAssistant.Classes.Parse
+@using MoodleAssistant.Classes.Utils
+@using MoodleAssistant.Components.Sections
+@rendermode InteractiveServer
+@inject NavigationManager NavigationManager;
+@inject ReplicatorState ReplicatorState;
+@inject IBrowserFileService FileService;
+@inject IJSRuntime Js;
+@inject ILogger<Replicator> Logger;
+
+@{
+    var mainForm = "main-upload";
+}
+
+<PageTitle>Replicator</PageTitle>
+<div id="content" class="pt-8 pb-8">
+    <div class="flex items-center justify-center mx-auto">
+        <div>
+            <p class="mb-6 text-center">Here you can upload your XML and CSV files:</p>
+            <form method="post" id="@(mainForm)" @formname="main-upload" @onsubmit="Submit">
+                <AntiforgeryToken />
+                <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row">
+                    <DropFileInput @ref="_xmlInput" InputName="xml-input">
+                        <p class="text-inherit">Drop XML here, or <span class="text-blue-500 underline ml-[4px]">browse</span>.</p>
+                    </DropFileInput>
+                    <DropFileInput @ref="_csvInput" InputName="csv-input">
+                        <p class="text-inherit">Drop CSV here, or <span class="text-blue-500 underline ml-[4px]">browse</span>.</p>
+                    </DropFileInput>
+                </div>
+                <div class="flex flex-row mt-3">
+                    <button type="submit" class="btn btn-primary py-1.5 px-6" @onclick="() => _isUploading = true" data-testid="main-submit">Upload</button>
+                    <button type="button" class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files" @onclick="ClearForm">Clear</button>
+                </div>
+                <div class="error-container">
+                    <Message @ref="_dialog" MsgText="@(ErrorMessage.GetErrorMessage(Error))" Type="MessageType.Error" CanClose="true"/>
+                    @if (_isUploading){
+                        <Message MsgText="Uploading..." Type="MessageType.Info" CanClose="false"/>
+                    }
+                    @if (_successfulUpload){
+                        <Message MsgText="Files uploaded successfully." Type="MessageType.Success" CanClose="true"/>
+                    }
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@if (_successfulUpload){
+    <Analysis />
+    @if (_showFileParams){
+        <FileParam OnSuccess="(value) => _showDownload = value" />
+    }
+    @if (_showDownload){
+        <Preview />
+    }
+
+    <div class="flex flex-row justify-center py-6 border-t border-zinc-200">
+        @if (_showDownload){
+            <button class="btn btn-primary py-1.5 px-5 mr-4" @onclick="Download" data-testid="download">Download</button>
+        }
+        <button class="btn btn-secondary py-1.5 px-5" @onclick="Reset" data-testid="reset">Reset</button>
+    </div>
+}
+
+@code{
+    public Error Error{ get; private set; } = Error.NoErrors; // public for testing purposes
+    
+    private Message _dialog = null!;
+    private DropFileInput _xmlInput = null!;
+    private DropFileInput _csvInput = null!;
+    
+    private bool _isUploading;
+    private bool _successfulUpload;
+    private bool _showFileParams;
+    private bool _showDownload;
+    
+    public bool SuccessUpload => _successfulUpload; // testing
+    public bool IsUploading => _isUploading; // testing
+    public bool ShowFileParams => _showFileParams; // testing
+    
+    private async Task Submit(){
+        ResetSections();
+        Thread.Sleep(250);
+        var state = ReplicatorState;
+        
+        // Check if both files are uploaded
+        var totalFiles = _xmlInput.UploadedFiles.Count + _csvInput.UploadedFiles.Count;
+        if(totalFiles < 2){
+            SetError(Error.NoFiles);
+            return;
+        }
+        var loader = new Loader(FileService);
+        
+        // Load XML file
+        XmlFileModel xmlModel;
+        try{ xmlModel = await loader.LoadXml(_xmlInput.UploadedFiles.Values.FirstOrDefault()!); }
+        catch (ReplicatorException e){
+            SetError(e.Error);
+            return;
+        }
+        ReplicatorState.XmlModel = xmlModel;
+        
+        // Load CSV file
+        List<string[]> csvList;
+        try{
+            csvList = await loader.LoadCsv(_csvInput.UploadedFiles.Values.FirstOrDefault()!, xmlModel) as List<string[]> ?? []; 
+        }catch (ReplicatorException e){
+            SetError(e.Error);
+            return;
+        }catch (Exception e){
+            Logger.LogError(e, e.Message);
+            SetError(Error.Unexpected);
+            return;
+        }
+        ReplicatorState.CsvAsList = csvList;
+        FileService.DeleteAllFiles();
+
+        // Load parameters
+        state.Parameters = new ParameterModel(xmlModel.XmlFile, csvList.Count() - 1);
+        if (state.Parameters.GetFileParameters().Count > 0){
+            _showFileParams = true;
+        }else{
+            if (state.XmlModel?.XmlFile == null){
+                SetError(Error.Unexpected);
+                return;
+            }
+            var merger = new Merger(state, FileService){
+                XmlFile = state.XmlModel.XmlFile,
+                CsvAsList = state.CsvAsList
+            };
+
+            try{
+                state.Preview = new PreviewModel(merger.PreviewMerge(), state.XmlModel.AnswerCount);
+                merger.MergeQuestion();
+            }catch (ReplicatorException e){
+                SetError(e.Error);
+                return;
+            }catch (Exception e){
+                Logger.LogError(e, e.Message);
+                SetError(Error.Unexpected);
+                return;
+            }
+
+            _showDownload = true;
+        }
+
+        FileService.DeleteAllFiles();
+        ClearForm();
+        _successfulUpload = true;
+        _isUploading = false;
+    }
+
+    private void ClearForm(){
+        _xmlInput.ClearFiles();
+        _csvInput.ClearFiles();
+    }
+
+    private void ResetSections(){
+        _successfulUpload = false;
+        _showFileParams = false;
+        _showDownload = false;
+    }
+
+    private void Reset(){
+        FileService.DeleteAllFiles();
+        NavigationManager.NavigateTo("/Replicator", true);
+    }
+
+    private void SetError(Error err){
+        _isUploading = false;
+        FileService.DeleteAllFiles();
+        Error = err;
+        _dialog.Show();
+        _dialog.Refresh();
+    }
+    
+    private async Task Download(){
+        var stream = new MemoryStream();
+        ReplicatorState.Merged?.Save(stream);
+        stream.Flush();
+        stream.Position = 0;
+        using var streamRef = new DotNetStreamReference(stream);
+        await Js.InvokeVoidAsync("downloadFileFromStream", "Question.xml", streamRef);
+        
+        FileService.DeleteAllFiles();
+    }
+}

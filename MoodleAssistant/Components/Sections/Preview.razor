@@ -1,0 +1,26 @@
+﻿@using MoodleAssistant.Services
+@inject ReplicatorState ReplicatorState;
+
+<div class="flex flex-col p-6 pt-0">
+    <h3 class="pb-4 text-lg font-semibold text-gray-700 text-center">Preview:</h3>
+    <div class="w-full overflow-x-auto content-center">
+        <div class="flex flex-row w-max min-w-full justify-center space-x-4">
+            @foreach (var item in ReplicatorState.Preview.Items){
+                <div class="border rounded border-zinc-300 overflow-hidden bg-gray-100">
+                    <div class="py-3 px-6 text-center">
+                        @((MarkupString)item.QuestionText)
+                    </div>
+                    <div class="border-t border-zinc-300 py-3 px-6 text-center">
+                        @foreach (var answer in item.Answers) {
+                            <p>@((MarkupString)answer)</p>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    
+}

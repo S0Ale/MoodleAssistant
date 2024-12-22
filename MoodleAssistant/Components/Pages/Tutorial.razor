@@ -1,0 +1,143 @@
+﻿@page "/Tutorial"
+
+<PageTitle>Tutorial</PageTitle>
+
+<div class="pt-16 pb-20 xl:pt-1/10 lg:px-44 2xl:px-96">
+    <div class="">
+        <h2 class="text-center text-3xl text-gray-700">Let's take an example of how MoodleAssistant works.</h2>
+        <p class="mt-4">
+            Think about teachers asking their students what is the capital of some states.
+            How boring can be creating a question for each state?
+            MoodleAssistant can be the solution!
+        </p>
+    </div>
+
+    <div class="mt-20">
+        <h2 class="text-center text-3xl text-gray-700">1. First of all you need a Moodle question in Moodle XML Format.</h2>
+        <p class="mt-4">
+            When creating a question, where possible, you should include some <i>parameters</i> in the question and answer text areas. The parameter format is <span class="code">[*[[identifier]]*]</span> and is used by MoodleAssistant to identify the words you want to replace.
+            <br/>Next, export the question in Moodle XML format
+            (<a class="text-blue-500" href="https://docs.moodle.org/310/en/Export_questions" target="_blank">How to export questions in Moodle?</a>).
+            Make sure not to check the "Write category to file" option.
+            If direct editing in Moodle is not possible, you need to find your identifiers and add <span class="code">[*[[</span> and <span class="code">]]*]</span> in the previously exported file.<br />
+            In our example, we have:
+        </p>
+    </div>
+    
+    <div class="mt-6 text-center">
+        <img src="res/questionExample.png" alt="Question with parameters example." class="mx-auto text-center border rounded border-zinc-200" />
+    </div>
+    
+    <div class="mt-3 text-center">
+        <a class="block w-fit mx-auto btn btn-secondary py-1.5 px-20" href="res/MoodleAssistantTutorial.xml" download>Download XML example</a>
+    </div>
+    
+    <div class="mt-16">
+        <h2 class="text-center text-3xl text-gray-700">2. Upload XML and CSV file.</h2>
+        <p class="mt-4">
+            Go to <span class="font-semibold">Expand a Question</span> tab, and upload the previously downloaded XML file.
+            Then upload the CSV example below. You can browse the file or drop it inside the drop zone. Each line represents a different question, along with the values of the parameters to replace.
+        </p>
+        <p class="mt-3 px-3 py-2 warning-dialog text-left">
+            The first line of the CSV (header) must include all the identifiers used as parameters. When opening it with a text editor, ensure it does not contain empty fields or extra commas.
+        </p>
+        
+        <img src="res/start-file-upload.png" alt="Upload question page." class="mx-auto mt-6 text-center border rounded border-zinc-200 md:w-[640px]" />
+        
+        <p class="mt-6 text-center">Our CSV example:</p>
+        <table class="mt-3 mx-auto border-collapse table-auto border border-zinc-300">
+            <thead>
+            <tr>
+                <th class="p-1 border border-zinc-200" scope="col">state</th>
+                <th class="p-1 border border-zinc-200" scope="col">capital</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td class="p-1 border border-zinc-200">Italy</td>
+                <td class="p-1 border border-zinc-200">Rome</td>
+            </tr>
+            <tr>
+                <td class="p-1 border border-zinc-200">France</td>
+                <td class="p-1 border border-zinc-200">Paris</td>
+            </tr>
+            <tr>
+                <td class="p-1 border border-zinc-200">Spain</td>
+                <td class="p-1 border border-zinc-200">Madrid</td>
+            </tr>
+            </tbody>
+        </table>
+        <a class="mt-3 block w-fit mx-auto btn btn-secondary py-1.5 px-20" href="res/MoodleAssistantTutorial.csv" download>Download CSV example</a>
+    </div>
+    
+    <div class="mt-8">
+        <h2 class="text-center text-2xl text-gray-700">2.1. File-type parameters.</h2>
+        <p class="mt-4">
+            You can include parameters that represent files: use the format <span class="code">[*[[IMAGE-identifier]]*]</span>
+            for images and <span class="code">[*[[FILE-identifier]]*]</span> for downloadable files.
+        </p>
+        <p class="w-fit mx-auto mt-1 px-3 py-2 warning-dialog text-left">
+            The names of the uploaded files must match exactly the values of their corresponding parameter names.
+        </p>
+
+        <p class="mt-6 text-center">
+            For example, if the parameter is <span class="code">[*[[IMAGE-number]]*]</span>, and the CSV file looks like this:
+        </p>
+        <div class="mt-3">
+            <table class="mx-auto border-collapse table-auto border border-zinc-300">
+                <thead>
+                    <tr>
+                        <th class="p-1 border border-zinc-200" scope="col">state</th>
+                        <th class="p-1 border border-zinc-200" scope="col">IMAGE-number</th>
+                        <th class="p-1 border border-zinc-200" scope="col">capital</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="p-1 border border-zinc-200">Italy</td>
+                        <td class="p-1 border border-zinc-200">Image1.png</td>
+                        <td class="p-1 border border-zinc-200">Rome</td>
+                    </tr>
+                    <tr>
+                        <td class="p-1 border border-zinc-200">France</td>
+                        <td class="p-1 border border-zinc-200">Image2.png</td>
+                        <td class="p-1 border border-zinc-200">Paris</td>
+                    </tr>
+                    <tr>
+                        <td class="p-1 border border-zinc-200">Spain</td>
+                        <td class="p-1 border border-zinc-200">Image3.png</td>
+                        <td class="p-1 border border-zinc-200">Madrid</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="mt-3 text-center">
+            Then we need to upload 3 files with the names
+            <span class="font-semibold">Image1.png</span>, <span class="font-semibold">Image2.png</span> and <span class="font-semibold">Image3.png</span>.
+        </p>
+    </div>
+    
+    <div class="mt-16">
+        <h2 class="text-center text-3xl text-gray-700">3. Check your input and download your questions.</h2>
+        <p class="mt-4">
+            If everything is correct during the upload, now it is time to check if there are any type of errors: check out chosen identifiers
+            and look for any kind of typing errors. You can check the <span class="code">Preview</span> section to see all the question variants.
+            Then you can click on the <span class="code">Download</span> button.
+        </p>
+        
+        <img src="res/success-file-upload.png" alt="Successful upload page." class="mx-auto mt-6 text-center border rounded border-zinc-200 md:w-[640px]" />
+    </div>
+    
+    <div class="mt-16">
+        <h4 class="text-center text-3xl text-gray-700">6. Upload questions.</h4>
+        <p class="mt-4 text-center">
+            Upload the <span class="code">Questions.xml</span> file downloaded in your Moodle instance. (<a class="text-blue-500" href="https://docs.moodle.org/310/en/Import_questions#Question_bank_import_process" target="_blank">How to import questions in Moodle?</a>)
+        </p>
+        
+        <NavLink href="/Replicator" class="block w-fit mt-6 mx-auto btn btn-primary py-1.5 px-10">Try to expand your question now!</NavLink>
+    </div>
+</div>
+
+@code {
+    
+}
