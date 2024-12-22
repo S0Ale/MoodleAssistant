@@ -30,6 +30,10 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
         var trustedFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
         _trustedFiles.Add(fileName, trustedFileName);
         
+        if(!Directory.Exists(_rootFolder)){
+            Directory.CreateDirectory(_rootFolder);
+        }
+        
         var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
         await using var fileStream = new FileStream(trustedFilePath, FileMode.Create);
         await file.OpenReadStream(MaxFileSize).CopyToAsync(fileStream);
