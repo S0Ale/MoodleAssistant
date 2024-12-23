@@ -11,8 +11,6 @@ namespace MoodleAssistant.Classes.Parse;
 public partial class ParameterParser(string str, bool previewMode = false){
     private const string Pattern =
         @"\[\*\[\[((?!FILE-|IMAGE-)[^\]*\]]+?)\]\]\*\]|\[\*\[\[FILE-([^\]*\]]+?)\]\]\*\]|\[\*\[\[IMAGE-([^\]*\]]+?)\]\]\*\]";
-    [GeneratedRegex(Pattern)]
-    private static partial Regex ParameterPattern();
 
     /// <summary>
     /// Finds all parameters in the string, and returns them as a list.
@@ -20,7 +18,7 @@ public partial class ParameterParser(string str, bool previewMode = false){
     /// <returns>A list of <see cref="Parameter"/> instances found in the string.</returns>
     public IEnumerable<Parameter> Match(){
         var list = new List<Parameter>();
-        var matches = ParameterPattern().Matches(str);
+        var matches = Regex.Matches(str, Pattern);
 
         foreach (Match match in matches){
             if (!previewMode){

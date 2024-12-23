@@ -7,13 +7,11 @@ using MoodleAssistant.Services;
 namespace MoodleAssistant.Classes.Models;
 
 // This class is used to manage the XML file uploaded by the user: format parts for analysis, validation.
-public partial class XmlFileModel(IBrowserFileService fileService){
+public class XmlFileModel(IBrowserFileService fileService){
     public static string FileName => "XML";
     private const string Pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
-    [GeneratedRegex(Pattern)]
-    private static partial Regex ParameterRegex();
 
-    public XmlDocument XmlFile{ get; private set; } = new XmlDocument();
+    public XmlDocument XmlFile{ get; private set; } = new();
     public IEnumerable<string> QuestionParametersList{ get; private set; } = [];
     public IEnumerable<string> AnswerParametersList{ get; private set; } = [];
     public int AnswerCount { get; private set; }
@@ -60,8 +58,7 @@ public partial class XmlFileModel(IBrowserFileService fileService){
                                                                                                                                                              
         var htmlFormatted = "";
         var questionText = questionTextNode.SelectSingleNode("text")?.InnerText ?? "";
-        var rgx = ParameterRegex();                                                                                                                        
-        foreach (Match match in rgx.Matches(questionText))                                                                                                   
+        foreach (Match match in Regex.Matches(questionText, Pattern))                                                                                                   
             questionText = questionText.Replace(match.Value, "<span class=\"code\">" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</span>");          
         htmlFormatted += questionText;                                                                                                                       
         return htmlFormatted;                                                                                                                       
@@ -72,15 +69,14 @@ public partial class XmlFileModel(IBrowserFileService fileService){
         if (!HasAnswer())                                                                                                                                    
             return string.Empty;                                                                                                                             
         var htmlFormatted = "";                                                                                                                              
-        var answerTextNodeList = XmlFile.GetElementsByTagName("answer");                                                                                     
-        var rgx = ParameterRegex();
+        var answerTextNodeList = XmlFile.GetElementsByTagName("answer");
         foreach (XmlNode answerTextNode in answerTextNodeList){
             if (answerTextNode == null)
                 continue;
             htmlFormatted += "<p>";
             foreach (XmlNode node in answerTextNode.SelectNodes("text")!){
                 var answerText = node.InnerText;
-                foreach (Match match in rgx.Matches(answerText))
+                foreach (Match match in Regex.Matches(answerText, Pattern))
                     answerText = answerText.Replace(match.Value,
                         "<span class=\"code\">" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</span>");
                 htmlFormatted += answerText;
@@ -120,11 +116,10 @@ public partial class XmlFileModel(IBrowserFileService fileService){
         AnswerParametersList = answerParametersList.Distinct();                                                                                              
     }
     
-    private static IEnumerable<string> GetParametersFromXmlNode(XmlNode textNode){
+    private static List<string> GetParametersFromXmlNode(XmlNode textNode){
         var questionText = textNode.InnerText;                                                                                                               
-        var rgx = ParameterRegex();                                                                                                                        
         var parametersList = new List<string>();                                                                                                             
-        foreach (Match match in rgx.Matches(questionText))                                                                                                   
+        foreach (Match match in Regex.Matches(questionText, Pattern))                                                                                                   
             parametersList.Add(match.Groups[2].Value);                                                                                                       
         return parametersList;                                                                                                                               
                                                                                                                                                              
