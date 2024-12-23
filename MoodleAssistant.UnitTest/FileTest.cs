@@ -70,6 +70,20 @@ internal class FileTest : FileUploadTest{
         
         Assert.That(_fileSection.Instance.Error, Is.EqualTo(Error.NoValidFile));
     }
+    
+    [Test]
+    public void UploadFiles_EmptyFile(){
+        var input = _fileSection.FindComponent<DropFileInput>();
+        var word1 = TestService.Create("Test1.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        var word2 = TestService.Create("Test2.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        var empty = TestService.Create("EmptyXmlFile.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
+        
+        input.FindComponent<CustomLabel>().FindComponent<InputFile>().UploadFiles(word1, word2, empty);
+        _submitFile.Click();
+        _fileSection.WaitForState(() => _fileSection.Instance.IsUploading == false);
+        
+        Assert.That(_fileSection.Instance.Error, Is.EqualTo(Error.EmptyFile));
+    }
 
     [Test]
     public void UploadFiles_MissingFiles(){

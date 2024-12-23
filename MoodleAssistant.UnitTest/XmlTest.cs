@@ -85,9 +85,24 @@ internal class XmlTest : FileUploadTest{
     }
 
     [Test]
-    public void UploadXML_CorrectXml(){
+    public void UploadXML_CorrectBasicXml(){
         var xml = TestService.Create("MoodleQuestionOk.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
         var csv = TestService.Create("MoodleQuestionOk.csv", System.Net.Mime.MediaTypeNames.Text.Csv);
+        _xml.UploadFiles(xml);
+        _csv.UploadFiles(csv);
+        
+        _submit.Click();
+        _page.WaitForState(() => _page.Instance.IsUploading == false);
+        Assert.Multiple(() => {
+            Assert.That(_page.Instance.Error, Is.EqualTo(Error.NoErrors));
+            Assert.That(_page.Instance.SuccessUpload, Is.True);
+        });
+    }
+
+    [Test]
+    public void Upload_Correct_FileXml(){
+        var xml = TestService.Create("MoodleOkWithImage.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
+        var csv = TestService.Create("MoodleOkWithImage.csv", System.Net.Mime.MediaTypeNames.Text.Csv);
         _xml.UploadFiles(xml);
         _csv.UploadFiles(csv);
         
