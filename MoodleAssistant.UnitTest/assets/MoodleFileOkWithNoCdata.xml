@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quiz>
+<!-- question: 2034038  -->
+  <question type="cloze">
+    <name>
+      <text>Cars-semplificata</text>
+    </name>
+    <questiontext format="html">
+      <text>Download the file [*[[FILE-wordtest]]*]. What is the number written inside the document? {1:SHORTANSWER:%100%[*[[number]]*]}</text>
+    </questiontext>
+    <generalfeedback format="html">
+      <text></text>
+    </generalfeedback>
+    <penalty>0.3333333</penalty>
+    <hidden>0</hidden>
+    <idnumber></idnumber>
+  </question>
+
+</quiz>

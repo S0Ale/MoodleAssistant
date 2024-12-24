@@ -13,8 +13,6 @@ internal class FileTest : FileUploadTest{
     
     private IRenderedComponent<Replicator> _page;
     private IRenderedComponent<FileParam> _fileSection;
-    private InputFileContent correctXml = TestService.Create("MoodleOkWithImage.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
-    private InputFileContent correctCsv = TestService.Create("MoodleOkWithImage.csv", System.Net.Mime.MediaTypeNames.Text.Csv);
     private IElement _submitFile;
     
     [SetUp]
@@ -26,8 +24,8 @@ internal class FileTest : FileUploadTest{
         var csv = inputs[1];
         var submit = _page.Find("button[type=submit]");
         
-        xml.UploadFiles(correctXml);
-        csv.UploadFiles(correctCsv);
+        xml.UploadFiles(TestService.Create("MoodleOkWithFile.xml", System.Net.Mime.MediaTypeNames.Text.Xml));
+        csv.UploadFiles(TestService.Create("MoodleOkWithFile.csv", System.Net.Mime.MediaTypeNames.Text.Csv));
         submit.Click();
         _page.WaitForState(() => _page.Instance.IsUploading == false);
 
@@ -98,7 +96,7 @@ internal class FileTest : FileUploadTest{
     }
 
     [Test]
-    public void UploadFiles_UploadCorrect(){
+    public void UploadFiles_UploadFileCorrect(){
         var input = _fileSection.FindComponent<DropFileInput>();
         var word1 = TestService.Create("Test1.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word2 = TestService.Create("Test2.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
@@ -111,6 +109,71 @@ internal class FileTest : FileUploadTest{
         Assert.Multiple(() => {
             Assert.That(_fileSection.Instance.Error, Is.EqualTo(Error.NoErrors));
             Assert.That(_fileSection.Instance.SuccessUpload, Is.True);
+        });
+    }
+
+    [Test]
+    public void UploadFiles_UploadImageCorrect(){
+        var inputs = _page.FindComponents<InputFile>();
+        var xml = inputs[0];
+        var csv = inputs[1];
+        var submit = _page.Find("button[type=submit]");
+        
+        xml.UploadFiles(TestService.Create("MoodleOkWithImage.xml", System.Net.Mime.MediaTypeNames.Text.Xml));
+        csv.UploadFiles(TestService.Create("MoodleOkWithImage.csv", System.Net.Mime.MediaTypeNames.Text.Csv));
+        submit.Click();
+        _page.WaitForState(() => _page.Instance.IsUploading == false);
+
+        _fileSection = _page.FindComponent<FileParam>();
+        _submitFile = _fileSection.Find("button[type=submit]");
+        
+        
+        var input = _fileSection.FindComponent<DropFileInput>();
+        var img1 = TestService.Create("Image1.png", System.Net.Mime.MediaTypeNames.Image.Png);
+        var img2 = TestService.Create("Image2.png", System.Net.Mime.MediaTypeNames.Image.Png);
+        var img3 = TestService.Create("Image3.png", System.Net.Mime.MediaTypeNames.Image.Png);
+        
+        input.FindComponent<CustomLabel>().FindComponent<InputFile>().UploadFiles(img1, img2, img3);
+        _submitFile.Click();
+        _fileSection.WaitForState(() => _fileSection.Instance.IsUploading == false);
+        
+        Assert.Multiple(() => {
+            Assert.That(_fileSection.Instance.Error, Is.EqualTo(Error.NoErrors));
+            Assert.That(_fileSection.Instance.SuccessUpload, Is.True);
+        });
+    }
+    
+    [Test]
+    public void UploadFiles_UploadImageWithNoCdataCorrect(){
+        var inputs = _page.FindComponents<InputFile>();
+        var xml = inputs[0];
+        var csv = inputs[1];
+        var submit = _page.Find("button[type=submit]");
+        
+        xml.UploadFiles(TestService.Create("MoodleFileOkWithNoCdata.xml", System.Net.Mime.MediaTypeNames.Text.Xml));
+        csv.UploadFiles(TestService.Create("MoodleFileOkWithNoCdata.csv", System.Net.Mime.MediaTypeNames.Text.Csv));
+        submit.Click();
+        _page.WaitForState(() => _page.Instance.IsUploading == false);
+
+        _fileSection = _page.FindComponent<FileParam>();
+        _submitFile = _fileSection.Find("button[type=submit]");
+        
+        var input = _fileSection.FindComponent<DropFileInput>();
+        var word1 = TestService.Create("Test1.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        var word2 = TestService.Create("Test2.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        var word3 = TestService.Create("Test3.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        
+        input.FindComponent<CustomLabel>().FindComponent<InputFile>().UploadFiles(word1, word2, word3);
+        _submitFile.Click();
+        _fileSection.WaitForState(() => _fileSection.Instance.IsUploading == false);
+        
+        var state = Ctx.Services.GetService<ReplicatorState>();
+        
+        Assert.Multiple(() => {
+            Assert.That(_fileSection.Instance.Error, Is.EqualTo(Error.NoErrors));
+            Assert.That(_fileSection.Instance.SuccessUpload, Is.True);
+            Assert.That(state.Merged, Is.Not.Null);
+            Assert.That(state.Merged.InnerXml, Does.Contain("<![CDATA["));
         });
     }
 
