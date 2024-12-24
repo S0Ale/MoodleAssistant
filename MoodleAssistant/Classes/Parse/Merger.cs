@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Xml;
+﻿using System.Xml;
 using MoodleAssistant.Classes.Utils;
 using MoodleAssistant.Services;
 
