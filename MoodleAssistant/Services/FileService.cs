@@ -1,6 +1,4 @@
-﻿using System.IO.Pipelines;
-using System.Security.Cryptography;
-using System.Text;
+﻿using System.Security.Cryptography;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace MoodleAssistant.Services;
@@ -30,6 +28,10 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
         var trustedFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
         _trustedFiles.Add(fileName, trustedFileName);
 
+        if(!Directory.Exists(_rootFolder)){
+            Directory.CreateDirectory(_rootFolder);
+        }
+        
         if(!Directory.Exists(_rootFolder)){
             Directory.CreateDirectory(_rootFolder);
         }
