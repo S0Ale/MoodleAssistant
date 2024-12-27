@@ -1,10 +1,8 @@
 # MoodleAssistant #
-- - -
 
 **MoodleAssistant** is a web application that generates multiple question variants for Moodle from a single template question, enabling users to create diverse quizzes with minimal effort.
 
 ## Usage ##
-- - -
 
 To generate your questions, you need two files:
 * a **template question**, written with the Moodle XML format (you can write the question from scratch, or write it in Moodle an then export it)
@@ -23,7 +21,6 @@ The CSV file must contain the **values** for the parameters. The first row of th
 You can find more informations at the [Tutorial page](https://moodleassistant.azurewebsites.net/Tutorial) of the website.
 
 ## Hosting ##
-- - -
 
 To run the application, you need to have the following tools installed:
 * [.NET Core SDK](https://dotnet.microsoft.com/download)
@@ -37,7 +34,6 @@ dotnet run # Run the application
 ```
 
 ## Deployment ##
-- - -
 
 A demo of the application is available at [moodleassistant.azurewebsites.net](https://moodleassistant.azurewebsites.net/).
 If you want to deploy the application on Azure, you can follow the [official guide](https://docs.microsoft.com/en-us/azure/app-service/app-service-web-get-started-dotnet).
