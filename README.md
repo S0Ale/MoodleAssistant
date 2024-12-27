@@ -1,14 +1,21 @@
-<div class="text-center">
-    <h1 class="display-4">Moodle Assistant</h1>
-    <p>Insert <code>[*[[placeholders]]*]</code> and get your questions</p>
-    <br>
-</div>
-<div>
-    <h2 class="text-center">Bored of rewrite each question in Moodle?</h2>
-    <p>
-        Thanks to Moodle Assistant you can create only one question in Moodle, change words to placeholders and export it.
-        Create a CSV and get some copies of the question. Now just upload these questions in Moodle.
-    </p>
-</div>
+# MoodleAssistant #
 
-<h3>Please refer to the following link for more information. https://moodleassistant.azurewebsites.net/ <h3>
+**MoodleAssistant** is a web application that generates multiple question variants for Moodle from a single template question, enabling users to create diverse quizzes with minimal effort.
+
+## Usage ##
+
+To generate your questions, you need two files:
+* a template question, written with the Moodle XML format (you can write the question from scratch, or write it in Moodle an then export it)
+* a CSV file.
+
+The template question must contain **parameters**. There are different type of parameters:
+
+Type | Format
+------------- | -------------
+Basic parameter (string) | <p><code>[*[[parameter]]*]</code></p>
+File parameter (MS Word, Excel...) | <code>[*[[FILE-parameter]]*]</code>
+Image parameter | <code>[*[[IMAGE-parameter]]*]</code>
+
+You can find more informations at the [Tutorial page](https://moodleassistant.azurewebsites.net/Tutorial) of the website.
+
+## Deploy ##
