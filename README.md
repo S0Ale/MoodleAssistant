@@ -13,7 +13,7 @@ The template question must contain **parameters**. There are different type of p
 Type | Format
 ------------- | -------------
 Basic parameter (string) | <code>[\*[[parameter]]*]</code>
-File parameter (MS Word, Excel...) | <code>[\*[[FILE-parameter]]*]</code>
+Dowloadable file parameter (MS Word, Excel...) | <code>[\*[[FILE-parameter]]*]</code>
 Image parameter | <code>[\*[[IMAGE-parameter]]*]</code>
 
 The CSV file must contain the **values** for the parameters. The first row of the CSV file must contain the name of the parameters.
