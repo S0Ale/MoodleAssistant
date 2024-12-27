@@ -16,16 +16,16 @@
 
 @code {
     [Parameter]
-    public RenderFragment ChildContent { get; set; }
+    public RenderFragment? ChildContent { get; set; }
     
     [Parameter(CaptureUnmatchedValues = true)]
-    public IDictionary<string, object> AdditionalAttributes { get; set; }
+    public IDictionary<string, object>? AdditionalAttributes { get; set; }
     [Parameter]
     public string InputName { get; set; } = string.Empty;
     [Required] [Parameter]
     public int MaxFiles { get; init; }
-    [Required] [Parameter]
-    public Dictionary<int, IBrowserFile> UploadedFiles { get; set; }
+    [Parameter]
+    public required Dictionary<int, IBrowserFile> UploadedFiles { get; set; }
     [Parameter]
     public bool IsVisible { get; set; }
     [Parameter]

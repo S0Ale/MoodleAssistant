@@ -35,7 +35,7 @@
     private IJSObjectReference? _module;
     public Dictionary<int, IBrowserFile> UploadedFiles{ get; private set; } = [];
 
-    private async Task UploadFile(InputFileChangeEventArgs e){
+    private void UploadFile(InputFileChangeEventArgs e){
         if (e.FileCount != 0 && UploadedFiles.Count < MaxFiles && _current <= MaxFiles){
             foreach (var file in e.GetMultipleFiles()){
                 UploadedFiles.Add(_current, file);
