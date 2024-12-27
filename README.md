@@ -12,7 +12,7 @@ The template question must contain **parameters**. There are different type of p
 
 Type | Format
 ------------- | -------------
-Basic parameter (string) | <code>[*[[parameter]]*]</code>
+Basic parameter (string) | <p><code>[*[[parameter]]*]</code></p>
 File parameter (MS Word, Excel...) | <code>[*[[FILE-parameter]]*]</code>
 Image parameter | <code>[*[[IMAGE-parameter]]*]</code>
 
