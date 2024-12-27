@@ -49,4 +49,5 @@ You can then deploy the content of this folder on the host.
 
 More informations are available at the [official documentation](https://learn.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/?view=aspnetcore-9.0).
 
+- - -
 Made with .NET Blazor and Tailwind CSS
