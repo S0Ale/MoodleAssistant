@@ -15,7 +15,7 @@ internal abstract  class FileUploadTest{
         Ctx = new BunitContext();
         var env = new Mock<IWebHostEnvironment>(); // faking IWebHostEnvironment
         env.Setup(e => e.WebRootPath).Returns(@"C:\Users\user\Desktop\UNI\MoodleAssistant\MoodleAssistant\wwwroot");
-        Ctx.Services.AddScoped<IWebHostEnvironment>(e => env.Object);
+        Ctx.Services.AddScoped<IWebHostEnvironment>(_ => env.Object);
         
         Ctx.JSInterop.Mode = JSRuntimeMode.Loose;
         //Ctx.JSInterop.SetupModule(@"C:\Users\user\Desktop\UNI\MoodleAssistant\MoodleAssistant\Components\Upload\FileDropInput.razor.js");

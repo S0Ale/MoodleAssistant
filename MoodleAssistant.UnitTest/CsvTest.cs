@@ -100,7 +100,7 @@ internal class CsvTest : FileUploadTest{
         var fs = Ctx.Services.GetService<FileService>();
         fs?.DeleteAllFiles();
         
-        Submit = null;
+        Submit = null!;
         Xml.Dispose();
         Csv.Dispose();
         Page.Dispose();
