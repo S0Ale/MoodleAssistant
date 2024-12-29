@@ -1,4 +1,5 @@
 # MoodleAssistant #
+[![Build & Deploy](https://github.com/S0Ale/MoodleAssistant/actions/workflows/master_moodleassistant.yml/badge.svg)](https://github.com/S0Ale/MoodleAssistant/actions/workflows/master_moodleassistant.yml)
 
 **MoodleAssistant** is a web application that generates multiple question variants for Moodle from a single template question, enabling users to create diverse quizzes with minimal effort.
 
