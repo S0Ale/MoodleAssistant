@@ -1,23 +1,22 @@
 ﻿using Microsoft.Playwright;
-using Microsoft.Playwright.NUnit;
 
-namespace MoodleAssistant.UnitTest;
+namespace MoodleAssistant.IntegrationTest;
 
 internal abstract class TestService{
-    private const string _assetsDir = @"C:\Users\user\Desktop\UNI\MoodleAssistant\MoodleAssistant.IntegrationTest\assets";
-    private const string _screenDir = @"C:\Users\user\Desktop\UNI\MoodleAssistant\MoodleAssistant.IntegrationTest\screenshots";
+    private const string AssetsDir = "./assets";
+    private const string ScreenDir = "./screenshots";
 
     public static string GetPath(string fileName){
-        return Path.Combine(_assetsDir, fileName);
+        return Path.Combine(AssetsDir, fileName);
     }
     
     private static byte[] GetBytes(string fileName){
-        return File.ReadAllBytes(Path.Combine(_assetsDir, fileName));
+        return File.ReadAllBytes(Path.Combine(AssetsDir, fileName));
     }
 
     public static async Task Screenshot(IPage page, string name, bool fullPage = false){
         await page.ScreenshotAsync(new(){
-            Path = Path.Combine(_screenDir, $"screen-{name}.png"),
+            Path = Path.Combine(ScreenDir, $"screen-{name}.png"),
             FullPage = fullPage
         });
     }

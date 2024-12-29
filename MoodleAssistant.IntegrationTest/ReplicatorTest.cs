@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using Microsoft.Playwright;
 using Microsoft.Playwright.NUnit;
-using MoodleAssistant.UnitTest;
 using NUnit.Framework;
 
 namespace MoodleAssistant.IntegrationTest;

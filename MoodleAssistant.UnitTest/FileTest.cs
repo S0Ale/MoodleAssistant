@@ -172,8 +172,8 @@ internal class FileTest : FileUploadTest{
         Assert.Multiple(() => {
             Assert.That(_fileSection.Instance.Error, Is.EqualTo(Error.NoErrors));
             Assert.That(_fileSection.Instance.SuccessUpload, Is.True);
-            Assert.That(state.Merged, Is.Not.Null);
-            Assert.That(state.Merged.InnerXml, Does.Contain("<![CDATA["));
+            Assert.That(state?.Merged, Is.Not.Null);
+            Assert.That(state?.Merged?.InnerXml, Does.Contain("<![CDATA["));
         });
     }
 
