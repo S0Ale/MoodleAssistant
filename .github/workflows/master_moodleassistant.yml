@@ -4,9 +4,7 @@
 name: Build and deploy ASP.Net Core app to Azure Web App - moodleassistant
 
 on:
-  push:
-    branches:
-      - master
+  workflow_call:
   workflow_dispatch:
 
 jobs:
