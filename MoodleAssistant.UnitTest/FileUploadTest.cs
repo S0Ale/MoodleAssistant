@@ -14,7 +14,7 @@ internal abstract  class FileUploadTest{
     public void Setup(){
         Ctx = new BunitContext();
         var env = new Mock<IWebHostEnvironment>(); // faking IWebHostEnvironment
-        env.Setup(e => e.WebRootPath).Returns(@"C:\Users\user\Desktop\UNI\MoodleAssistant\MoodleAssistant\wwwroot");
+        env.Setup(e => e.WebRootPath).Returns("./wwwroot");
         Ctx.Services.AddScoped<IWebHostEnvironment>(_ => env.Object);
         
         Ctx.JSInterop.Mode = JSRuntimeMode.Loose;

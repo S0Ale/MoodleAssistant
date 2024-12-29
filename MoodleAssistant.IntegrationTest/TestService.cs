@@ -3,8 +3,8 @@
 namespace MoodleAssistant.IntegrationTest;
 
 internal abstract class TestService{
-    private const string AssetsDir = @"C:\Users\user\Desktop\UNI\MoodleAssistant\MoodleAssistant.IntegrationTest\assets";
-    private const string ScreenDir = @"C:\Users\user\Desktop\UNI\MoodleAssistant\MoodleAssistant.IntegrationTest\screenshots";
+    private const string AssetsDir = "./assets";
+    private const string ScreenDir = "./screenshots";
 
     public static string GetPath(string fileName){
         return Path.Combine(AssetsDir, fileName);

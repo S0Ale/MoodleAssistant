@@ -3,7 +3,7 @@
 namespace MoodleAssistant.UnitTest;
 
 internal abstract class TestService{
-    private const string AssetsDir = @"C:\Users\user\Desktop\UNI\MoodleAssistant\MoodleAssistant.UnitTest\assets";
+    private const string AssetsDir = "./assets";
     
     private static byte[] GetBytes(string fileName){
         return File.ReadAllBytes(Path.Combine(AssetsDir, fileName));
