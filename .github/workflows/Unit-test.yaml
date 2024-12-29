@@ -1,13 +1,15 @@
 name: Unit Test
 
 on:
-#  push:
-#  pull_request:
-#    branches: [ main, master ]
-#    paths:
-#    - '**.cs'
-#    - '**.csproj'
-#    - '**.razor'
+  push:
+  pull_request:
+    branches: [ main, master ]
+    paths:
+    - '**.cs'
+    - '**.csproj'
+    - '**.razor'
+    - '**.js'
+    - '**.css'
   workflow_dispatch:
 
 env:
