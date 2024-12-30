@@ -7,9 +7,11 @@ namespace MoodleAssistant.Services;
 /// Represents a service that manages the file operations during a user session.
 /// </summary>
 /// <param name="env">The <see cref="IWebHostEnvironment"/> instance that provides information about the web hosting environment.</param>
-public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDisposable{
+//public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDisposable{
+public class FileService() : IBrowserFileService, IDisposable{
     private const long MaxFileSize = 10000000;
-    private readonly string _rootFolder = Path.Combine(env.WebRootPath, "Uploads");
+    //private readonly string _rootFolder = Path.Combine(env.WebRootPath, "Uploads");
+    private readonly string _rootFolder = Path.Combine("", "Uploads");
     
     // Maps fixed file names to their trusted file names
     private Dictionary<string, string> _trustedFiles = new Dictionary<string, string>();

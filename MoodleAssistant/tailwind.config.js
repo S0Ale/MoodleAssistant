@@ -4,7 +4,8 @@ module.exports = {
         "./Components/**/*.razor",
         "./Components/**/*.razor.js",
         "./wwwroot/js/**/*.js",
-        "./wwwroot/**/*.js"
+        "./wwwroot/**/*.js",
+        "./wwwroot/**/*.html",
     ],
     theme: {
         extend: {
