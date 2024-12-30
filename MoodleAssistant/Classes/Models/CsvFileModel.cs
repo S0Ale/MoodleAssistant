@@ -19,15 +19,10 @@ public class CsvFileModel(IBrowserFileService fileService){
     {
         return MimeTypes.Contains(file.ContentType);
     }
-
-    public bool IsEmpty()
-    {
-        return fileService.IsEmpty(FileName);
-    }
     
-    public bool HasValidHeader()
+    public async Task<bool> HasValidHeader()
     {
-        var stream = fileService.GetFile(FileName);
+        var stream = await fileService.GetFile(FileName);
         using var reader = new StreamReader(stream);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Read();
@@ -37,9 +32,9 @@ public class CsvFileModel(IBrowserFileService fileService){
         return headerRow.All(questionAndAnswerList.Contains) && Equals(headerRow.Length, questionAndAnswerList.Count);
     }
 
-    public bool IsWellFormed()
+    public async Task<bool> IsWellFormed()
     {
-        var stream = fileService.GetFile(FileName);
+        var stream = await fileService.GetFile(FileName);
         using var reader = new StreamReader(stream, Encoding.Default);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Read();
@@ -57,11 +52,11 @@ public class CsvFileModel(IBrowserFileService fileService){
         return true;
     }
 
-    public IEnumerable<string[]> ConvertCsvToListOfArrayString()
+    public async Task<IEnumerable<string[]>> ConvertCsvToListOfArrayString()
     {
         var csvAsList = new List<string[]>();
         
-        var stream = fileService.GetFile(FileName);
+        var stream = await fileService.GetFile(FileName);
         using var reader = new StreamReader(stream);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
         csv.Read();

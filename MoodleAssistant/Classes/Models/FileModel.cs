@@ -45,7 +45,4 @@ public class FileModel(IBrowserFileService fileService, string name){
     public bool IsOfficeFile(IBrowserFile file){
         return MsMimeTypes.Contains(file.ContentType);
     }
-    public bool IsEmpty(){
-        return fileService.IsEmpty(_fileName);
-    }
 }

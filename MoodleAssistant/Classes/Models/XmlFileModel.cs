@@ -21,17 +21,13 @@ public class XmlFileModel(IBrowserFileService fileService){
         return System.Net.Mime.MediaTypeNames.Text.Xml == file.ContentType;
     }
     
-    public bool IsEmpty(){
-        return fileService.IsEmpty(FileName);
-    }
-    
-    public bool IsWellFormattedXml(){
-        var stream = fileService.GetFile(FileName);
+    public async Task<bool> IsWellFormattedXml(){
+        var stream = await fileService.GetFile(FileName);
         using var reader = new StreamReader(stream, Encoding.UTF8);
                                                                                                
         try{                                                                                      
             XmlFile = new XmlDocument();                                                       
-            XmlFile.LoadXml(reader.ReadToEnd());                                         
+            XmlFile.LoadXml(await reader.ReadToEndAsync());                                         
             return true;                                                                       
         }                                                                                      
         catch (XmlException){                                                                                      

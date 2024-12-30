@@ -14,7 +14,8 @@ public class FileService() : IBrowserFileService, IDisposable{
     private readonly string _rootFolder = Path.Combine("", "Uploads");
     
     // Maps fixed file names to their trusted file names
-    private Dictionary<string, string> _trustedFiles = new Dictionary<string, string>();
+    //private Dictionary<string, string> _trustedFiles = new Dictionary<string, string>();
+    private Dictionary<string, IBrowserFile> _trustedFiles = new Dictionary<string, IBrowserFile>();
 
     /// <summary>
     /// Saves the specified file inside the root folder.
@@ -22,14 +23,16 @@ public class FileService() : IBrowserFileService, IDisposable{
     /// <param name="file">Instance of <see cref="IBrowserFile"/> to save.</param>
     /// <param name="fileName">The file name.</param>
     /// <returns>The save operation result.</returns>
-    public async Task<bool> SaveFile(IBrowserFile file, string fileName){
+    public Task<bool> SaveFile(IBrowserFile file, string fileName){
         // if name exists, overwrite
         if(_trustedFiles.ContainsKey(fileName)){
             DeleteFile(fileName);
         }
-        var trustedFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
-        _trustedFiles.Add(fileName, trustedFileName);
+        //var trustedFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
+        //_trustedFiles.Add(fileName, trustedFileName);
+        _trustedFiles.Add(fileName, file);
         
+        /*
         if(!Directory.Exists(_rootFolder)){
             Directory.CreateDirectory(_rootFolder);
         }
@@ -37,7 +40,8 @@ public class FileService() : IBrowserFileService, IDisposable{
         var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
         await using var fileStream = new FileStream(trustedFilePath, FileMode.Create);
         await file.OpenReadStream(MaxFileSize).CopyToAsync(fileStream);
-        return true;
+        */
+        return Task.FromResult(true);
     }
 
     /// <summary>
@@ -45,10 +49,14 @@ public class FileService() : IBrowserFileService, IDisposable{
     /// </summary>
     /// <param name="fileName">The file name.</param>
     /// <returns>The <see cref="FileStream"/> that encapsulates the file with the specified name.</returns>
-    public FileStream GetFile(string fileName){
-        var trustedFileName = _trustedFiles[fileName];
-        var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
-        return new FileStream(trustedFilePath, FileMode.Open, FileAccess.Read);
+    public async Task<Stream> GetFile(string fileName){
+        //var trustedFileName = _trustedFiles[fileName];
+        //var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
+        //return new FileStream(trustedFilePath, FileMode.Open, FileAccess.Read);
+        var stream = new MemoryStream();
+        await _trustedFiles[fileName].OpenReadStream(MaxFileSize).CopyToAsync(stream);
+        stream.Position = 0;
+        return stream;
     }
 
     /// <summary>
@@ -57,9 +65,10 @@ public class FileService() : IBrowserFileService, IDisposable{
     /// <param name="fileName">The file name.</param>
     /// <returns>The <see cref="FileInfo"/> if the file with the specified name.</returns>
     public FileInfo GetFileInfo(string fileName){
-        var trustedFileName = _trustedFiles[fileName];
-        var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
-        return new FileInfo(trustedFilePath);
+        //var trustedFileName = _trustedFiles[fileName];
+        //var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
+        //return new FileInfo(trustedFilePath);
+        throw new NotImplementedException();
     }
     
     /// <summary>
@@ -67,21 +76,21 @@ public class FileService() : IBrowserFileService, IDisposable{
     /// </summary>
     /// <param name="fileName">The name of the file to delete.</param>
     public void DeleteFile(string fileName){
-        var trustedFileName = _trustedFiles[fileName];
-        var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
-        File.Delete(trustedFilePath);
-        _trustedFiles.Remove(fileName);
+        //var trustedFileName = _trustedFiles[fileName];
+        //var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
+        //File.Delete(trustedFilePath);
+        //_trustedFiles.Remove(fileName);
     }
     
     /// <summary>
     /// Deletes all files inside the root folder.
     /// </summary>
     public void DeleteAllFiles(){
-        foreach(var trustedName in _trustedFiles.Values){
-            var trustedFilePath = Path.Combine(_rootFolder, trustedName);
-            File.Delete(trustedFilePath);
-        }
-        _trustedFiles = new Dictionary<string, string>();
+        //foreach(var trustedName in _trustedFiles.Values){
+            //var trustedFilePath = Path.Combine(_rootFolder, trustedName);
+            //File.Delete(trustedFilePath);
+        //}
+        //_trustedFiles = new Dictionary<string, string>();
     }
     
     /// <summary>
@@ -90,11 +99,12 @@ public class FileService() : IBrowserFileService, IDisposable{
     /// <param name="fileName">The file name.</param>
     /// <returns>The base64 string of the file.</returns>
     public string GetBase64(string fileName){
-        var trustedFileName = _trustedFiles[fileName];
-        var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
+        //var trustedFileName = _trustedFiles[fileName];
+        //var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
         
-        using var fileStream = new FileStream(trustedFilePath, FileMode.Open, FileAccess.Read);
-        using var base64Stream = new CryptoStream(fileStream, new ToBase64Transform(), CryptoStreamMode.Read);
+        //using var fileStream = new FileStream(trustedFilePath, FileMode.Open, FileAccess.Read);
+        var stream = _trustedFiles[fileName].OpenReadStream(MaxFileSize);
+        using var base64Stream = new CryptoStream(stream, new ToBase64Transform(), CryptoStreamMode.Read);
         using var reader = new StreamReader(base64Stream);
         return reader.ReadToEnd();
     }
