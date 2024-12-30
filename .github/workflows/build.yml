@@ -1,8 +1,16 @@
 name: Build
 
 on:
+  push:
+  pull_request:
+    branches: [ main, master ]
+    paths:
+    - '**.cs'
+    - '**.csproj'
+    - '**.razor'
+    - '**.js'
+    - '**.css'
   workflow_dispatch:
-  workflow_call:
 
 jobs:
   build:
@@ -28,3 +36,40 @@ jobs:
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/myapp
+
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: install deps
+        run: dotnet restore MoodleAssistant.UnitTest
+        
+      - name: build solution
+        run: dotnet build MoodleAssistant.UnitTest --configuration Release --no-restore
+      
+      - name: test solution
+        run: dotnet test MoodleAssistant.UnitTest --no-restore --verbosity normal
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    if: success()
+    
+    environment:
+      name: 'Demo Site'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v3
+        with:
+          name: .net-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: 'moodleassistant'
+          slot-name: 'Production'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AF1642609DB7460D8D73B9A9362FB28D }}
+          package: .
