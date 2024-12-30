@@ -79,9 +79,9 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
 
     // File names need to be equal to the names inside the CSV file
     // The CSV column order must be the same as the XML parameter order
-    public void MergeQuestion(){
+    public async Task MergeQuestion(){
         try{
-            XmlFileParamPhase();
+            await XmlFileParamPhase();
             ReplaceParamPhase();
         }
         catch (KeyNotFoundException){
@@ -100,7 +100,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
     /// First phase of the XML file merging process. This function provides the correct values for the file tags
     /// and clones the question node for each row in the CSV file.
     /// </summary>
-    private void XmlFileParamPhase(){
+    private async Task XmlFileParamPhase(){
         var headerRow = CsvAsList.ElementAt(0); // first row contains parameter names
 
         for (var j = 1; j < CsvAsList.Count(); j++){
@@ -128,7 +128,7 @@ public class Merger(ReplicatorState state, IBrowserFileService fileService){
                     var tag = xmlQuestionNode.SelectSingleNode(
                         $"//file[@name='{param.Name}']"); // select the correct file tag
                     tag!.Attributes!["name"]!.Value = filename;
-                    tag.InnerText = base64;
+                    tag.InnerText = await base64;
                 }
             }
 

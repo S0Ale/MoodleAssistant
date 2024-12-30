@@ -13,5 +13,5 @@ public interface IBrowserFileService{
     public void DeleteFile(string fileName);
 
     public void DeleteAllFiles();
-    string GetBase64(string filename);
+    Task<string> GetBase64(string filename);
 }

@@ -98,15 +98,16 @@ public class FileService() : IBrowserFileService, IDisposable{
     /// </summary>
     /// <param name="fileName">The file name.</param>
     /// <returns>The base64 string of the file.</returns>
-    public string GetBase64(string fileName){
+    public async Task<string> GetBase64(string fileName){
         //var trustedFileName = _trustedFiles[fileName];
         //var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
         
         //using var fileStream = new FileStream(trustedFilePath, FileMode.Open, FileAccess.Read);
-        var stream = _trustedFiles[fileName].OpenReadStream(MaxFileSize);
-        using var base64Stream = new CryptoStream(stream, new ToBase64Transform(), CryptoStreamMode.Read);
+        var stream = await GetFile(fileName);
+        stream.Position = 0;
+        await using var base64Stream = new CryptoStream(stream, new ToBase64Transform(), CryptoStreamMode.Read); // throws an error
         using var reader = new StreamReader(base64Stream);
-        return reader.ReadToEnd();
+        return await reader.ReadToEndAsync();
     }
 
     /// <summary>

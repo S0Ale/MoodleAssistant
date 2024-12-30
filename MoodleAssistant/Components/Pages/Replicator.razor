@@ -133,7 +133,7 @@
 
             try{
                 state.Preview = new PreviewModel(merger.PreviewMerge(), state.XmlModel.AnswerCount);
-                merger.MergeQuestion();
+                await merger.MergeQuestion();
             }catch (ReplicatorException e){
                 SetError(e.Error);
                 return;
