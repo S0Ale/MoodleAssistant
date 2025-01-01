@@ -128,8 +128,13 @@
         try{
             state.Preview = new PreviewModel(merger.MergeQuestion(true), state.XmlModel.AnswerCount);
             state.Merged = merger.MergeQuestion();
-        }catch (ReplicatorException e){
+        }
+        catch (ReplicatorException e){
             SetError(e.Error);
+            return;
+        }
+        catch (KeyNotFoundException){
+            SetError(Error.FileMismatch);
             return;
         }catch (Exception e){
             Logger.LogError(e, e.Message);

@@ -4,8 +4,6 @@ namespace MoodleAssistant.Classes.Models;
 
 public class PreviewModel{
     public List<PreviewItem> Items{ get; } = [];
-    //public IEnumerable<string> QuestPreviews; // more than 1 question is not allowed
-
 
     public PreviewModel(XmlDocument question, int answers){
         GenerateItems(question, answers);
