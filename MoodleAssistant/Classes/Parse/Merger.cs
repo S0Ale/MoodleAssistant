@@ -1,5 +1,4 @@
 ﻿using System.Xml;
-using MoodleAssistant.Classes.Utils;
 using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Classes.Parse;
