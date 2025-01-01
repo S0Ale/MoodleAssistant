@@ -76,21 +76,14 @@ public class FileService() : IBrowserFileService, IDisposable{
     /// </summary>
     /// <param name="fileName">The name of the file to delete.</param>
     public void DeleteFile(string fileName){
-        //var trustedFileName = _trustedFiles[fileName];
-        //var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
-        //File.Delete(trustedFilePath);
-        //_trustedFiles.Remove(fileName);
+        _trustedFiles.Remove(fileName);
     }
     
     /// <summary>
     /// Deletes all files inside the root folder.
     /// </summary>
     public void DeleteAllFiles(){
-        //foreach(var trustedName in _trustedFiles.Values){
-            //var trustedFilePath = Path.Combine(_rootFolder, trustedName);
-            //File.Delete(trustedFilePath);
-        //}
-        //_trustedFiles = new Dictionary<string, string>();
+        _trustedFiles = new Dictionary<string, IBrowserFile>();
     }
     
     /// <summary>

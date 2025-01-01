@@ -127,7 +127,7 @@
         // Merge question
         try{
             state.Preview = new PreviewModel(await merger.MergeQuestion(true), state.XmlModel.AnswerCount);
-            await merger.MergeQuestion();
+            state.Merged = await merger.MergeQuestion();
         }catch (ReplicatorException e){
             SetError(e.Error);
             return;

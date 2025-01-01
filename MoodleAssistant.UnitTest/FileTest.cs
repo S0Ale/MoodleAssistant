@@ -114,6 +114,9 @@ internal class FileTest : FileUploadTest{
 
     [Test]
     public void UploadFiles_UploadImageCorrect(){
+        TearDown();
+        base.Setup();
+        _page = Ctx.Render<Replicator>();
         var inputs = _page.FindComponents<InputFile>();
         var xml = inputs[0];
         var csv = inputs[1];
@@ -145,6 +148,9 @@ internal class FileTest : FileUploadTest{
     
     [Test]
     public void UploadFiles_UploadImageWithNoCdataCorrect(){
+        TearDown();
+        base.Setup();
+        _page = Ctx.Render<Replicator>();
         var inputs = _page.FindComponents<InputFile>();
         var xml = inputs[0];
         var csv = inputs[1];
@@ -179,7 +185,7 @@ internal class FileTest : FileUploadTest{
 
     [TearDown]
     public new void TearDown(){
-        var fs = Ctx.Services.GetService<FileService>();
+        var fs = Ctx.Services.GetService<IBrowserFileService>();
         fs?.DeleteAllFiles();
         
         _submitFile = null!;
