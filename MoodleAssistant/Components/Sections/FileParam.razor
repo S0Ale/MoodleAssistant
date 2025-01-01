@@ -119,17 +119,20 @@
             SetError(Error.Unexpected);
             return;
         }
-        var merger = new Merger(state, FileService){
+        var merger = new Merger(FileService){
             XmlFile = state.XmlModel.XmlFile,
             CsvAsList = state.CsvAsList
         };
 
         // Merge question
         try{
-            state.Preview = new PreviewModel(merger.PreviewMerge(), state.XmlModel.AnswerCount);
+            state.Preview = new PreviewModel(await merger.MergeQuestion(true), state.XmlModel.AnswerCount);
             await merger.MergeQuestion();
         }catch (ReplicatorException e){
             SetError(e.Error);
+            return;
+        }catch (KeyNotFoundException){
+            SetError(Error.FileMismatch);
             return;
         }catch (Exception e){
             Logger.LogError(e, e.Message);
