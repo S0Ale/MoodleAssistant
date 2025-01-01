@@ -126,10 +126,15 @@
 
         // Merge question
         try{
-            state.Preview = new PreviewModel(merger.PreviewMerge(), state.XmlModel.AnswerCount);
-            merger.MergeQuestion();
-        }catch (ReplicatorException e){
+            state.Preview = new PreviewModel(merger.MergeQuestion(true), state.XmlModel.AnswerCount);
+            state.Merged = merger.MergeQuestion();
+        }
+        catch (ReplicatorException e){
             SetError(e.Error);
+            return;
+        }
+        catch (KeyNotFoundException){
+            SetError(Error.FileMismatch);
             return;
         }catch (Exception e){
             Logger.LogError(e, e.Message);
