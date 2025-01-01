@@ -18,13 +18,14 @@ public class PreviewModel{
         using var e1 = e as IDisposable;
 
         for (var i = 0; i < questions.Count; i++){
-            var item = new PreviewItem(questions[i]?.InnerText ?? string.Empty);
+            var question = questions[i];
+            var item = new PreviewItem(question?.SelectSingleNode("text")?.InnerText ?? string.Empty);
 
             var answerStrings = new string[answerCount];
             for (var j = 0; j < answerCount; j++) {
                 e.MoveNext();
                 var node = e.Current as XmlNode;
-                answerStrings[j] = node?.InnerText ?? string.Empty;
+                answerStrings[j] = node?.SelectSingleNode("text")?.InnerText ?? string.Empty;
             }
 
             item.Answers = answerStrings;
