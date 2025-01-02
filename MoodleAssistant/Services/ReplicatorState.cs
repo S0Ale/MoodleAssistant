@@ -7,7 +7,7 @@ namespace MoodleAssistant.Services;
 /// <summary>
 /// Represents the current state of the program, during the current user session.
 /// </summary>
-public class ReplicatorState{
+public class ReplicatorState : IDisposable{
     public PreviewModel? Preview{ get; set; }
     public ParameterModel? Parameters{ get; set; }
     public XmlFileModel? XmlModel{ get; set; }
@@ -22,5 +22,9 @@ public class ReplicatorState{
         XmlModel = null;
         CsvAsList = [];
         Merged = null;
+    }
+
+    public void Dispose(){
+        Reset();
     }
 }
