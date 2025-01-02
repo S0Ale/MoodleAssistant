@@ -9,6 +9,7 @@ on:
     - '**.js'
     - '**.css'
     - '!**.md'
+    - '!docs/**'
   pull_request:
     branches: [ main, master ]
     paths:
@@ -18,6 +19,7 @@ on:
     - '**.js'
     - '**.css'
     - '!**.md'
+    - '!docs/**'
   workflow_dispatch:
 
 jobs:
