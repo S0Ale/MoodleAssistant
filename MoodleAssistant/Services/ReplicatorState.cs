@@ -1,5 +1,5 @@
 ﻿using System.Xml;
-using MoodleAssistant.Classes.Models;
+using MoodleAssistant.Logic.Models;
 
 namespace MoodleAssistant.Services;
 

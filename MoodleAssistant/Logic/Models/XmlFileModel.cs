@@ -4,7 +4,7 @@ using System.Xml;
 using Microsoft.AspNetCore.Components.Forms;
 using MoodleAssistant.Services;
 
-namespace MoodleAssistant.Classes.Models;
+namespace MoodleAssistant.Logic.Models;
 
 // This class is used to manage the XML file uploaded by the user: format parts for analysis, validation.
 public class XmlFileModel(IBrowserFileService fileService){

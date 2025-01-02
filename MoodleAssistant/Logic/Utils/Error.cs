@@ -1,4 +1,4 @@
-﻿namespace MoodleAssistant.Classes.Utils;
+﻿namespace MoodleAssistant.Logic.Utils;
 
 public static class ErrorMessage
 {

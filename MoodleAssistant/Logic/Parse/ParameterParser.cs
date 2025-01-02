@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
 
-namespace MoodleAssistant.Classes.Parse;
+namespace MoodleAssistant.Logic.Parse;
 
 /// <summary>
 /// Parses a string for parameters.

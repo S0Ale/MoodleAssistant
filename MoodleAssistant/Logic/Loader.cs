@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
-using MoodleAssistant.Classes.Models;
-using MoodleAssistant.Classes.Utils;
+using MoodleAssistant.Logic.Models;
+using MoodleAssistant.Logic.Utils;
 using MoodleAssistant.Services;
 
-namespace MoodleAssistant.Classes.Parse;
+namespace MoodleAssistant.Logic;
 
 // This class is used to load the files uploaded by the user (save, validation).
 public class Loader(IBrowserFileService fileService){

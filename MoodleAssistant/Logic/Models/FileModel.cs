@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using MoodleAssistant.Services;
 
-namespace MoodleAssistant.Classes.Models;
+namespace MoodleAssistant.Logic.Models;
 
 public class FileModel(IBrowserFileService fileService, string name){
     private readonly string _fileName = name;

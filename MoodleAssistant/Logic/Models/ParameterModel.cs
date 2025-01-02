@@ -1,7 +1,7 @@
 ﻿using System.Xml;
-using MoodleAssistant.Classes.Parse;
+using MoodleAssistant.Logic.Parse;
 
-namespace MoodleAssistant.Classes.Models;
+namespace MoodleAssistant.Logic.Models;
 
 public class ParameterModel(XmlDocument doc, int csvRows){
     private readonly List<Parameter>? _param = new ParameterParser(doc.OuterXml).Match() as List<Parameter>;

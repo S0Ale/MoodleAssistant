@@ -1,10 +1,10 @@
 ﻿using AngleSharp.Dom;
 using Bunit;
 using Microsoft.AspNetCore.Components.Forms;
-using MoodleAssistant.Classes.Utils;
 using MoodleAssistant.Components.Pages;
 using MoodleAssistant.Components.Sections;
 using MoodleAssistant.Components.Upload;
+using MoodleAssistant.Logic.Utils;
 using MoodleAssistant.Services;
 
 namespace MoodleAssistant.UnitTest;

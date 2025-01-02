@@ -1,4 +1,4 @@
-﻿namespace MoodleAssistant.Classes.Models;
+﻿namespace MoodleAssistant.Logic.Models;
 
 public class PreviewItem(string questionText){
     public string QuestionText{ get; } = questionText;
