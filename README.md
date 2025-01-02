@@ -9,9 +9,7 @@
     <a href="https://github.com/S0Ale/MoodleAssistant/wiki" target="_blank"><b>Documentation</b></a>
 </p>
 
-<kbd>
-<img src="https://github.com/S0Ale/MoodleAssistant/blob/master/doc/Home-site.png"/>
-</kbd>
+![](https://github.com/S0Ale/MoodleAssistant/blob/master/docs/Home-site.png)
 
 ***
 
