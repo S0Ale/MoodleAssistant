@@ -10,8 +10,7 @@ on:
     - '**.razor'
     - '**.js'
     - '**.css'
-    - '!docs/**'
-    - '!README.md'
+    - '!**.md'
   workflow_dispatch:
 
 jobs:
