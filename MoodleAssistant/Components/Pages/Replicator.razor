@@ -170,7 +170,10 @@
 
     private void Reset(){
         FileService.DeleteAllFiles();
-        NavigationManager.NavigateTo("/Replicator", true);
+        ClearForm();
+        ReplicatorState.Reset();
+        ResetSections();
+        //NavigationManager.NavigateTo("/Replicator", true);
     }
 
     private void SetError(Error err){
