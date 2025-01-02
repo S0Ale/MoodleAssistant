@@ -10,6 +10,8 @@ on:
     - '**.razor'
     - '**.js'
     - '**.css'
+    paths-ignore:
+    - 'docs/**'
   workflow_dispatch:
 
 jobs:
