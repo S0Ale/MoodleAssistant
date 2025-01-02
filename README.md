@@ -4,9 +4,14 @@
 
 **MoodleAssistant** is a web application that generates multiple question variants for Moodle from a single template question, enabling users to create diverse quizzes with minimal effort.
 
-[Live Demo](https://moodleassistant.azurewebsites.net/) • [Documentation](https://github.com/S0Ale/MoodleAssistant/wiki)
+<p align="center" style="align-items: center">
+    <a href="https://moodleassistant.azurewebsites.net/" target="_blank"><b>Live Demo</b></a> •
+    <a href="https://github.com/S0Ale/MoodleAssistant/wiki" target="_blank"><b>Documentation</b></a>
+</p>
 
-![](https://github.com/S0Ale/MoodleAssistant/blob/master/doc/Home-site.png)
+<kbd>
+<img src="https://github.com/S0Ale/MoodleAssistant/blob/master/doc/Home-site.png"/>
+</kbd>
 
 ***
 
