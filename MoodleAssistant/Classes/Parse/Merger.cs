@@ -32,11 +32,20 @@ public class Merger(IBrowserFileService fileService){
         // 2. For each file parameter, add a file tag to the parent node
         var fileNodes = ScanForCdata(merged, previewMode); // 1.
         if(!previewMode) PrepareFileTags(merged, fileNodes); // 2.
-        
+
+        var i = 1;
         // Create a new question for each row in the CSV file
         for (var j = 1; j < CsvAsList.Count(); j++){
             var xmlQuestionNode = merged.GetElementsByTagName("question").Item(0)?.Clone(); // 1. Clone the template question
             if (xmlQuestionNode == null) continue;
+            
+            var nameNode = xmlQuestionNode.SelectSingleNode("//name/text");
+            if (!previewMode){
+                if (nameNode != null){
+                    nameNode.InnerText = $"{nameNode.InnerText}-{i}";
+                    i++;
+                }
+            }
 
             // 2. Replace the parameters with the values from the CSV file
             var allNodes = xmlQuestionNode.SelectNodes("//text"); // Select all nodes of type text
@@ -61,9 +70,12 @@ public class Merger(IBrowserFileService fileService){
                 if (allFileNodes == null) continue;
                 var fileTags = allFileNodes.Cast<XmlNode>();
                 foreach (var tag in fileTags){
-                    if(!String.IsNullOrEmpty(tag.InnerText)) continue;
+                    if(!string.IsNullOrEmpty(tag.InnerText)) continue;
                     var name = tag.Attributes!["name"]!.Value;
-                    var filename = FindInCsv(CsvAsList, j, name);
+                    string filename;
+                    try{ filename = FindInCsv(CsvAsList, j, name); }
+                    catch (KeyNotFoundException){ continue; } // this tag is not the one I added in the previous steps
+                    
                     tag.Attributes!["name"]!.Value = filename;
                     var base64 = await fileService.GetBase64(filename);
                     tag.InnerText = base64;
@@ -71,17 +83,6 @@ public class Merger(IBrowserFileService fileService){
             }
 
             merged.DocumentElement?.AppendChild(xmlQuestionNode);
-        }
-
-        if (!previewMode){
-            // Rename the questions
-            var i = 0;
-            var names = merged.SelectNodes("//name/text");
-            if (names != null)
-                foreach (XmlNode name in names){
-                    name.InnerText = $"{name.InnerText}-{i}";
-                    i++;
-                }
         }
 
         // remove template question
@@ -106,7 +107,7 @@ public class Merger(IBrowserFileService fileService){
         var nodes = allNodes.Cast<XmlNode>();
         var fileNodes = nodes.Where(n =>
             (!previewMode && (n.InnerText.Contains("[*[[FILE-") || n.InnerText.Contains("[*[[IMAGE-"))) ||
-            (n.InnerText.Contains("[*[[") && n.InnerText.Contains("]]*]"))
+            (previewMode && n.InnerText.Contains("[*[[") && n.InnerText.Contains("]]*]"))
         ).ToList();
         
         foreach (var node in fileNodes){
