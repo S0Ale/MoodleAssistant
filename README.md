@@ -1,7 +1,3 @@
----
-icon: hand-wave
----
-
 # MoodleAssistant
 
 [![Build](https://github.com/S0Ale/MoodleAssistant/actions/workflows/build.yml/badge.svg)](https://github.com/S0Ale/MoodleAssistant/actions/workflows/build.yml)
