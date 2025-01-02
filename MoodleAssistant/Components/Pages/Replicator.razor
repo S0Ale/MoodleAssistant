@@ -127,7 +127,7 @@
                 SetError(Error.Unexpected);
                 return;
             }
-            var merger = new Merger(state, FileService){
+            var merger = new Merger(FileService){
                 XmlFile = state.XmlModel.XmlFile,
                 CsvAsList = state.CsvAsList
             };
