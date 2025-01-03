@@ -4,7 +4,7 @@ using CsvHelper;
 using Microsoft.AspNetCore.Components.Forms;
 using MoodleAssistant.Services;
 
-namespace MoodleAssistant.Classes.Models;
+namespace MoodleAssistant.Logic.Models;
 
 // This class is used to handle the CSV file uploaded by the user, mostly validation.
 public class CsvFileModel(IBrowserFileService fileService){

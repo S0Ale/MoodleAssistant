@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace MoodleAssistant.Classes.Models;
+namespace MoodleAssistant.Logic.Models;
 
 public class PreviewModel{
     public List<PreviewItem> Items{ get; } = [];

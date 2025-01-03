@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 using Microsoft.AspNetCore.Components.Forms;
-using MoodleAssistant.Classes.Models;
+using MoodleAssistant.Logic.Models;
 
 namespace MoodleAssistant.Services;
 

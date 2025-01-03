@@ -1,7 +1,8 @@
 ﻿using System.Text;
 using System.Text.RegularExpressions;
+using MoodleAssistant.Classes.Parse;
 
-namespace MoodleAssistant.Classes.Parse;
+namespace MoodleAssistant.Logic.Parse;
 
 /// <summary>
 /// Represents a file-type parameter in a template question.

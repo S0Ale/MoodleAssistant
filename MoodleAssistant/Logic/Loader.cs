@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
-using MoodleAssistant.Classes.Models;
-using MoodleAssistant.Classes.Utils;
+using MoodleAssistant.Logic.Models;
+using MoodleAssistant.Logic.Utils;
 using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Classes.Parse;
@@ -51,7 +51,7 @@ public class Loader(IBrowserFileService fileService){
     
     public async Task LoadFiles(IBrowserFile[] files){
         foreach (var file in files){
-            var model = new FileModel(fileService, file.Name);
+            var model = new FileModel();
             _ = await fileService.SaveFile(file, file.Name); 
             
             if (null == file)
