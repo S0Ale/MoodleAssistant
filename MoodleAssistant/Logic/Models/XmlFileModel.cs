@@ -49,50 +49,6 @@ public class XmlFileModel(IBrowserFileService fileService){
         return questionTextNodeList is {Count: 1};                                                                                                              
     } 
     
-    public string GetFormattedQuestionText(){                                                                                                                                                        
-        if(!HasQuestionText())                                                                                                                               
-            return string.Empty;                                                                                                                             
-        var questionTextNode = XmlFile.GetElementsByTagName("questiontext").Item(0);                                                                         
-        if (questionTextNode == null)                                                                                                                        
-            return string.Empty;                                                                                                                             
-                                                                                                                                                             
-        var htmlFormatted = "";
-        var questionText = questionTextNode.SelectSingleNode("text")?.InnerText ?? "";
-        foreach (Match match in Regex.Matches(questionText, Pattern))                                                                                                   
-            questionText = questionText.Replace(match.Value, "<span class=\"code\">" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</span>");          
-        htmlFormatted += questionText;                                                                                                                       
-        return htmlFormatted;                                                                                                                       
-                                                                                                                                                             
-    }
-    
-    public string GetFormattedAnswers(){                                                                                                                                                        
-        if (!HasAnswer())                                                                                                                                    
-            return string.Empty;                                                                                                                             
-        var htmlFormatted = "";                                                                                                                              
-        var answerTextNodeList = XmlFile.GetElementsByTagName("answer");
-        foreach (XmlNode answerTextNode in answerTextNodeList){
-            if (answerTextNode == null)
-                continue;
-            htmlFormatted += "<p>";
-            foreach (XmlNode node in answerTextNode.SelectNodes("text")!){
-                var answerText = node.InnerText;
-                foreach (Match match in Regex.Matches(answerText, Pattern))
-                    answerText = answerText.Replace(match.Value,
-                        "<span class=\"code\">" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</span>");
-                htmlFormatted += answerText;
-            }
-
-            htmlFormatted += "</p>";
-        }
-
-        return htmlFormatted;                                                                                                                                
-    }
-
-    private bool HasAnswer(){                                                                                                                                                        
-        var answerList = XmlFile.GetElementsByTagName("answer");                                                                                             
-        return answerList is {Count: > 0};                                                                                                                         
-    }   
-    
     public void TakeParameters(){                                                                                                                                                        
         var questionTextNodeList = XmlFile.GetElementsByTagName("questiontext");
         QuestionParametersList = GetParametersFromXmlNode(questionTextNodeList.Item(0)!).Distinct();

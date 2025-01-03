@@ -9,16 +9,17 @@ namespace MoodleAssistant.Services;
 public class ReplicatorState : IDisposable{
     public PreviewModel? Preview{ get; set; }
     public ParameterModel? Parameters{ get; set; }
-    public XmlFileModel? XmlModel{ get; set; }
 
     public IEnumerable<string[]> CsvAsList{ get; set; } = [];
-    
+
+    public XmlDocument Template{ get; set; } = new XmlDocument();
     public XmlDocument? Merged{ get; set; }
+    
+    public int AnswerCount { get; set; }
 
     public void Reset(){
         Preview = null;
         Parameters = null;
-        XmlModel = null;
         CsvAsList = [];
         Merged = null;
     }

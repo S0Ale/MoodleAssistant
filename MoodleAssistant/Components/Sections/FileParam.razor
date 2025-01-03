@@ -114,19 +114,14 @@
             SetError(Error.Unexpected);
             return;
         }
-        
-        if (state.XmlModel?.XmlFile == null){
-            SetError(Error.Unexpected);
-            return;
-        }
         var merger = new Merger(FileService){
-            XmlFile = state.XmlModel.XmlFile,
+            XmlFile = state.Template,
             CsvAsList = state.CsvAsList
         };
 
         // Merge question
         try{
-            state.Preview = new PreviewModel(merger.MergeQuestion(true), state.XmlModel.AnswerCount);
+            state.Preview = new PreviewModel(merger.MergeQuestion(true), state.AnswerCount);
             state.Merged = merger.MergeQuestion();
         }
         catch (ReplicatorException e){
