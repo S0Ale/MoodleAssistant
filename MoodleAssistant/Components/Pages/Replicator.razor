@@ -119,7 +119,7 @@
         FileService.DeleteAllFiles();
 
         // Load parameters
-        state.Parameters = new ParameterModel(xmlModel.XmlFile, csvList.Count() - 1);
+        state.Parameters = new ParameterModel(state.Template, csvList.Count() - 1);
         if (state.Parameters.GetFileParameters().Count > 0){
             _showFileParams = true;
         }else{
