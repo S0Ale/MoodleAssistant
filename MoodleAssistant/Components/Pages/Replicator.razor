@@ -101,7 +101,8 @@
             SetError(e.Error);
             return;
         }
-        ReplicatorState.XmlModel = xmlModel;
+        state.Template = xmlModel.XmlFile;
+        state.AnswerCount = xmlModel.AnswerCount;
         
         // Load CSV file
         List<string[]> csvList;
@@ -115,25 +116,21 @@
             SetError(Error.Unexpected);
             return;
         }
-        ReplicatorState.CsvAsList = csvList;
+        state.CsvAsList = csvList;
         FileService.DeleteAllFiles();
 
         // Load parameters
-        state.Parameters = new ParameterModel(xmlModel.XmlFile, csvList.Count() - 1);
+        state.Parameters = new ParameterModel(state.Template, csvList.Count() - 1);
         if (state.Parameters.GetFileParameters().Count > 0){
             _showFileParams = true;
         }else{
-            if (state.XmlModel?.XmlFile == null){
-                SetError(Error.Unexpected);
-                return;
-            }
             var merger = new Merger(FileService){
-                XmlFile = state.XmlModel.XmlFile,
+                XmlFile = state.Template,
                 CsvAsList = state.CsvAsList
             };
 
             try{
-                state.Preview = new PreviewModel(await merger.MergeQuestion(true), state.XmlModel.AnswerCount);
+                state.Preview = new PreviewModel(await merger.MergeQuestion(true), state.AnswerCount);
                 state.Merged = await merger.MergeQuestion();
             }catch (ReplicatorException e){
                 SetError(e.Error);
