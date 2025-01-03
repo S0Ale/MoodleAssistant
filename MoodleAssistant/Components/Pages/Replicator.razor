@@ -100,8 +100,8 @@
             SetError(e.Error);
             return;
         }
-        ReplicatorState.Template = xmlModel.XmlFile;
-        ReplicatorState.AnswerCount = xmlModel.AnswerCount;
+        state.Template = xmlModel.XmlFile;
+        state.AnswerCount = xmlModel.AnswerCount;
         
         // Load CSV file
         List<string[]> csvList;
@@ -115,7 +115,7 @@
             SetError(Error.Unexpected);
             return;
         }
-        ReplicatorState.CsvAsList = csvList;
+        state.CsvAsList = csvList;
         FileService.DeleteAllFiles();
 
         // Load parameters
