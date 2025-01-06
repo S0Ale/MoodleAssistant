@@ -35,7 +35,7 @@
                     <button type="button" class="btn btn-secondary py-1.5 px-6 ml-3" id="clear-files" @onclick="ClearForm">Clear</button>
                 </div>
                 <div class="error-container">
-                    <Message @ref="_dialog" MsgText="@(ErrorMessage.GetErrorMessage(Error))" Type="MessageType.Error" CanClose="true"/>
+                    <Message @ref="_dialog" MsgText="@(ErrorMessage.GetErrorMessage(ErrorMsg))" Type="MessageType.Error" CanClose="true"/>
                     @if (_isUploading){
                         <Message MsgText="Uploading..." Type="MessageType.Info" CanClose="false"/>
                     }
@@ -65,7 +65,7 @@
 }
 
 @code{
-    public Error Error{ get; private set; } = Error.NoErrors; // public for testing purposes
+    public Error ErrorMsg{ get; private set; } = Error.NoErrors; // public for testing purposes
     
     private Message _dialog = null!;
     private DropInput _xmlInput = null!;
@@ -169,13 +169,12 @@
         ClearForm();
         ReplicatorState.Reset();
         ResetSections();
-        //NavigationManager.NavigateTo("/Replicator", true);
     }
 
     private void SetError(Error err){
         _isUploading = false;
         FileService.DeleteAllFiles();
-        Error = err;
+        ErrorMsg = err;
         _dialog.Show();
         _dialog.Refresh();
     }
