@@ -34,7 +34,7 @@ internal class UploadCsvFileShould : FileUploadTest{
         
         _submit.Click();
         _page.WaitForState(() => _page.Instance.IsUploading == false);
-        Assert.That(_page.Instance.Error, Is.EqualTo(Error.NonCsvFile));
+        Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.NonCsvFile));
     }
 
     [Test]
@@ -45,7 +45,7 @@ internal class UploadCsvFileShould : FileUploadTest{
         
         _submit.Click();
         _page.WaitForState(() => _page.Instance.IsUploading == false);
-        Assert.That(_page.Instance.Error, Is.EqualTo(Error.EmptyFile));
+        Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.EmptyFile));
     }
 
     [Test]
@@ -56,7 +56,7 @@ internal class UploadCsvFileShould : FileUploadTest{
         
         _submit.Click();
         _page.WaitForState(() => _page.Instance.IsUploading == false);
-        Assert.That(_page.Instance.Error, Is.EqualTo(Error.CsvInvalidHeader));
+        Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.CsvInvalidHeader));
     }
 
     [Test]
@@ -67,7 +67,7 @@ internal class UploadCsvFileShould : FileUploadTest{
         
         _submit.Click();
         _page.WaitForState(() => _page.Instance.IsUploading == false);
-        Assert.That(_page.Instance.Error, Is.EqualTo(Error.CsvBadFormed));
+        Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.CsvBadFormed));
     }
 
     [Test]
@@ -78,7 +78,7 @@ internal class UploadCsvFileShould : FileUploadTest{
         
         _submit.Click();
         _page.WaitForState(() => _page.Instance.IsUploading == false);
-        Assert.That(_page.Instance.Error, Is.EqualTo(Error.CsvInvalidHeader));
+        Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.CsvInvalidHeader));
     }
 
     [Test]
@@ -90,7 +90,7 @@ internal class UploadCsvFileShould : FileUploadTest{
         _submit.Click();
         _page.WaitForState(() => _page.Instance.IsUploading == false);
         Assert.Multiple(() => {
-            Assert.That(_page.Instance.Error, Is.EqualTo(Error.NoErrors));
+            Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.NoErrors));
             Assert.That(_page.Instance.SuccessUpload, Is.True);
         });
     }

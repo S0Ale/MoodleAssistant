@@ -43,7 +43,7 @@ internal class UploadFileShould : FileUploadTest{
         _submitFile.Click();
         _fileSection.WaitForState(() => _fileSection.Instance.IsUploading == false);
         
-        Assert.That(_fileSection.Instance.Error, Is.EqualTo(Error.FileMismatch));
+        Assert.That(_fileSection.Instance.ErrorMsg, Is.EqualTo(Error.FileMismatch));
     }
 
     [Test]
@@ -57,7 +57,7 @@ internal class UploadFileShould : FileUploadTest{
         _submitFile.Click();
         _fileSection.WaitForState(() => _fileSection.Instance.IsUploading == false);
         
-        Assert.That(_fileSection.Instance.Error, Is.EqualTo(Error.NoValidFile));
+        Assert.That(_fileSection.Instance.ErrorMsg, Is.EqualTo(Error.NoValidFile));
     }
     
     [Test]
@@ -71,7 +71,7 @@ internal class UploadFileShould : FileUploadTest{
         _submitFile.Click();
         _fileSection.WaitForState(() => _fileSection.Instance.IsUploading == false);
         
-        Assert.That(_fileSection.Instance.Error, Is.EqualTo(Error.EmptyFile));
+        Assert.That(_fileSection.Instance.ErrorMsg, Is.EqualTo(Error.EmptyFile));
     }
 
     [Test]
@@ -83,7 +83,7 @@ internal class UploadFileShould : FileUploadTest{
         _submitFile.Click();
         _fileSection.WaitForState(() => _fileSection.Instance.IsUploading == false);
         
-        Assert.That(_fileSection.Instance.Error, Is.EqualTo(Error.NoFiles));
+        Assert.That(_fileSection.Instance.ErrorMsg, Is.EqualTo(Error.NoFiles));
     }
 
     [Test]
@@ -98,7 +98,7 @@ internal class UploadFileShould : FileUploadTest{
         _fileSection.WaitForState(() => _fileSection.Instance.IsUploading == false);
         
         Assert.Multiple(() => {
-            Assert.That(_fileSection.Instance.Error, Is.EqualTo(Error.NoErrors));
+            Assert.That(_fileSection.Instance.ErrorMsg, Is.EqualTo(Error.NoErrors));
             Assert.That(_fileSection.Instance.SuccessUpload, Is.True);
         });
     }
@@ -129,7 +129,7 @@ internal class UploadFileShould : FileUploadTest{
         _fileSection.WaitForState(() => _fileSection.Instance.IsUploading == false);
         
         Assert.Multiple(() => {
-            Assert.That(_fileSection.Instance.Error, Is.EqualTo(Error.NoErrors));
+            Assert.That(_fileSection.Instance.ErrorMsg, Is.EqualTo(Error.NoErrors));
             Assert.That(_fileSection.Instance.SuccessUpload, Is.True);
         });
     }
@@ -161,7 +161,7 @@ internal class UploadFileShould : FileUploadTest{
         var state = Ctx.Services.GetService<ReplicatorState>();
         
         Assert.Multiple(() => {
-            Assert.That(_fileSection.Instance.Error, Is.EqualTo(Error.NoErrors));
+            Assert.That(_fileSection.Instance.ErrorMsg, Is.EqualTo(Error.NoErrors));
             Assert.That(_fileSection.Instance.SuccessUpload, Is.True);
             Assert.That(state?.Merged, Is.Not.Null);
             Assert.That(state?.Merged?.InnerXml, Does.Contain("<![CDATA["));

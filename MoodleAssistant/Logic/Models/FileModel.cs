@@ -4,14 +4,25 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Logic.Models;
 
+/// <summary>
+/// Manage the validation of a uploaded file.
+/// </summary>
+/// <param name="fileService">An instance of <see cref="IBrowserFileService"/> to manage saved files.</param>
+/// <param name="name">The file's name.</param>
 public class FileModel(IBrowserFileService fileService, string name){
-    private readonly string _fileName = name;
+    /// <summary>
+    /// A list of supported image MIME types.
+    /// </summary>
     private static readonly string[] ImageMimeTypes = [
         MediaTypeNames.Image.Png,
         MediaTypeNames.Image.Jpeg,
         MediaTypeNames.Image.Webp,
         MediaTypeNames.Image.Bmp,
     ];
+    
+    /// <summary>
+    /// A list of supported Microsoft Office MIME types.
+    /// </summary>
     private static readonly string[] MsMimeTypes = [
         // Word
         "application/msword",
@@ -39,13 +50,29 @@ public class FileModel(IBrowserFileService fileService, string name){
         "application/vnd.ms-powerpoint.slideshow.macroEnabled.12",
     ];
     
+    /// <summary>
+    /// Checks if the <see cref="IBrowserFile.ContentType"/> of a file is an image.
+    /// </summary>
+    /// <param name="file">An instance of <see cref="IBrowserFile"/> representing the file.</param>
+    /// <returns><see langword="true"/> if the file is an image; otherwise <see langword="false"/>.</returns>
     public bool IsImage(IBrowserFile file){
         return ImageMimeTypes.Contains(file.ContentType);
     }
+    
+    /// <summary>
+    /// Checks if the <see cref="IBrowserFile.ContentType"/> of a file is a Microsoft Office file.
+    /// </summary>
+    /// <param name="file">An instance of <see cref="IBrowserFile"/> representing the file.</param>
+    /// <returns><see langword="true"/> if the file is a MS Office file; otherwise <see langword="false"/>.</returns>
     public bool IsOfficeFile(IBrowserFile file){
         return MsMimeTypes.Contains(file.ContentType);
     }
+    
+    /// <summary>
+    /// Checks if the file is empty.
+    /// </summary>
+    /// <returns><see langword="true"/> if the file is empty; otherwise <see langword="false"/>.</returns>
     public bool IsEmpty(){
-        return fileService.IsEmpty(_fileName);
+        return fileService.IsEmpty(name);
     }
 }

@@ -6,25 +6,63 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Logic.Models;
 
-// This class is used to manage the XML file uploaded by the user: format parts for analysis, validation.
+/// <summary>
+/// Manages the validation of a XML template file and its parameters.
+/// </summary>
+/// <param name="fileService">An instance of <see cref="IBrowserFileService"/> to manage saved files.</param>
 public class XmlFileModel(IBrowserFileService fileService){
+    /// <summary>
+    /// The standard name of the XML file managed by the <see cref="XmlFileModel"/>.
+    /// </summary>
     public static string FileName => "XML";
+    
+    /// <summary>
+    /// The pattern to match the parameters in the XML file.
+    /// </summary>
     private const string Pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
 
+    /// <summary>
+    /// Gets the XML template document.
+    /// </summary>
     public XmlDocument XmlFile{ get; private set; } = new();
+    
+    /// <summary>
+    /// Gets the parameters found in the question text.
+    /// </summary>
     public IEnumerable<string> QuestionParametersList{ get; private set; } = [];
+    
+    /// <summary>
+    /// Gets the parameters found in the answers.
+    /// </summary>
     public IEnumerable<string> AnswerParametersList{ get; private set; } = [];
+    
+    /// <summary>
+    /// Gets the number of answers in the XML file.
+    /// </summary>
     public int AnswerCount { get; private set; }
 
+    /// <summary>
+    /// Checks if the <see cref="IBrowserFile.ContentType"/> of a file is XML.
+    /// </summary>
+    /// <param name="file">An instance of <see cref="IBrowserFile"/> representing the file.</param>
+    /// <returns><see langword="true"/> if the file is XML; otherwise <see langword="false"/>.</returns>
     public static bool IsXml(IBrowserFile file)
     {
         return System.Net.Mime.MediaTypeNames.Text.Xml == file.ContentType;
     }
     
+    /// <summary>
+    /// Checks if the file with the <see cref="XmlFileModel"/>'s file name is empty.
+    /// </summary>
+    /// <returns><see langword="true"/> if the file is empty; otherwise <see langword="false"/>.</returns>
     public bool IsEmpty(){
         return fileService.IsEmpty(FileName);
     }
     
+    /// <summary>
+    /// Checks if the file with the <see cref="XmlFileModel"/>'s file name is well formatted XML.
+    /// </summary>
+    /// <returns><see langword="true"/> if the file is well formatted; otherwise <see langword="false"/>.</returns>
     public bool IsWellFormattedXml(){
         var stream = fileService.GetFile(FileName);
         using var reader = new StreamReader(stream, Encoding.UTF8);
@@ -39,16 +77,27 @@ public class XmlFileModel(IBrowserFileService fileService){
         }                                                                                      
     }
     
+    /// <summary>
+    /// Checks if the file with the <see cref="XmlFileModel"/>'s file name has only one question tag.
+    /// </summary>
+    /// <returns><see langword="true"/> if the file has only one question; otherwise <see langword="false"/>.</returns>
     public bool HasOnlyOneQuestion(){                                                                                                                                                        
         var questionList = XmlFile.GetElementsByTagName("question");                                                                                         
         return questionList is {Count: 1};                                                                                                                      
     }  
     
+    /// <summary>
+    /// Checks if the file with the <see cref="XmlFileModel"/>'s file name has a question text.
+    /// </summary>
+    /// <returns><see langword="true"/> if the file has question text; otherwise <see langword="false"/>.</returns>
     public bool HasQuestionText(){                                                                                                                                                        
         var questionTextNodeList = XmlFile.GetElementsByTagName("questiontext");                                                                             
         return questionTextNodeList is {Count: 1};                                                                                                              
     } 
     
+    /// <summary>
+    /// Gets the parameters from the XML file and puts them in the <see cref="QuestionParametersList"/> and <see cref="AnswerParametersList"/>.
+    /// </summary>
     public void TakeParameters(){                                                                                                                                                        
         var questionTextNodeList = XmlFile.GetElementsByTagName("questiontext");
         QuestionParametersList = GetParametersFromXmlNode(questionTextNodeList.Item(0)!).Distinct();
@@ -72,6 +121,11 @@ public class XmlFileModel(IBrowserFileService fileService){
         AnswerParametersList = answerParametersList.Distinct();                                                                                              
     }
     
+    /// <summary>
+    /// Gets the parameters from a XML node.
+    /// </summary>
+    /// <param name="textNode">An instance of <see cref="XmlNode"/></param>
+    /// <returns>The list of parameters contained into the node.</returns>
     private static List<string> GetParametersFromXmlNode(XmlNode textNode){
         var questionText = textNode.InnerText;                                                                                                               
         var parametersList = new List<string>();                                                                                                             

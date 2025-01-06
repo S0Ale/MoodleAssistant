@@ -8,7 +8,10 @@ namespace MoodleAssistant.Logic.Parse;
 /// </summary>
 /// <param name="str">The <see cref="string"/> to parse</param>
 /// <param name="previewMode"></param>
-public partial class ParameterParser(string str, bool previewMode = false){
+public class ParameterParser(string str, bool previewMode = false){
+    /// <summary>
+    /// The pattern used to match parameters in the string.
+    /// </summary>
     private const string Pattern =
         @"\[\*\[\[((?!FILE-|IMAGE-)[^\]*\]]+?)\]\]\*\]|\[\*\[\[FILE-([^\]*\]]+?)\]\]\*\]|\[\*\[\[IMAGE-([^\]*\]]+?)\]\]\*\]";
 

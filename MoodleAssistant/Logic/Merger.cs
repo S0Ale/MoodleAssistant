@@ -7,14 +7,23 @@ namespace MoodleAssistant.Logic;
 /// <summary>
 /// Represents a class that merges the template XML file with the CSV file to create a new XML file.
 /// </summary>
-/// <param name="fileService">A service to manage saved files</param>
+/// <param name="fileService">An instance of <see cref="IBrowserFileService"/> to manage saved files.</param>
 public class Merger(IBrowserFileService fileService){
+    /// <summary>
+    /// The XML file to be used as a template.
+    /// </summary>
     private XmlDocument _xmlDoc = null!;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Merger"/> class.
+    /// </summary>
     public required XmlDocument XmlFile{
         set => _xmlDoc = value.Clone() as XmlDocument ?? new XmlDocument();
     }
 
+    /// <summary>
+    /// The CSV file to be used as a data source.
+    /// </summary>
     public required IEnumerable<string[]> CsvAsList{ get; init; }
 
     /// <summary>
@@ -23,9 +32,8 @@ public class Merger(IBrowserFileService fileService){
     /// </summary>
     /// <param name="previewMode">Whether the merge process is executing in preview mode or not.</param>
     /// <returns>The merged <see cref="XmlDocument"/>.</returns>
-
-    // File names need to be equal to the names inside the CSV file
     public XmlDocument MergeQuestion(bool previewMode = false){
+        // File names need to be equal to the names inside the CSV file
         var merged = _xmlDoc.Clone() as XmlDocument ?? new XmlDocument();
         
         // Prepare the template question

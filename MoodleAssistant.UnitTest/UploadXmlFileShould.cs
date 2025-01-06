@@ -34,7 +34,7 @@ internal class UploadXmlFileShould : FileUploadTest{
         
         _submit.Click();
         _page.WaitForState(() => _page.Instance.IsUploading == false);
-        Assert.That(_page.Instance.Error, Is.EqualTo(Error.NonXmlFile));
+        Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.NonXmlFile));
     }
 
     [Test]
@@ -45,7 +45,7 @@ internal class UploadXmlFileShould : FileUploadTest{
         
         _submit.Click();
         _page.WaitForState(() => _page.Instance.IsUploading == false);
-        Assert.That(_page.Instance.Error, Is.EqualTo(Error.EmptyFile));
+        Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.EmptyFile));
     }
 
     [Test]
@@ -59,7 +59,7 @@ internal class UploadXmlFileShould : FileUploadTest{
         
         _submit.Click();
         _page.WaitForState(() => _page.Instance.IsUploading == false);
-        Assert.That(_page.Instance.Error, Is.EqualTo(Error.XmlBadFormed));
+        Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.XmlBadFormed));
     }
 
     [Test]
@@ -70,7 +70,7 @@ internal class UploadXmlFileShould : FileUploadTest{
         
         _submit.Click();
         _page.WaitForState(() => _page.Instance.IsUploading == false);
-        Assert.That(_page.Instance.Error, Is.EqualTo(Error.ZeroOrMoreQuestions));
+        Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.ZeroOrMoreQuestions));
     }
 
     [Test]
@@ -81,7 +81,7 @@ internal class UploadXmlFileShould : FileUploadTest{
         
         _submit.Click();
         _page.WaitForState(() => _page.Instance.IsUploading == false);
-        Assert.That(_page.Instance.Error, Is.EqualTo(Error.ZeroOrMoreQuestions));
+        Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.ZeroOrMoreQuestions));
     }
 
     [Test]
@@ -94,7 +94,7 @@ internal class UploadXmlFileShould : FileUploadTest{
         _submit.Click();
         _page.WaitForState(() => _page.Instance.IsUploading == false);
         Assert.Multiple(() => {
-            Assert.That(_page.Instance.Error, Is.EqualTo(Error.NoErrors));
+            Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.NoErrors));
             Assert.That(_page.Instance.SuccessUpload, Is.True);
         });
     }
@@ -109,7 +109,7 @@ internal class UploadXmlFileShould : FileUploadTest{
         _submit.Click();
         _page.WaitForState(() => _page.Instance.IsUploading == false);
         Assert.Multiple(() => {
-            Assert.That(_page.Instance.Error, Is.EqualTo(Error.NoErrors));
+            Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.NoErrors));
             Assert.That(_page.Instance.SuccessUpload, Is.True);
         });
     }

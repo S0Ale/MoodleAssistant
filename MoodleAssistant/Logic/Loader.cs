@@ -5,8 +5,18 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Logic;
 
-// This class is used to load the files uploaded by the user (save, validation).
+
+/// <summary>
+/// Loads the files uploaded by the user.
+/// </summary>
+/// <param name="fileService">An instance of <see cref="IBrowserFileService"/> to manage saved files.</param>
 public class Loader(IBrowserFileService fileService){
+    /// <summary>
+    /// Loads the XML file and validates it.
+    /// </summary>
+    /// <param name="file">An instance of <see cref="IBrowserFile"/>representing the XML file.</param>
+    /// <returns>An instance of <see cref="XmlFileModel"/> to manage the file.</returns>
+    /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
     public async Task<XmlFileModel> LoadXml(IBrowserFile file){
         var model = new XmlFileModel(fileService);
         await fileService.SaveFile(file, XmlFileModel.FileName);
@@ -28,6 +38,13 @@ public class Loader(IBrowserFileService fileService){
         return model;
     }
 
+    /// <summary>
+    /// Loads the CSV file and validates it.
+    /// </summary>
+    /// <param name="file">An instance of <see cref="IBrowserFile"/> representing the CSV file.</param>
+    /// <param name="xmlModel">An instance of <see cref="XmlFileModel"/> representing the template XML file.</param>
+    /// <returns>A list of string arrays representing the CSV file.</returns>
+    /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
     public async Task<IEnumerable<string[]>> LoadCsv(IBrowserFile file, XmlFileModel xmlModel){
         var model = new CsvFileModel(fileService){
             QuestionParametersList = xmlModel.QuestionParametersList,
@@ -49,6 +66,11 @@ public class Loader(IBrowserFileService fileService){
         return model.ConvertCsvToListOfArrayString();
     }
     
+    /// <summary>
+    /// Loads the files uploaded and validates them.
+    /// </summary>
+    /// <param name="files">Sequence of <see cref="IBrowserFile"/> instances representing the uploaded files.</param>
+    /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
     public async Task LoadFiles(IBrowserFile[] files){
         foreach (var file in files){
             var model = new FileModel(fileService, file.Name);

@@ -8,18 +8,27 @@ namespace MoodleAssistant.Services;
 /// </summary>
 /// <param name="env">The <see cref="IWebHostEnvironment"/> instance that provides information about the web hosting environment.</param>
 public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDisposable{
+    /// <summary>
+    /// The maximum file size in bytes.
+    /// </summary>
     private const long MaxFileSize = 10000000;
+    
+    /// <summary>
+    /// The root folder where the files are saved.
+    /// </summary>
     private readonly string _rootFolder = Path.Combine(env.WebRootPath, "Uploads");
     
-    // Maps fixed file names to their trusted file names
+    /// <summary>
+    /// Map of fixed file names with their trusted file names.
+    /// </summary>
     private Dictionary<string, string> _trustedFiles = new Dictionary<string, string>();
 
     /// <summary>
     /// Saves the specified file inside the root folder.
     /// </summary>
-    /// <param name="file">Instance of <see cref="IBrowserFile"/> to save.</param>
-    /// <param name="fileName">The file name.</param>
-    /// <returns>The save operation result.</returns>
+    /// <param name="file">The instance of <see cref="IBrowserFile"/> to save.</param>
+    /// <param name="fileName">The file's name.</param>
+    /// <returns><see langword="true"/> if the operation is successful; otherwise <see langword="false"/>.</returns>
     public async Task<bool> SaveFile(IBrowserFile file, string fileName){
         // if name exists, overwrite
         if(_trustedFiles.ContainsKey(fileName)){
@@ -41,7 +50,7 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
     /// <summary>
     /// Gets the <see cref="FileStream"/> of the specified file.
     /// </summary>
-    /// <param name="fileName">The file name.</param>
+    /// <param name="fileName">The file's name.</param>
     /// <returns>The <see cref="FileStream"/> that encapsulates the file with the specified name.</returns>
     public FileStream GetFile(string fileName){
         var trustedFileName = _trustedFiles[fileName];
@@ -52,8 +61,8 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
     /// <summary>
     /// Gets the <see cref="FileInfo"/> of the specified file.
     /// </summary>
-    /// <param name="fileName">The file name.</param>
-    /// <returns>The <see cref="FileInfo"/> if the file with the specified name.</returns>
+    /// <param name="fileName">The file's name.</param>
+    /// <returns>The <see cref="FileInfo"/> of the file with the specified name.</returns>
     public FileInfo GetFileInfo(string fileName){
         var trustedFileName = _trustedFiles[fileName];
         var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
@@ -83,9 +92,9 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
     }
     
     /// <summary>
-    /// Gets the base64 string of the file with the specified name.
+    /// Gets the base64 string of the specified file.
     /// </summary>
-    /// <param name="fileName">The file name.</param>
+    /// <param name="fileName">The file's name.</param>
     /// <returns>The base64 string of the file.</returns>
     public string GetBase64(string fileName){
         var trustedFileName = _trustedFiles[fileName];

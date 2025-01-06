@@ -6,25 +6,54 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Logic.Models;
 
-// This class is used to handle the CSV file uploaded by the user, mostly validation.
+/// <summary>
+/// Manages the validation of a CSV file and other operations.
+/// </summary>
+/// <param name="fileService">An instance of <see cref="IBrowserFileService"/> to manage saved files.</param>
 public class CsvFileModel(IBrowserFileService fileService){
+    /// <summary>
+    /// The standard name of the XML file managed by the <see cref="CsvFileModel"/>.
+    /// </summary>
     public static string FileName => "CSV";
     
+    /// <summary>
+    /// A list of supported CSV MIME types.
+    /// </summary>
     private static readonly string[] MimeTypes = ["application/vnd.ms-excel", "text/csv"];
-
+    
+    /// <summary>
+    /// Gets the parameters found in the question text
+    /// </summary>
     public IEnumerable<string> QuestionParametersList{ get; init; } = [];
+    
+    /// <summary>
+    /// Gets the parameters found in the answers.
+    /// </summary>
     public IEnumerable<string> AnswersParametersList{ get; init; } = [];
 
+    /// <summary>
+    /// Checks if the <see cref="IBrowserFile.ContentType"/> of a file is CSV.
+    /// </summary>
+    /// <param name="file">An instance of <see cref="IBrowserFile"/> representing the file.</param>
+    /// <returns><see langword="true"/> if the file is CSV; otherwise <see langword="false"/>.</returns>
     public static bool IsCsv(IBrowserFile file)
     {
         return MimeTypes.Contains(file.ContentType);
     }
 
+    /// <summary>
+    /// Checks if the file with the <see cref="CsvFileModel"/>'s file name is empty.
+    /// </summary>
+    /// <returns><see langword="true"/> if the file is empty; otherwise <see langword="false"/>.</returns>
     public bool IsEmpty()
     {
         return fileService.IsEmpty(FileName);
     }
     
+    /// <summary>
+    /// Checks if the file with the <see cref="CsvFileModel"/>'s file name has a valid header.
+    /// </summary>
+    /// <returns><see langword="true"/> if the file as a valid header; otherwise <see langword="false"/>.</returns>
     public bool HasValidHeader()
     {
         var stream = fileService.GetFile(FileName);
@@ -37,6 +66,10 @@ public class CsvFileModel(IBrowserFileService fileService){
         return headerRow.All(questionAndAnswerList.Contains) && Equals(headerRow.Length, questionAndAnswerList.Count);
     }
 
+    /// <summary>
+    /// Checks if the file with the <see cref="CsvFileModel"/>'s file name is well-formed.
+    /// </summary>
+    /// <returns><see langword="true"/> if the file is well-formed; otherwise <see langword="false"/>.</returns>
     public bool IsWellFormed()
     {
         var stream = fileService.GetFile(FileName);
@@ -57,6 +90,10 @@ public class CsvFileModel(IBrowserFileService fileService){
         return true;
     }
 
+    /// <summary>
+    /// Converts the CSV file to a list of string arrays.
+    /// </summary>
+    /// <returns>A list of string arrays representing the parameters' values.</returns>
     public IEnumerable<string[]> ConvertCsvToListOfArrayString()
     {
         var csvAsList = new List<string[]>();

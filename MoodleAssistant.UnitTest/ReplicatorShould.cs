@@ -89,7 +89,7 @@ internal class ReplicatorShould : FileUploadTest{
         var state = Ctx.Services.GetService<ReplicatorState>();
         
         Assert.Multiple(() => {
-            Assert.That(_page.Instance.Error, Is.EqualTo(Error.NoErrors));
+            Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.NoErrors));
             Assert.That(_page.Instance.SuccessUpload, Is.True);
             Assert.That(state?.Merged, Is.Not.Null);
         });
