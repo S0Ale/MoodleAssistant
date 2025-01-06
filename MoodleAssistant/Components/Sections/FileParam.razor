@@ -46,9 +46,9 @@
                         }
                     </p>
                     <div class="p-3">
-                        <DropFileInput @ref="_inputs[param.Name]" InputName="@($"{param.Name}-input")" MaxFiles="@ReplicatorState.Parameters!.NeededFiles">
+                        <DropInput @ref="_inputs[param.Name]" InputName="@($"{param.Name}-input")" MaxFiles="@ReplicatorState.Parameters!.NeededFiles">
                             <p class="text-inherit">Drop files here, or <span class="text-blue-500 underline ml-[4px]">browse</span>.</p>
-                        </DropFileInput>
+                        </DropInput>
                     </div>
                 </div>
             }
@@ -75,7 +75,7 @@
     
     public Error Error{ get; private set; } = Error.NoErrors; // public for testing purposes
     private Message _dialog = null!;
-    private Dictionary<string, DropFileInput> _inputs = [];
+    private Dictionary<string, DropInput> _inputs = [];
     
     private bool _isUploading;
     private bool _successfulUpload;

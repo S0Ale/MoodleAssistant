@@ -23,12 +23,12 @@
             <form method="post" id="@(mainForm)" @formname="main-upload" @onsubmit="Submit">
                 <AntiforgeryToken />
                 <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row">
-                    <DropFileInput @ref="_xmlInput" InputName="xml-input">
+                    <DropInput @ref="_xmlInput" InputName="xml-input">
                         <p class="text-inherit">Drop XML here, or <span class="text-blue-500 underline ml-[4px]">browse</span>.</p>
-                    </DropFileInput>
-                    <DropFileInput @ref="_csvInput" InputName="csv-input">
+                    </DropInput>
+                    <DropInput @ref="_csvInput" InputName="csv-input">
                         <p class="text-inherit">Drop CSV here, or <span class="text-blue-500 underline ml-[4px]">browse</span>.</p>
-                    </DropFileInput>
+                    </DropInput>
                 </div>
                 <div class="flex flex-row mt-3">
                     <button type="submit" class="btn btn-primary py-1.5 px-6" @onclick="() => _isUploading = true" data-testid="main-submit">Upload</button>
@@ -68,8 +68,8 @@
     public Error Error{ get; private set; } = Error.NoErrors; // public for testing purposes
     
     private Message _dialog = null!;
-    private DropFileInput _xmlInput = null!;
-    private DropFileInput _csvInput = null!;
+    private DropInput _xmlInput = null!;
+    private DropInput _csvInput = null!;
     
     private bool _isUploading;
     private bool _successfulUpload;
