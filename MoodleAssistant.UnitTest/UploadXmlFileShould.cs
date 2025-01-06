@@ -8,7 +8,7 @@ using MoodleAssistant.Services;
 namespace MoodleAssistant.UnitTest;
 
 [TestFixture]
-internal class XmlTest : FileUploadTest{
+internal class UploadXmlFileShould : FileUploadTest{
 
     private IRenderedComponent<Replicator> _page;
     private IRenderedComponent<InputFile> _xml;
@@ -27,7 +27,7 @@ internal class XmlTest : FileUploadTest{
     }
 
     [Test]
-    public void UploadXML_NonXMLFile(){
+    public void Throw_NonXMLFile(){
         var xml = TestService.Create("txtFile.txt", System.Net.Mime.MediaTypeNames.Text.Plain);
         _xml.UploadFiles(xml);
         _csv.UploadFiles(_mockCsv);
@@ -38,7 +38,7 @@ internal class XmlTest : FileUploadTest{
     }
 
     [Test]
-    public void UploadXML_EmptyXML(){
+    public void Throw_EmptyXML(){
         var xml = TestService.Create("EmptyXmlFile.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
         _xml.UploadFiles(xml);
         _csv.UploadFiles(_mockCsv);
@@ -52,7 +52,7 @@ internal class XmlTest : FileUploadTest{
     [TestCase("XmlBadFormed.xml")]
     [TestCase("XmlBadFormed-1.xml")]
     [TestCase("XmlBadFormed-2.xml")]
-    public void UploadXML_XmlBadFormed(string name){
+    public void Throw_XmlBadFormed(string name){
         var xml = TestService.Create(name, System.Net.Mime.MediaTypeNames.Text.Xml);
         _xml.UploadFiles(xml);
         _csv.UploadFiles(_mockCsv);
@@ -63,7 +63,7 @@ internal class XmlTest : FileUploadTest{
     }
 
     [Test]
-    public void UploadXML_XMLWithoutQuestions(){
+    public void Throw_XMLWithoutQuestions(){
         var xml = TestService.Create("MoodleXMLWithoutQuestions.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
         _xml.UploadFiles(xml);
         _csv.UploadFiles(_mockCsv);
@@ -74,7 +74,7 @@ internal class XmlTest : FileUploadTest{
     }
 
     [Test]
-    public void UploadXML_XMLWithMoreThanOneQuestion(){
+    public void Throw_XMLWithMoreThanOneQuestion(){
         var xml = TestService.Create("MoodleXMLWithMoreThanOneQuestion.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
         _xml.UploadFiles(xml);
         _csv.UploadFiles(_mockCsv);
@@ -85,7 +85,7 @@ internal class XmlTest : FileUploadTest{
     }
 
     [Test]
-    public void UploadXML_CorrectBasicXml(){
+    public void Success_BasicXml(){
         var xml = TestService.Create("MoodleQuestionOk.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
         var csv = TestService.Create("MoodleQuestionOk.csv", System.Net.Mime.MediaTypeNames.Text.Csv);
         _xml.UploadFiles(xml);
@@ -100,7 +100,7 @@ internal class XmlTest : FileUploadTest{
     }
 
     [Test]
-    public void Upload_Correct_FileXml(){
+    public void Success_XmlWithFile(){
         var xml = TestService.Create("MoodleOkWithImage.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
         var csv = TestService.Create("MoodleOkWithImage.csv", System.Net.Mime.MediaTypeNames.Text.Csv);
         _xml.UploadFiles(xml);

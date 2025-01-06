@@ -18,7 +18,6 @@ internal abstract  class FileUploadTest{
         Ctx.Services.AddScoped<IWebHostEnvironment>(_ => env.Object);
         
         Ctx.JSInterop.Mode = JSRuntimeMode.Loose;
-        //Ctx.JSInterop.SetupModule(@"C:\Users\user\Desktop\UNI\MoodleAssistant\MoodleAssistant\Components\Upload\FileDropInput.razor.js");
         
         Ctx.Services.AddScoped<IBrowserFileService, FileService>();
         Ctx.Services.AddScoped<ReplicatorState>();

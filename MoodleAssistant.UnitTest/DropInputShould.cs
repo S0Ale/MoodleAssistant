@@ -4,20 +4,20 @@ using MoodleAssistant.Components.Upload;
 
 namespace MoodleAssistant.UnitTest;
 
-internal class InputComponentTest : FileUploadTest{
+internal class DropInputShould : FileUploadTest{
     
-    private IRenderedComponent<DropFileInput> cut;
+    private IRenderedComponent<DropInput> cut;
     
     [SetUp]
     public new void Setup(){
-        cut = Ctx.Render<DropFileInput>(param => param
+        cut = Ctx.Render<DropInput>(param => param
             .Add(p => p.InputName, "test")
             .Add(p => p.MaxFiles, 3)
         );
     }
 
     [Test]
-    public void Upload_AllAtOnce(){
+    public void Success_AllFilesAtOnce(){
         var word1 = TestService.Create("Test1.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word2 = TestService.Create("Test2.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word3 = TestService.Create("Test3.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
@@ -29,7 +29,7 @@ internal class InputComponentTest : FileUploadTest{
     }
     
     [Test]
-    public void Upload_OneAtATime(){
+    public void Success_OneFileAtATime(){
         var word1 = TestService.Create("Test1.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word2 = TestService.Create("Test2.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word3 = TestService.Create("Test3.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
@@ -41,6 +41,19 @@ internal class InputComponentTest : FileUploadTest{
         }
         
         Assert.That(cut.Instance.UploadedFiles, Has.Count.EqualTo(3));
+    }
+
+    [Test]
+    public void Success_ClearFiles(){
+        var word1 = TestService.Create("Test1.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        var word2 = TestService.Create("Test2.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        var word3 = TestService.Create("Test3.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+        
+        var labels = cut.FindComponents<CustomLabel>();
+        labels[0].FindComponent<InputFile>().UploadFiles(word1, word2, word3);
+        
+        cut.Instance.ClearFiles();
+        Assert.That(cut.Instance.UploadedFiles, Has.Count.EqualTo(0));
     }
 
     [TearDown]

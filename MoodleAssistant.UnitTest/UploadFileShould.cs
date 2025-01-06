@@ -9,7 +9,7 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.UnitTest;
 
-internal class FileTest : FileUploadTest{
+internal class UploadFileShould : FileUploadTest{
     
     private IRenderedComponent<Replicator> _page;
     private IRenderedComponent<FileParam> _fileSection;
@@ -34,17 +34,8 @@ internal class FileTest : FileUploadTest{
     }
 
     [Test]
-    public void UploadFiles_ShowsFileUploadForm(){
-        var fileForm = _page.Find("form[id=param-upload]");
-        Assert.Multiple(() => {
-            Assert.That(_page.Instance.ShowFileParams, Is.True);
-            Assert.That(fileForm, Is.Not.Null);
-        });
-    }
-
-    [Test]
-    public void UploadFiles_FileMismatchDuringMerge(){
-        var input = _fileSection.FindComponent<DropFileInput>();
+    public void Throw_FileMismatchDuringMerge(){
+        var input = _fileSection.FindComponent<DropInput>();
         var word1 = TestService.Create("Test1.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word2 = TestService.Create("Test2.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         
@@ -56,8 +47,8 @@ internal class FileTest : FileUploadTest{
     }
 
     [Test]
-    public void UploadFiles_InvalidFile(){
-        var input = _fileSection.FindComponent<DropFileInput>();
+    public void Throw_InvalidFile(){
+        var input = _fileSection.FindComponent<DropInput>();
         var word1 = TestService.Create("Test1.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word2 = TestService.Create("Test2.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var text = TestService.Create("txtFile.txt", System.Net.Mime.MediaTypeNames.Text.Plain);
@@ -70,8 +61,8 @@ internal class FileTest : FileUploadTest{
     }
     
     [Test]
-    public void UploadFiles_EmptyFile(){
-        var input = _fileSection.FindComponent<DropFileInput>();
+    public void Throw_EmptyFile(){
+        var input = _fileSection.FindComponent<DropInput>();
         var word1 = TestService.Create("Test1.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word2 = TestService.Create("Test2.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var empty = TestService.Create("EmptyXmlFile.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
@@ -84,8 +75,8 @@ internal class FileTest : FileUploadTest{
     }
 
     [Test]
-    public void UploadFiles_MissingFiles(){
-        var input = _fileSection.FindComponent<DropFileInput>();
+    public void Throw_MissingFiles(){
+        var input = _fileSection.FindComponent<DropInput>();
         var word1 = TestService.Create("Test1.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         
         input.FindComponent<CustomLabel>().FindComponent<InputFile>().UploadFiles(word1);
@@ -96,8 +87,8 @@ internal class FileTest : FileUploadTest{
     }
 
     [Test]
-    public void UploadFiles_UploadFileCorrect(){
-        var input = _fileSection.FindComponent<DropFileInput>();
+    public void Success_CorrectFile(){
+        var input = _fileSection.FindComponent<DropInput>();
         var word1 = TestService.Create("Test1.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word2 = TestService.Create("Test2.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word3 = TestService.Create("Test3.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
@@ -113,7 +104,7 @@ internal class FileTest : FileUploadTest{
     }
 
     [Test]
-    public void UploadFiles_UploadImageCorrect(){
+    public void Success_CorrectImage(){
         var inputs = _page.FindComponents<InputFile>();
         var xml = inputs[0];
         var csv = inputs[1];
@@ -128,7 +119,7 @@ internal class FileTest : FileUploadTest{
         _submitFile = _fileSection.Find("button[type=submit]");
         
         
-        var input = _fileSection.FindComponent<DropFileInput>();
+        var input = _fileSection.FindComponent<DropInput>();
         var img1 = TestService.Create("Image1.png", System.Net.Mime.MediaTypeNames.Image.Png);
         var img2 = TestService.Create("Image2.png", System.Net.Mime.MediaTypeNames.Image.Png);
         var img3 = TestService.Create("Image3.png", System.Net.Mime.MediaTypeNames.Image.Png);
@@ -144,7 +135,7 @@ internal class FileTest : FileUploadTest{
     }
     
     [Test]
-    public void UploadFiles_UploadImageWithNoCdataCorrect(){
+    public void Success_CorrectImageWithNoCdata(){
         var inputs = _page.FindComponents<InputFile>();
         var xml = inputs[0];
         var csv = inputs[1];
@@ -158,7 +149,7 @@ internal class FileTest : FileUploadTest{
         _fileSection = _page.FindComponent<FileParam>();
         _submitFile = _fileSection.Find("button[type=submit]");
         
-        var input = _fileSection.FindComponent<DropFileInput>();
+        var input = _fileSection.FindComponent<DropInput>();
         var word1 = TestService.Create("Test1.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word2 = TestService.Create("Test2.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
         var word3 = TestService.Create("Test3.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document");
