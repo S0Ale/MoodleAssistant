@@ -13,6 +13,12 @@
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="33.0.1" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="..\.dockerignore">
+      <Link>.dockerignore</Link>
+    </Content>
+  </ItemGroup>
 	
 	<Target Name="Tailwind" BeforeTargets="Build">
         <Exec Command="npm install" />
