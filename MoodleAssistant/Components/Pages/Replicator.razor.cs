@@ -143,7 +143,7 @@ public partial class Replicator{
     }
 
     /// <summary>
-    /// Sets the error message.
+    /// Sets the error message of the page.
     /// </summary>
     /// <param name="err">The <see cref="Error"/> that occurred.</param>
     private void SetError(Error err){

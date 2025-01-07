@@ -83,7 +83,7 @@ public partial class DropInput{
     }
     
     /// <summary>
-    /// Invoked when the component has been rendered.
+    /// Function invoked when the component has been rendered.
     /// </summary>
     /// <param name="firstRender">
     /// <c>true</c> if this is the first time <see cref="ComponentBase.OnAfterRender(bool)"/> has been called; otherwise, <c>false</c>.
