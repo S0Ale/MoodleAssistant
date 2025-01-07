@@ -34,11 +34,6 @@ public class FileService : IBrowserFileService, IDisposable{
         stream.Position = 0;
         return stream;
     }
-
-    /// <inheritdoc/>
-    public FileInfo GetFileInfo(string fileName){
-        throw new NotImplementedException();
-    }
     
     /// <inheritdoc/>
     public void DeleteFile(string fileName){
