@@ -23,12 +23,7 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
     /// </summary>
     private Dictionary<string, string> _trustedFiles = new Dictionary<string, string>();
 
-    /// <summary>
-    /// Saves the specified file inside the root folder.
-    /// </summary>
-    /// <param name="file">The instance of <see cref="IBrowserFile"/> to save.</param>
-    /// <param name="fileName">The file's name.</param>
-    /// <returns><see langword="true"/> if the operation is successful; otherwise <see langword="false"/>.</returns>
+    /// <inheritdoc/>
     public async Task<bool> SaveFile(IBrowserFile file, string fileName){
         // if name exists, overwrite
         if(_trustedFiles.ContainsKey(fileName)){
@@ -47,32 +42,21 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
         return true;
     }
 
-    /// <summary>
-    /// Gets the <see cref="FileStream"/> of the specified file.
-    /// </summary>
-    /// <param name="fileName">The file's name.</param>
-    /// <returns>The <see cref="FileStream"/> that encapsulates the file with the specified name.</returns>
+    /// <inheritdoc/>
     public FileStream GetFile(string fileName){
         var trustedFileName = _trustedFiles[fileName];
         var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
         return new FileStream(trustedFilePath, FileMode.Open, FileAccess.Read);
     }
 
-    /// <summary>
-    /// Gets the <see cref="FileInfo"/> of the specified file.
-    /// </summary>
-    /// <param name="fileName">The file's name.</param>
-    /// <returns>The <see cref="FileInfo"/> of the file with the specified name.</returns>
+    /// <inheritdoc/>
     public FileInfo GetFileInfo(string fileName){
         var trustedFileName = _trustedFiles[fileName];
         var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
         return new FileInfo(trustedFilePath);
     }
     
-    /// <summary>
-    /// Deletes the file with the specified name.
-    /// </summary>
-    /// <param name="fileName">The name of the file to delete.</param>
+    /// <inheritdoc/>
     public void DeleteFile(string fileName){
         var trustedFileName = _trustedFiles[fileName];
         var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
@@ -80,9 +64,7 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
         _trustedFiles.Remove(fileName);
     }
     
-    /// <summary>
-    /// Deletes all files inside the root folder.
-    /// </summary>
+    /// <inheritdoc/>
     public void DeleteAllFiles(){
         foreach(var trustedName in _trustedFiles.Values){
             var trustedFilePath = Path.Combine(_rootFolder, trustedName);
@@ -91,11 +73,7 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
         _trustedFiles = new Dictionary<string, string>();
     }
     
-    /// <summary>
-    /// Gets the base64 string of the specified file.
-    /// </summary>
-    /// <param name="fileName">The file's name.</param>
-    /// <returns>The base64 string of the file.</returns>
+    /// <inheritdoc/>
     public string GetBase64(string fileName){
         var trustedFileName = _trustedFiles[fileName];
         var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
