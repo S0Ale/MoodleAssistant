@@ -19,11 +19,12 @@
     }
     <div class="mt-1 flex flex-col flex-wrap bg-transparent preview-container">
         @foreach (var filePair in UploadedFiles){
-            <FileInputPreview FileName="@filePair.Value.Name" OnClose="() => RemoveFile(filePair.Key)"/>
+            <InputPreview FileName="@filePair.Value.Name" OnClose="() => RemoveFile(filePair.Key)"/>
         }
     </div>
 </div>
 
+<!--
 @code {
     [Parameter]
     public RenderFragment? ChildContent { get; set; }
@@ -82,3 +83,4 @@
         }
     }
 }
+-->

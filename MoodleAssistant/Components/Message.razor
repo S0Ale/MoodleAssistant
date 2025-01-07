@@ -1,5 +1,4 @@
-﻿@using System.ComponentModel.DataAnnotations
-@rendermode InteractiveServer
+﻿@rendermode InteractiveServer
 
 @{
     string msgClass;
@@ -35,32 +34,4 @@
             </button>
         }
     </p>
-}
-
-
-@code {
-    private bool _visible = false;
-
-    [Parameter]
-    public string? MsgText { get; set; }
-    [Required][Parameter]
-    public MessageType Type { get; set; }
-    [Required][Parameter]
-    public bool CanClose { get; set; }
-    
-    protected override void OnInitialized(){
-        _visible = Type != MessageType.Error;
-    }
-    
-    public void Show(){
-        _visible = true;
-    }
-    
-    private void Close(){
-        _visible = false;
-    }
-
-    public void Refresh(){
-        StateHasChanged();
-    }
 }
