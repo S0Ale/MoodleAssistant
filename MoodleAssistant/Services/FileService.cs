@@ -6,104 +6,57 @@ namespace MoodleAssistant.Services;
 /// <summary>
 /// Represents a service that manages the file operations during a user session.
 /// </summary>
-/// <param name="env">The <see cref="IWebHostEnvironment"/> instance that provides information about the web hosting environment.</param>
-public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDisposable{
+public class FileService : IBrowserFileService, IDisposable{
     /// <summary>
     /// The maximum file size in bytes.
     /// </summary>
     private const long MaxFileSize = 10000000;
     
     /// <summary>
-    /// The root folder where the files are saved.
-    /// </summary>
-    private readonly string _rootFolder = Path.Combine(env.WebRootPath, "Uploads");
-    
-    /// <summary>
     /// Map of fixed file names with their trusted file names.
     /// </summary>
-    private Dictionary<string, string> _trustedFiles = new Dictionary<string, string>();
+    private Dictionary<string, IBrowserFile> _trustedFiles = new Dictionary<string, IBrowserFile>();
 
-    /// <summary>
-    /// Saves the specified file inside the root folder.
-    /// </summary>
-    /// <param name="file">The instance of <see cref="IBrowserFile"/> to save.</param>
-    /// <param name="fileName">The file's name.</param>
-    /// <returns><see langword="true"/> if the operation is successful; otherwise <see langword="false"/>.</returns>
-    public async Task<bool> SaveFile(IBrowserFile file, string fileName){
+    /// <inheritdoc/>
+    public Task<bool> SaveFile(IBrowserFile file, string fileName){
         // if name exists, overwrite
         if(_trustedFiles.ContainsKey(fileName)){
             DeleteFile(fileName);
         }
-        var trustedFileName = Path.ChangeExtension(Path.GetRandomFileName(), Path.GetExtension(file.Name));
-        _trustedFiles.Add(fileName, trustedFileName);
-
-        if(!Directory.Exists(_rootFolder)){
-            Directory.CreateDirectory(_rootFolder);
-        }
-        
-        var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
-        await using var fileStream = new FileStream(trustedFilePath, FileMode.Create);
-        await file.OpenReadStream(MaxFileSize).CopyToAsync(fileStream);
-        return true;
+        _trustedFiles.Add(fileName, file);
+        return Task.FromResult(true);
     }
 
-    /// <summary>
-    /// Gets the <see cref="FileStream"/> of the specified file.
-    /// </summary>
-    /// <param name="fileName">The file's name.</param>
-    /// <returns>The <see cref="FileStream"/> that encapsulates the file with the specified name.</returns>
-    public FileStream GetFile(string fileName){
-        var trustedFileName = _trustedFiles[fileName];
-        var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
-        return new FileStream(trustedFilePath, FileMode.Open, FileAccess.Read);
+    /// <inheritdoc/>
+    public async Task<Stream> GetFile(string fileName){
+        var stream = new MemoryStream();
+        await _trustedFiles[fileName].OpenReadStream(MaxFileSize).CopyToAsync(stream);
+        stream.Position = 0;
+        return stream;
     }
 
-    /// <summary>
-    /// Gets the <see cref="FileInfo"/> of the specified file.
-    /// </summary>
-    /// <param name="fileName">The file's name.</param>
-    /// <returns>The <see cref="FileInfo"/> of the file with the specified name.</returns>
+    /// <inheritdoc/>
     public FileInfo GetFileInfo(string fileName){
-        var trustedFileName = _trustedFiles[fileName];
-        var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
-        return new FileInfo(trustedFilePath);
+        throw new NotImplementedException();
     }
     
-    /// <summary>
-    /// Deletes the file with the specified name.
-    /// </summary>
-    /// <param name="fileName">The name of the file to delete.</param>
+    /// <inheritdoc/>
     public void DeleteFile(string fileName){
-        var trustedFileName = _trustedFiles[fileName];
-        var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
-        File.Delete(trustedFilePath);
         _trustedFiles.Remove(fileName);
     }
     
-    /// <summary>
-    /// Deletes all files inside the root folder.
-    /// </summary>
+    /// <inheritdoc/>
     public void DeleteAllFiles(){
-        foreach(var trustedName in _trustedFiles.Values){
-            var trustedFilePath = Path.Combine(_rootFolder, trustedName);
-            File.Delete(trustedFilePath);
-        }
-        _trustedFiles = new Dictionary<string, string>();
+        _trustedFiles = new Dictionary<string, IBrowserFile>();
     }
     
-    /// <summary>
-    /// Gets the base64 string of the specified file.
-    /// </summary>
-    /// <param name="fileName">The file's name.</param>
-    /// <returns>The base64 string of the file.</returns>
-    public string GetBase64(string fileName){
-        var trustedFileName = _trustedFiles[fileName];
-        var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
-        
-        using var fileStream = new FileStream(trustedFilePath, FileMode.Open, FileAccess.Read);
-        using var base64Stream = new CryptoStream(fileStream, new ToBase64Transform(), CryptoStreamMode.Read);
+    /// <inheritdoc/>
+    public async Task<string> GetBase64(string fileName){
+        var stream = await GetFile(fileName);
+        stream.Position = 0;
+        await using var base64Stream = new CryptoStream(stream, new ToBase64Transform(), CryptoStreamMode.Read); // throws an error
         using var reader = new StreamReader(base64Stream);
-        return reader.ReadToEnd();
+        return await reader.ReadToEndAsync();
     }
 
     /// <summary>

@@ -91,8 +91,8 @@ public partial class Replicator{
             };
 
             try{
-                state.Preview = new PreviewModel(merger.MergeQuestion(true), state.AnswerCount);
-                state.Merged = merger.MergeQuestion();
+                state.Preview = new PreviewModel(await merger.MergeQuestion(true), state.AnswerCount);
+                state.Merged = await merger.MergeQuestion();
             }
             catch (ReplicatorException e){
                 SetError(e.Error);
