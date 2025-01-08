@@ -25,7 +25,7 @@ public class Loader(IBrowserFileService fileService){
             throw new ReplicatorException(Error.NullFile);
         if (!XmlFileModel.IsXml(file))
             throw new ReplicatorException(Error.NonXmlFile);
-        if (model.IsEmpty())
+        if (IsEmpty(file))
             throw new ReplicatorException(Error.EmptyFile);
         if (!model.IsWellFormattedXml())
             throw new ReplicatorException(Error.XmlBadFormed);
@@ -56,7 +56,7 @@ public class Loader(IBrowserFileService fileService){
             throw new ReplicatorException(Error.NullFile);
         if (!CsvFileModel.IsCsv(file))
             throw new ReplicatorException(Error.NonCsvFile);
-        if (model.IsEmpty())
+        if (IsEmpty(file))
             throw new ReplicatorException(Error.EmptyFile);
         if (!model.HasValidHeader())
             throw new ReplicatorException(Error.CsvInvalidHeader);
@@ -78,10 +78,29 @@ public class Loader(IBrowserFileService fileService){
             
             if (null == file)
                 throw new ReplicatorException(Error.NullFile);
-            if (model.IsEmpty())  
+            if (IsEmpty(file))  
                 throw new ReplicatorException(Error.EmptyFile);
             if (!model.IsImage(file) && !model.IsOfficeFile(file))
                 throw new ReplicatorException(Error.NoValidFile);
         }
+    }
+    
+    /// <summary>
+    /// Checks if the file is empty.
+    /// </summary>
+    /// <param name="file">The instance of <see cref="IBrowserFile"/> representing the file to check.</param>
+    /// <returns><c>true</c> if the file is empty; otherwise <c>false</c></returns>
+    private static bool IsEmpty(IBrowserFile file){
+        switch (file.Size){
+            case 0:
+                return true;
+            case >= 6:
+                return false;
+        }
+
+        var stream = file.OpenReadStream();
+        using var reader = new StreamReader(stream);
+        stream.Position = 0;
+        return reader.ReadToEnd().Length == 0;
     }
 }

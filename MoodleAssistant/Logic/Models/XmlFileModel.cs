@@ -52,14 +52,6 @@ public class XmlFileModel(IBrowserFileService fileService){
     }
     
     /// <summary>
-    /// Checks if the file with the <see cref="XmlFileModel"/>'s file name is empty.
-    /// </summary>
-    /// <returns><see langword="true"/> if the file is empty; otherwise <see langword="false"/>.</returns>
-    public bool IsEmpty(){
-        return fileService.IsEmpty(FileName);
-    }
-    
-    /// <summary>
     /// Checks if the file with the <see cref="XmlFileModel"/>'s file name is well formatted XML.
     /// </summary>
     /// <returns><see langword="true"/> if the file is well formatted; otherwise <see langword="false"/>.</returns>
