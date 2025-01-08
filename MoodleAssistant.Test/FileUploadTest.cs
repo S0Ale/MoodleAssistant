@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MoodleAssistant.Services;
 using Moq;
 
-namespace MoodleAssistant.UnitTest;
+namespace MoodleAssistant.Test;
 
 [TestFixture]
 internal abstract  class FileUploadTest{

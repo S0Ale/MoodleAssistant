@@ -7,7 +7,7 @@ using MoodleAssistant.Components.Upload;
 using MoodleAssistant.Logic.Utils;
 using MoodleAssistant.Services;
 
-namespace MoodleAssistant.UnitTest;
+namespace MoodleAssistant.Test;
 
 internal class UploadFileShould : FileUploadTest{
     
