@@ -60,13 +60,13 @@ jobs:
           dotnet-version: '8.x'
     
       - name: install deps
-        run: dotnet restore MoodleAssistant.UnitTest
+        run: dotnet restore MoodleAssistant.Test
         
       - name: build solution
-        run: dotnet build MoodleAssistant.UnitTest --configuration Release --no-restore
+        run: dotnet build MoodleAssistant.Test --configuration Release --no-restore
       
       - name: test solution
-        run: dotnet test MoodleAssistant.UnitTest --no-restore --verbosity normal
+        run: dotnet test MoodleAssistant.Test --no-restore
 
   deploy:
     runs-on: ubuntu-latest

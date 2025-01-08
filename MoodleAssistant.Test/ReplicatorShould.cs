@@ -105,7 +105,7 @@ internal class ReplicatorShould : FileUploadTest{
 
     [TestCase("MoodleQuestionOk.xml", "MoodleQuestionOk.csv")]
     [TestCase("multichoice.xml", "multichoice.csv")]
-    [TestCase("Multichoice1.xml", "Multichoice1.csv")]
+    [TestCase("MultiChoice1.xml", "MultiChoice1.csv")]
     [TestCase("trueFalse.xml", "trueFalse.csv")]
     [TestCase("shortAnswer.xml", "shortAnswer.csv")]
     public void Success_BasicQuestion(string xmlName, string csvName){
