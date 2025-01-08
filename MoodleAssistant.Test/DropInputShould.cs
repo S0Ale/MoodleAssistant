@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using MoodleAssistant.Components.Upload;
 
-namespace MoodleAssistant.UnitTest;
+namespace MoodleAssistant.Test;
 
 internal class DropInputShould : FileUploadTest{
     

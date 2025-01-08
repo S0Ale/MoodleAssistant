@@ -13,6 +13,10 @@
 <img src="https://github.com/S0Ale/MoodleAssistant/blob/master/docs/Home-site.png"/>
 </kbd>
 
-***
+## External Libraries
 
-Made with .NET Blazor and Tailwind CSS
+- [Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor) for UI.
+- [ModularDoc](https://github.com/hailstorm75/ModularDoc/tree/unstable) for code documentation.
+- [Coverlet](https://github.com/coverlet-coverage/coverlet) for code coverage.
+- [bUnit](https://github.com/bUnit-dev/bUnit) for unit testing.
+- [CsvHelper](https://github.com/JoshClose/CsvHelper) to work with CSV files.

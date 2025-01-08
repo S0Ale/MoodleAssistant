@@ -1,6 +1,6 @@
 ﻿using Bunit;
 
-namespace MoodleAssistant.UnitTest;
+namespace MoodleAssistant.Test;
 
 internal abstract class TestService{
     private const string AssetsDir = "./assets";

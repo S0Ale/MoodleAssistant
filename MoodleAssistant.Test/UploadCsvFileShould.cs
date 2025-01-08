@@ -5,7 +5,7 @@ using MoodleAssistant.Components.Pages;
 using MoodleAssistant.Logic.Utils;
 using MoodleAssistant.Services;
 
-namespace MoodleAssistant.UnitTest;
+namespace MoodleAssistant.Test;
 
 [TestFixture]
 internal class UploadCsvFileShould : FileUploadTest{
