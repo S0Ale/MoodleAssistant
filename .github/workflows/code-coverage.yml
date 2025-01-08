@@ -19,7 +19,7 @@ jobs:
         dotnet-version: '8.x'
 
     - name: Collect coverage
-      run: dotnet test source -c Release
+      run: dotnet test
       env:
         CollectCoverage: true
         CoverletOutputFormat: cobertura
