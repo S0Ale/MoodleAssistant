@@ -5,7 +5,6 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Logic;
 
-
 /// <summary>
 /// Loads the files uploaded by the user.
 /// </summary>
@@ -73,7 +72,7 @@ public class Loader(IBrowserFileService fileService){
     /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
     public async Task LoadFiles(IBrowserFile[] files){
         foreach (var file in files){
-            var model = new FileModel(fileService, file.Name);
+            var model = new FileModel();
             _ = await fileService.SaveFile(file, file.Name); 
             
             if (null == file)

@@ -7,9 +7,7 @@ namespace MoodleAssistant.Logic.Models;
 /// <summary>
 /// Manage the validation of a uploaded file.
 /// </summary>
-/// <param name="fileService">An instance of <see cref="IBrowserFileService"/> to manage saved files.</param>
-/// <param name="name">The file's name.</param>
-public class FileModel(IBrowserFileService fileService, string name){
+public class FileModel{
     /// <summary>
     /// A list of supported image MIME types.
     /// </summary>
