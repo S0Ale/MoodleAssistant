@@ -17,6 +17,14 @@ internal class ReplicatorShould : FileUploadTest{
         base.Setup();
         _page = Ctx.Render<Replicator>();
     }
+    
+    [Test]
+    public void Throw_NoFiles(){
+        _page.Find("button[type=submit]").Click();
+        _page.WaitForState(() => _page.Instance.IsUploading == false);
+        
+        Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.NoFiles));
+    }
 
     [Test]
     public void Success_ClearForm(){
@@ -93,6 +101,22 @@ internal class ReplicatorShould : FileUploadTest{
             Assert.That(_page.Instance.SuccessUpload, Is.True);
             Assert.That(state?.Merged, Is.Not.Null);
         });
+    }
+
+    [TestCase("MoodleQuestionOk.xml", "MoodleQuestionOk.csv")]
+    [TestCase("multichoice.xml", "multichoice.csv")]
+    [TestCase("Multichoice1.xml", "Multichoice1.csv")]
+    [TestCase("trueFalse.xml", "trueFalse.csv")]
+    [TestCase("shortAnswer.xml", "shortAnswer.csv")]
+    public void Success_BasicQuestion(string xmlName, string csvName){
+        var inputs = _page.FindComponents<InputFile>();
+        inputs[0].UploadFiles(TestService.Create(xmlName, System.Net.Mime.MediaTypeNames.Text.Xml));
+        inputs[1].UploadFiles(TestService.Create(csvName, System.Net.Mime.MediaTypeNames.Text.Csv));
+        _page.Find("button[type=submit]").Click();
+        _page.WaitForState(() => _page.Instance.IsUploading == false);
+        
+        var download = _page.Find("button[id=download]");
+        Assert.That(download, Is.Not.Null);
     }
 
     [TearDown]

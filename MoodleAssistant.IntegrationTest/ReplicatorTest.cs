@@ -28,7 +28,7 @@ public class ReplicatorTest : PageTest{
         await Expect(Page.GetByTestId("download")).ToBeVisibleAsync();
     }
 
-    [Test][Category("File")]
+    [Test]
     public async Task UploadFiles_QuestionWithImage(){
         await Page.GotoAsync(Url);
         var xml = Page.GetByTestId("xml-input");
