@@ -1,0 +1,33 @@
+name: Coverage
+
+on:
+  push:
+    branches: [ main, master ]
+    paths:
+      - '.github/workflows/code-coverage.yml'
+      - 'MoodleAssistant/**'
+      - 'MoodleAssistant.Test/**'
+
+jobs:
+  code_coverage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.x'
+
+    - name: Collect coverage
+      run: dotnet test -c Release
+      env:
+        CollectCoverage: true
+        CoverletOutputFormat: cobertura
+        CoverletOutput: TestResults/
+
+    - name: Upload to coverall
+      uses: coverallsapp/github-action@v2
+      with:
+        github-token: ${{ secrets.COVERALLS_TOKEN }}
+        debug: false
+        file: MoodleAssistant.Test/TestResults/coverage.cobertura.xml
