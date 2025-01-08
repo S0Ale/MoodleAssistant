@@ -48,13 +48,6 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
         var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
         return new FileStream(trustedFilePath, FileMode.Open, FileAccess.Read);
     }
-
-    /// <inheritdoc/>
-    public FileInfo GetFileInfo(string fileName){
-        var trustedFileName = _trustedFiles[fileName];
-        var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
-        return new FileInfo(trustedFilePath);
-    }
     
     /// <inheritdoc/>
     public void DeleteFile(string fileName){

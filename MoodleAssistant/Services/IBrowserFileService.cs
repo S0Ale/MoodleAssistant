@@ -22,13 +22,6 @@ public interface IBrowserFileService{
     public FileStream GetFile(string fileName);
 
     /// <summary>
-    /// Gets the <see cref="FileInfo"/> of the specified file.
-    /// </summary>
-    /// <param name="fileName">The file's name.</param>
-    /// <returns>The <see cref="FileInfo"/> of the file with the specified name.</returns>
-    public FileInfo GetFileInfo(string fileName);
-
-    /// <summary>
     /// Deletes the file with the specified name.
     /// </summary>
     /// <param name="fileName">The name of the file to delete.</param>
