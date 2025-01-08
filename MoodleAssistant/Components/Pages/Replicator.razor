@@ -56,7 +56,7 @@
 
     <div class="flex flex-row justify-center py-6 border-t border-zinc-200">
         @if (_showDownload){
-            <button class="btn btn-primary py-1.5 px-5 mr-4" @onclick="Download" data-testid="download">Download</button>
+            <button class="btn btn-primary py-1.5 px-5 mr-4" @onclick="Download" id="download" data-testid="download">Download</button>
         }
         <button class="btn btn-secondary py-1.5 px-5" @onclick="Reset" data-testid="reset">Reset</button>
     </div>
