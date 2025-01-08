@@ -11,7 +11,7 @@ public interface IBrowserFileService{
     /// </summary>
     /// <param name="file">The instance of <see cref="IBrowserFile"/> to save.</param>
     /// <param name="fileName">The file's name.</param>
-    /// <returns><see langword="true"/> if the operation is successful; otherwise <see langword="false"/>.</returns>
+    /// <returns><c>true</c> if the operation is successful; otherwise <c>false</c>.</returns>
     public Task<bool> SaveFile(IBrowserFile file, string fileName);
 
     /// <summary>

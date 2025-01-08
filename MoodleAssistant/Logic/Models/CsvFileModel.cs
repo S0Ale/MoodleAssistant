@@ -35,7 +35,7 @@ public class CsvFileModel(IBrowserFileService fileService){
     /// Checks if the <see cref="IBrowserFile.ContentType"/> of a file is CSV.
     /// </summary>
     /// <param name="file">An instance of <see cref="IBrowserFile"/> representing the file.</param>
-    /// <returns><see langword="true"/> if the file is CSV; otherwise <see langword="false"/>.</returns>
+    /// <returns><c>true</c> if the file is CSV; otherwise <c>false</c>.</returns>
     public static bool IsCsv(IBrowserFile file)
     {
         return MimeTypes.Contains(file.ContentType);
@@ -44,7 +44,7 @@ public class CsvFileModel(IBrowserFileService fileService){
     /// <summary>
     /// Checks if the file with the <see cref="CsvFileModel"/>'s file name has a valid header.
     /// </summary>
-    /// <returns><see langword="true"/> if the file as a valid header; otherwise <see langword="false"/>.</returns>
+    /// <returns><c>true</c> if the file as a valid header; otherwise <c>false</c>.</returns>
     public bool HasValidHeader()
     {
         var stream = fileService.GetFile(FileName);
@@ -60,7 +60,7 @@ public class CsvFileModel(IBrowserFileService fileService){
     /// <summary>
     /// Checks if the file with the <see cref="CsvFileModel"/>'s file name is well-formed.
     /// </summary>
-    /// <returns><see langword="true"/> if the file is well-formed; otherwise <see langword="false"/>.</returns>
+    /// <returns><c>true</c> if the file is well-formed; otherwise <c>false</c>.</returns>
     public bool IsWellFormed()
     {
         var stream = fileService.GetFile(FileName);

@@ -45,7 +45,7 @@ public class XmlFileModel(IBrowserFileService fileService){
     /// Checks if the <see cref="IBrowserFile.ContentType"/> of a file is XML.
     /// </summary>
     /// <param name="file">An instance of <see cref="IBrowserFile"/> representing the file.</param>
-    /// <returns><see langword="true"/> if the file is XML; otherwise <see langword="false"/>.</returns>
+    /// <returns><c>true</c> if the file is XML; otherwise <c>false</c>.</returns>
     public static bool IsXml(IBrowserFile file)
     {
         return System.Net.Mime.MediaTypeNames.Text.Xml == file.ContentType;
@@ -54,7 +54,7 @@ public class XmlFileModel(IBrowserFileService fileService){
     /// <summary>
     /// Checks if the file with the <see cref="XmlFileModel"/>'s file name is well formatted XML.
     /// </summary>
-    /// <returns><see langword="true"/> if the file is well formatted; otherwise <see langword="false"/>.</returns>
+    /// <returns><c>true</c> if the file is well formatted; otherwise <c>false</c>.</returns>
     public bool IsWellFormattedXml(){
         var stream = fileService.GetFile(FileName);
         using var reader = new StreamReader(stream, Encoding.UTF8);
@@ -72,7 +72,7 @@ public class XmlFileModel(IBrowserFileService fileService){
     /// <summary>
     /// Checks if the file with the <see cref="XmlFileModel"/>'s file name has only one question tag.
     /// </summary>
-    /// <returns><see langword="true"/> if the file has only one question; otherwise <see langword="false"/>.</returns>
+    /// <returns><c>true</c> if the file has only one question; otherwise <c>false</c>.</returns>
     public bool HasOnlyOneQuestion(){                                                                                                                                                        
         var questionList = XmlFile.GetElementsByTagName("question");                                                                                         
         return questionList is {Count: 1};                                                                                                                      
@@ -81,7 +81,7 @@ public class XmlFileModel(IBrowserFileService fileService){
     /// <summary>
     /// Checks if the file with the <see cref="XmlFileModel"/>'s file name has a question text.
     /// </summary>
-    /// <returns><see langword="true"/> if the file has question text; otherwise <see langword="false"/>.</returns>
+    /// <returns><c>true</c> if the file has question text; otherwise <c>false</c>.</returns>
     public bool HasQuestionText(){                                                                                                                                                        
         var questionTextNodeList = XmlFile.GetElementsByTagName("questiontext");                                                                             
         return questionTextNodeList is {Count: 1};                                                                                                              
