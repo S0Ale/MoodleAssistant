@@ -30,4 +30,4 @@ jobs:
       with:
         github-token: ${{ secrets.COVERALLS_TOKEN }}
         debug: false
-        file: TestResults/coverage.cobertura.xml
+        file: ./TestResults/coverage.cobertura.xml
