@@ -85,10 +85,7 @@ public partial class Replicator{
         if (state.Parameters.GetFileParameters().Count > 0){
             _showFileParams = true;
         }else{
-            var merger = new Merger(FileService){
-                XmlFile = state.Template,
-                CsvAsList = state.CsvAsList
-            };
+            var merger = new Merger(FileService, state.Template, state.CsvAsList);
 
             try{
                 state.Preview = new PreviewModel(merger.MergeQuestion(true), state.AnswerCount);

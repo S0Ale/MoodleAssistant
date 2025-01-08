@@ -71,10 +71,7 @@ public partial class FileParam{
             SetError(Error.Unexpected);
             return;
         }
-        var merger = new Merger(FileService){
-            XmlFile = state.Template,
-            CsvAsList = state.CsvAsList
-        };
+        var merger = new Merger(FileService, state.Template, state.CsvAsList);
 
         // Merge question
         try{
