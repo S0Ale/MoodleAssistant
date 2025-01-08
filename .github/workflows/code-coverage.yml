@@ -19,7 +19,7 @@ jobs:
         dotnet-version: '8.x'
 
     - name: Collect coverage
-      run: dotnet test
+      run: dotnet test -c Release
       env:
         CollectCoverage: true
         CoverletOutputFormat: cobertura
@@ -29,4 +29,5 @@ jobs:
       uses: coverallsapp/github-action@v2
       with:
         github-token: ${{ secrets.COVERALLS_TOKEN }}
-  
+        debug: false
+        file: TestResults/coverage.cobertura.xml
