@@ -18,8 +18,8 @@ public interface IBrowserFileService{
     /// Gets the <see cref="FileStream"/> of the specified file.
     /// </summary>
     /// <param name="fileName">The file's name.</param>
-    /// <returns>The <see cref="FileStream"/> that encapsulates the file with the specified name.</returns>
-    public Task<FileStream> GetFile(string fileName);
+    /// <returns>The <see cref="Stream"/> that encapsulates the file with the specified name.</returns>
+    public Task<Stream> GetFile(string fileName);
 
     /// <summary>
     /// Deletes the file with the specified name.
