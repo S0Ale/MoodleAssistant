@@ -9,10 +9,11 @@ namespace MoodleAssistant.Logic.Models;
 /// <summary>
 /// Manages the validation of a XML template file and its parameters.
 /// </summary>
+/// <param name="file">The instance of <see cref="IBrowserFile"/> representing the file to validate.</param>
 /// <param name="fileService">An instance of <see cref="IBrowserFileService"/> to manage saved files.</param>
-public class XmlFileModel(IBrowserFileService fileService){
+public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : ValidationModel(file){
     /// <summary>
-    /// The standard name of the XML file managed by the <see cref="XmlFileModel"/>.
+    /// The standard name of the XML file managed by the <see cref="XmlModel"/>.
     /// </summary>
     public static string FileName => "XML";
     
@@ -52,7 +53,7 @@ public class XmlFileModel(IBrowserFileService fileService){
     }
     
     /// <summary>
-    /// Checks if the file with the <see cref="XmlFileModel"/>'s file name is well formatted XML.
+    /// Checks if the file with the <see cref="XmlModel"/>'s file name is well formatted XML.
     /// </summary>
     /// <returns><c>true</c> if the file is well formatted; otherwise <c>false</c>.</returns>
     public bool IsWellFormattedXml(){
@@ -70,7 +71,7 @@ public class XmlFileModel(IBrowserFileService fileService){
     }
     
     /// <summary>
-    /// Checks if the file with the <see cref="XmlFileModel"/>'s file name has only one question tag.
+    /// Checks if the file with the <see cref="XmlModel"/>'s file name has only one question tag.
     /// </summary>
     /// <returns><c>true</c> if the file has only one question; otherwise <c>false</c>.</returns>
     public bool HasOnlyOneQuestion(){                                                                                                                                                        
@@ -79,7 +80,7 @@ public class XmlFileModel(IBrowserFileService fileService){
     }  
     
     /// <summary>
-    /// Checks if the file with the <see cref="XmlFileModel"/>'s file name has a question text.
+    /// Checks if the file with the <see cref="XmlModel"/>'s file name has a question text.
     /// </summary>
     /// <returns><c>true</c> if the file has question text; otherwise <c>false</c>.</returns>
     public bool HasQuestionText(){                                                                                                                                                        
