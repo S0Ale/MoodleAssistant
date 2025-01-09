@@ -56,7 +56,7 @@ public partial class Replicator{
         var loader = new Loader(FileService);
         
         // Load XML file
-        XmlFileModel xmlModel;
+        XmlModel xmlModel;
         try{ xmlModel = await loader.LoadXml(_xmlInput.UploadedFiles.Values.FirstOrDefault()!); }
         catch (ReplicatorException e){
             SetError(e.Error);

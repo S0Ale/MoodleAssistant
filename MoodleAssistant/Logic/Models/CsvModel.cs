@@ -9,10 +9,11 @@ namespace MoodleAssistant.Logic.Models;
 /// <summary>
 /// Manages the validation of a CSV file and other operations.
 /// </summary>
+/// <param name="file">The instance of <see cref="IBrowserFile"/> representing the file to validate.</param>
 /// <param name="fileService">An instance of <see cref="IBrowserFileService"/> to manage saved files.</param>
-public class CsvFileModel(IBrowserFileService fileService){
+public class CsvModel(IBrowserFile file, IBrowserFileService fileService) : ValidationModel(file){
     /// <summary>
-    /// The standard name of the XML file managed by the <see cref="CsvFileModel"/>.
+    /// The standard name of the XML file managed by the <see cref="CsvModel"/>.
     /// </summary>
     public static string FileName => "CSV";
     
@@ -35,16 +36,16 @@ public class CsvFileModel(IBrowserFileService fileService){
     /// Checks if the <see cref="IBrowserFile.ContentType"/> of a file is CSV.
     /// </summary>
     /// <param name="file">An instance of <see cref="IBrowserFile"/> representing the file.</param>
-    /// <returns><see langword="true"/> if the file is CSV; otherwise <see langword="false"/>.</returns>
+    /// <returns><c>true</c> if the file is CSV; otherwise <c>false</c>.</returns>
     public static bool IsCsv(IBrowserFile file)
     {
         return MimeTypes.Contains(file.ContentType);
     }
     
     /// <summary>
-    /// Checks if the file with the <see cref="CsvFileModel"/>'s file name has a valid header.
+    /// Checks if the file with the <see cref="CsvModel"/>'s file name has a valid header.
     /// </summary>
-    /// <returns><see langword="true"/> if the file as a valid header; otherwise <see langword="false"/>.</returns>
+    /// <returns><c>true</c> if the file as a valid header; otherwise <c>false</c>.</returns>
     public async Task<bool> HasValidHeader()
     {
         var stream = await fileService.GetFile(FileName);
@@ -58,9 +59,9 @@ public class CsvFileModel(IBrowserFileService fileService){
     }
 
     /// <summary>
-    /// Checks if the file with the <see cref="CsvFileModel"/>'s file name is well-formed.
+    /// Checks if the file with the <see cref="CsvModel"/>'s file name is well-formed.
     /// </summary>
-    /// <returns><see langword="true"/> if the file is well-formed; otherwise <see langword="false"/>.</returns>
+    /// <returns><c>true</c> if the file is well-formed; otherwise <c>false</c>.</returns>
     public async Task<bool> IsWellFormed()
     {
         var stream = await fileService.GetFile(FileName);

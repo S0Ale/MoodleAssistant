@@ -5,7 +5,6 @@ using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Logic;
 
-
 /// <summary>
 /// Loads the files uploaded by the user.
 /// </summary>
@@ -15,15 +14,15 @@ public class Loader(IBrowserFileService fileService){
     /// Loads the XML file and validates it.
     /// </summary>
     /// <param name="file">An instance of <see cref="IBrowserFile"/>representing the XML file.</param>
-    /// <returns>An instance of <see cref="XmlFileModel"/> to manage the file.</returns>
+    /// <returns>An instance of <see cref="XmlModel"/> to manage the file.</returns>
     /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
-    public async Task<XmlFileModel> LoadXml(IBrowserFile file){
-        var model = new XmlFileModel(fileService);
-        await fileService.SaveFile(file, XmlFileModel.FileName);
+    public async Task<XmlModel> LoadXml(IBrowserFile file){
+        var model = new XmlModel(file, fileService);
+        await fileService.SaveFile(file, XmlModel.FileName);
 
         if (null == file)
             throw new ReplicatorException(Error.NullFile);
-        if (!XmlFileModel.IsXml(file))
+        if (!XmlModel.IsXml(file))
             throw new ReplicatorException(Error.NonXmlFile);
         if (IsEmpty(file))
             throw new ReplicatorException(Error.EmptyFile);
@@ -42,19 +41,19 @@ public class Loader(IBrowserFileService fileService){
     /// Loads the CSV file and validates it.
     /// </summary>
     /// <param name="file">An instance of <see cref="IBrowserFile"/> representing the CSV file.</param>
-    /// <param name="xmlModel">An instance of <see cref="XmlFileModel"/> representing the template XML file.</param>
+    /// <param name="xmlModel">An instance of <see cref="XmlModel"/> representing the template XML file.</param>
     /// <returns>A list of string arrays representing the CSV file.</returns>
     /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
-    public async Task<IEnumerable<string[]>> LoadCsv(IBrowserFile file, XmlFileModel xmlModel){
-        var model = new CsvFileModel(fileService){
+    public async Task<IEnumerable<string[]>> LoadCsv(IBrowserFile file, XmlModel xmlModel){
+        var model = new CsvModel(file, fileService){
             QuestionParametersList = xmlModel.QuestionParametersList,
             AnswersParametersList = xmlModel.AnswerParametersList
         };
-        _ = await fileService.SaveFile(file, CsvFileModel.FileName);
+        _ = await fileService.SaveFile(file, CsvModel.FileName);
 
         if (null == file)
             throw new ReplicatorException(Error.NullFile);
-        if (!CsvFileModel.IsCsv(file))
+        if (!CsvModel.IsCsv(file))
             throw new ReplicatorException(Error.NonCsvFile);
         if (IsEmpty(file))
             throw new ReplicatorException(Error.EmptyFile);
@@ -73,7 +72,7 @@ public class Loader(IBrowserFileService fileService){
     /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
     public async Task LoadFiles(IBrowserFile[] files){
         foreach (var file in files){
-            var model = new FileModel(fileService, file.Name);
+            var model = new FileModel(file);
             _ = await fileService.SaveFile(file, file.Name); 
             
             if (null == file)
