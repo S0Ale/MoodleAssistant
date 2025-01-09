@@ -8,6 +8,8 @@ namespace MoodleAssistant.Logic;
 /// Represents a class that merges the template XML file with the CSV file to create a new XML file.
 /// </summary>
 /// <param name="fileService">An instance of <see cref="IBrowserFileService"/> to manage saved files.</param>
+/// <param name="template">The <see cref="XmlDocument"/> of the template question.</param>
+/// <param name="csvAsList">The CSV file as a list of string arrays.</param>
 public class Merger(IBrowserFileService fileService, XmlDocument template, IEnumerable<string[]> csvAsList){
     /// <summary>
     /// The XML file to be used as a template.
