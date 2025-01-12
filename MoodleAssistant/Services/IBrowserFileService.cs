@@ -18,8 +18,8 @@ public interface IBrowserFileService{
     /// Gets the <see cref="FileStream"/> of the specified file.
     /// </summary>
     /// <param name="fileName">The file's name.</param>
-    /// <returns>The <see cref="Stream"/> that encapsulates the file with the specified name.</returns>
-    public Task<Stream> GetFile(string fileName);
+    /// <returns>The <see cref="FileStream"/> that encapsulates the file with the specified name.</returns>
+    public FileStream GetFile(string fileName);
 
     /// <summary>
     /// Deletes the file with the specified name.
@@ -37,5 +37,5 @@ public interface IBrowserFileService{
     /// </summary>
     /// <param name="filename">The file's name.</param>
     /// <returns>The base64 string of the file.</returns>
-    Task<string> GetBase64(string filename);
+    string GetBase64(string filename);
 }
