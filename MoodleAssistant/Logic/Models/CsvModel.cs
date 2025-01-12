@@ -46,12 +46,12 @@ public class CsvModel(IBrowserFile file, IBrowserFileService fileService) : Vali
     /// Checks if the file with the <see cref="CsvModel"/>'s file name has a valid header.
     /// </summary>
     /// <returns><c>true</c> if the file as a valid header; otherwise <c>false</c>.</returns>
-    public bool HasValidHeader()
+    public async Task<bool> HasValidHeader()
     {
-        var stream = fileService.GetFile(FileName);
+        var stream = await fileService.GetFile(FileName);
         using var reader = new StreamReader(stream);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-        csv.Read();
+        await csv.ReadAsync();
         csv.ReadHeader();
         var headerRow = csv.HeaderRecord ?? [];
         var questionAndAnswerList = QuestionParametersList.Concat(AnswersParametersList).Distinct().ToList();
@@ -62,15 +62,15 @@ public class CsvModel(IBrowserFile file, IBrowserFileService fileService) : Vali
     /// Checks if the file with the <see cref="CsvModel"/>'s file name is well-formed.
     /// </summary>
     /// <returns><c>true</c> if the file is well-formed; otherwise <c>false</c>.</returns>
-    public bool IsWellFormed()
+    public async Task<bool> IsWellFormed()
     {
-        var stream = fileService.GetFile(FileName);
+        var stream = await fileService.GetFile(FileName);
         using var reader = new StreamReader(stream, Encoding.Default);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-        csv.Read();
+        await csv.ReadAsync();
         csv.ReadHeader();
         var numOfHeaders = csv.Parser.Count;
-        while (csv.Read())
+        while (await csv.ReadAsync())
         {
             if (numOfHeaders != csv.Parser.Count)
                 return false;
@@ -86,18 +86,18 @@ public class CsvModel(IBrowserFile file, IBrowserFileService fileService) : Vali
     /// Converts the CSV file to a list of string arrays.
     /// </summary>
     /// <returns>A list of string arrays representing the parameters' values.</returns>
-    public IEnumerable<string[]> ConvertCsvToListOfArrayString()
+    public async Task<IEnumerable<string[]>> ConvertCsvToListOfArrayString()
     {
         var csvAsList = new List<string[]>();
         
-        var stream = fileService.GetFile(FileName);
+        var stream = await fileService.GetFile(FileName);
         using var reader = new StreamReader(stream);
         using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
-        csv.Read();
+        await csv.ReadAsync();
         csv.ReadHeader();
         var numOfHeaders = csv.Parser.Count;
         if (csv.HeaderRecord != null) csvAsList.Add(csv.HeaderRecord);
-        while (csv.Read())
+        while (await csv.ReadAsync())
         {
             var temp = new string[numOfHeaders];
             for (var i = 0; i < numOfHeaders; i++)
