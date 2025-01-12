@@ -88,8 +88,8 @@ public partial class Replicator{
             var merger = new Merger(FileService, state.Template, state.CsvAsList);
 
             try{
-                state.Preview = new PreviewModel(await merger.MergeQuestion(true), state.AnswerCount);
-                state.Merged = await merger.MergeQuestion();
+                state.Preview = new PreviewModel(merger.MergeQuestion(true), state.AnswerCount);
+                state.Merged = merger.MergeQuestion();
             }
             catch (ReplicatorException e){
                 SetError(e.Error);

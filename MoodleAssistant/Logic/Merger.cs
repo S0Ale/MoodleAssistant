@@ -27,7 +27,7 @@ public class Merger(IBrowserFileService fileService, XmlDocument template, IEnum
     /// </summary>
     /// <param name="previewMode">Whether the merge process is executing in preview mode or not.</param>
     /// <returns>The merged <see cref="XmlDocument"/>.</returns>
-    public async Task<XmlDocument> MergeQuestion(bool previewMode = false){
+    public XmlDocument MergeQuestion(bool previewMode = false){
         // File names need to be equal to the names inside the CSV file
         var merged = (_xmlDoc.Clone() as XmlDocument)!;
         
@@ -82,7 +82,7 @@ public class Merger(IBrowserFileService fileService, XmlDocument template, IEnum
                     
                     tag.Attributes!["name"]!.Value = filename;
                     var base64 = fileService.GetBase64(filename);
-                    tag.InnerText = await base64;
+                    tag.InnerText = base64;
                 }
             }
 
