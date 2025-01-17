@@ -1,8 +1,8 @@
 services:
-  moodleassistant:
-    image: moodleassistant
+  moodleassistant-wasm:
+    image: moodleassistant-wasm
     build:
       context: .
       dockerfile: Dockerfile
     ports:
-      - 5000:8080
+      - 5000:80
