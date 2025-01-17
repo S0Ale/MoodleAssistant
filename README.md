@@ -15,7 +15,7 @@
 
 ## External Libraries
 
-- [Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor) for UI.
+- [Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor) and [Tailwind CSS](https://github.com/tailwindlabs/tailwindcss) for UI.
 - [ModularDoc](https://github.com/hailstorm75/ModularDoc/tree/unstable) for code documentation.
 - [Coverlet](https://github.com/coverlet-coverage/coverlet) for code coverage.
 - [NUnit](https://github.com/nunit/nunit) and [bUnit](https://github.com/bUnit-dev/bUnit) for unit testing.
