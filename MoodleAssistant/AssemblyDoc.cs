@@ -3,6 +3,4 @@
 /// <summary>
 /// MoodleAssistant documentation.
 /// </summary>
-internal static class MoodleAssistantDoc{
-    
-}
+internal static class AssemblyDoc{ }

@@ -2,6 +2,8 @@
 
 ## MoodleAssistant.Logic.Parse Namespace
 
+Manages parameter parsing.
+
 | Classes | |
 | :--- | :--- |
 | [FileParameter](MoodleAssistant.Logic.Parse.FileParameter.md 'MoodleAssistant.Logic.Parse.FileParameter') | Represents a file-type parameter in a template question. |

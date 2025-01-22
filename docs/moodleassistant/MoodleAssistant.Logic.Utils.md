@@ -2,6 +2,8 @@
 
 ## MoodleAssistant.Logic.Utils Namespace
 
+Common errors and exceptions.
+
 | Classes | |
 | :--- | :--- |
 | [ErrorMessage](MoodleAssistant.Logic.Utils.ErrorMessage.md 'MoodleAssistant.Logic.Utils.ErrorMessage') | Contains error messages for the application. |

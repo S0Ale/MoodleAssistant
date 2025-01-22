@@ -2,9 +2,10 @@
 
 ## MoodleAssistant.Components Namespace
 
+All Blazor components that manage UI events. Interacts with the logic and manages the template analysis and question preview.
+
 | Classes | |
 | :--- | :--- |
-| [ComponentsDoc](MoodleAssistant.Components.ComponentsDoc.md 'MoodleAssistant.Components.ComponentsDoc') | All Blazor components that manage UI events. Interacts with the logic and manages the template analysis and question preview. |
 | [Message](MoodleAssistant.Components.Message.md 'MoodleAssistant.Components.Message') | Represents a message component. |
 
 | Enums | |

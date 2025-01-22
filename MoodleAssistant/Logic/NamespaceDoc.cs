@@ -3,4 +3,4 @@
 /// <summary>
 /// Handles the application's behavior: parse, merge and validation.
 /// </summary>
-internal static class LogicDoc{ }
+internal static class NamespaceDoc { }
