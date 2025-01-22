@@ -4,6 +4,7 @@
 
 | Namespaces | |
 | :--- | :--- |
+| [MoodleAssistant](MoodleAssistant.md 'MoodleAssistant') | |
 | [MoodleAssistant.Components](MoodleAssistant.Components.md 'MoodleAssistant.Components') | |
 | [MoodleAssistant.Components.Pages](MoodleAssistant.Components.Pages.md 'MoodleAssistant.Components.Pages') | |
 | [MoodleAssistant.Components.Sections](MoodleAssistant.Components.Sections.md 'MoodleAssistant.Components.Sections') | |
