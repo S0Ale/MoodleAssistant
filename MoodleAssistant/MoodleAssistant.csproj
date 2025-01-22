@@ -4,7 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <GenerateDocumentationFile>False</GenerateDocumentationFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="33.0.1" />
+    <PackageReference Include="DefaultDocumentation" Version="0.8.2" PrivateAssets="all"/>
   </ItemGroup>
 
   <ItemGroup>
