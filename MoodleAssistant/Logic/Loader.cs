@@ -17,6 +17,9 @@ public class Loader(IBrowserFileService fileService){
     /// <returns>An instance of <see cref="XmlModel"/> to manage the file.</returns>
     /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
     public async Task<XmlModel> LoadXml(IBrowserFile file){
+        if(file.Size > 10000000)
+            throw new ReplicatorException(Error.FileTooBig);
+        
         var model = new XmlModel(file, fileService);
         await fileService.SaveFile(file, XmlModel.FileName);
 
