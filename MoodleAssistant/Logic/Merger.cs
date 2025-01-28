@@ -12,24 +12,14 @@ namespace MoodleAssistant.Logic;
 /// <param name="csvAsList">The CSV file as a list of string arrays.</param>
 public class Merger(IBrowserFileService fileService, XmlDocument template, IEnumerable<string[]> csvAsList){
     /// <summary>
-    /// The XML file to be used as a template.
-    /// </summary>
-    private readonly XmlDocument _xmlDoc = (template.Clone() as XmlDocument)!;
-
-    /// <summary>
-    /// The CSV file to be used as a data source.
-    /// </summary>
-    private readonly IEnumerable<string[]> _csvAsList = csvAsList;
-
-    /// <summary>
     /// This function creates a XML file with the replicated questions using the XML file as the template and the CSV file
     /// to find the parameter values.
     /// </summary>
     /// <param name="previewMode">Whether the merge process is executing in preview mode or not.</param>
     /// <returns>The merged <see cref="XmlDocument"/>.</returns>
-    public async Task<XmlDocument> MergeQuestion(bool previewMode = false){
+    public XmlDocument MergeQuestion(bool previewMode = false){
         // File names need to be equal to the names inside the CSV file
-        var merged = (_xmlDoc.Clone() as XmlDocument)!;
+        var merged = (template.Clone() as XmlDocument)!;
         
         // Prepare the template question
         // 1. Look for all the nodes that contain text and a file parameter, look for cdata sections and create them if not found
@@ -39,7 +29,7 @@ public class Merger(IBrowserFileService fileService, XmlDocument template, IEnum
 
         var i = 1;
         // Create a new question for each row in the CSV file
-        for (var j = 1; j < _csvAsList.Count(); j++){
+        for (var j = 1; j < csvAsList.Count(); j++){
             var xmlQuestionNode = merged.GetElementsByTagName("question").Item(0)?.Clone(); // 1. Clone the template question
             if (xmlQuestionNode == null) continue;
             
@@ -62,8 +52,8 @@ public class Merger(IBrowserFileService fileService, XmlDocument template, IEnum
                 var parser = new ParameterParser(node.InnerXml, previewMode);
                 var parameters = parser.Match() as List<Parameter> ?? [];
                 foreach (var param in parameters){
-                    param.Replacement = !previewMode ? FindInCsv(_csvAsList, j, param.Name) : 
-                        $"<span class=\"code\">[{FindInCsv(_csvAsList, j, param.Name)}]</span>";
+                    param.Replacement = !previewMode ? FindInCsv(csvAsList, j, param.Name) : 
+                        $"<span class=\"code\">[{FindInCsv(csvAsList, j, param.Name)}]</span>";
                 }
                 node.InnerXml = parser.Replace(parameters);
             }
@@ -77,12 +67,12 @@ public class Merger(IBrowserFileService fileService, XmlDocument template, IEnum
                     if(!string.IsNullOrEmpty(tag.InnerText)) continue;
                     var name = tag.Attributes!["name"]!.Value;
                     string filename;
-                    try{ filename = FindInCsv(_csvAsList, j, name); }
+                    try{ filename = FindInCsv(csvAsList, j, name); }
                     catch (KeyNotFoundException){ continue; } // this tag is not the one I added in the previous steps
                     
                     tag.Attributes!["name"]!.Value = filename;
                     var base64 = fileService.GetBase64(filename);
-                    tag.InnerText = await base64;
+                    tag.InnerText = base64;
                 }
             }
 

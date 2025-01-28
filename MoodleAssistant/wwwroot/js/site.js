@@ -1,8 +1,7 @@
-﻿window.initMobileMenu = () => {
-    let btn = document.querySelector("button.mobile-menu-button");
-    let menu = document.querySelector(".mobile-menu");
+﻿//Navbar
+const btn = document.querySelector("button.mobile-menu-button");
+const menu = document.querySelector(".mobile-menu");
 
-    btn.addEventListener("click", () => {
-        menu.classList.toggle("hidden");
-    });
-};
+btn.addEventListener("click", () => {
+    menu.classList.toggle("hidden");
+});
