@@ -1,4 +1,6 @@
-﻿<header>
+﻿@inject IJSRuntime Js;
+
+<header>
     <nav class="border-b border-zinc-200">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between">
@@ -39,4 +41,10 @@
         </div>
     </nav>
 </header>
+
+@code{
+    protected override async Task OnAfterRenderAsync(bool firstRender){
+        await Js.InvokeVoidAsync("initMobileMenu");
+    }
+}
 

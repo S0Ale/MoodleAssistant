@@ -105,6 +105,9 @@ internal class UploadFileShould : FileUploadTest{
 
     [Test]
     public void Success_CorrectImage(){
+        TearDown();
+        base.Setup();
+        _page = Ctx.Render<Replicator>();
         var inputs = _page.FindComponents<InputFile>();
         var xml = inputs[0];
         var csv = inputs[1];
