@@ -12,6 +12,7 @@ public static class ErrorMessage
     private const string NullFile = "Upload a file.";
     private const string EmptyFile = "File cannot be empty.";
     private const string Unexpected = "An unexpected error occurred. Try reloading the page.";
+    private const string FileTooBig = "File is too big. File size must be less than 10MB.";
 
     //xml errors
     private const string NonXmlFile = "File type must be XML.";
@@ -43,6 +44,7 @@ public static class ErrorMessage
             Error.NoFiles => NoFiles,
             Error.NullFile => NullFile,
             Error.Unexpected => Unexpected,
+            Error.FileTooBig => FileTooBig,
             
             Error.NonXmlFile => NonXmlFile,
             Error.EmptyFile => EmptyFile,

@@ -35,6 +35,11 @@ public enum Error{
     EmptyFile,
     
     /// <summary>
+    /// The uploaded file is too big.
+    /// </summary>
+    FileTooBig,
+    
+    /// <summary>
     /// The uploaded XML file is not well-formatted.
     /// </summary>
     XmlBadFormed,

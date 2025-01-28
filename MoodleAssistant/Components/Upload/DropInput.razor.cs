@@ -23,6 +23,11 @@ public partial class DropInput{
     /// The maximum number of files that can be uploaded.
     /// </summary>
     [Parameter] public int MaxFiles{ get; init; } = 1;
+    
+    /// <summary>
+    /// The maximum size of the files that can be uploaded.
+    /// </summary>
+    [Parameter] public int MaxSize{ get; init; } = 10000000;
 
     /// <summary>
     /// The current index of the uploaded files.

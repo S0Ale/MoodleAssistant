@@ -17,6 +17,9 @@ public class Loader(IBrowserFileService fileService){
     /// <returns>An instance of <see cref="XmlModel"/> to manage the file.</returns>
     /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
     public async Task<XmlModel> LoadXml(IBrowserFile file){
+        if(file.Size > 10000000)
+            throw new ReplicatorException(Error.FileTooBig);
+        
         var model = new XmlModel(file, fileService);
         await fileService.SaveFile(file, XmlModel.FileName);
 
@@ -45,6 +48,9 @@ public class Loader(IBrowserFileService fileService){
     /// <returns>A list of string arrays representing the CSV file.</returns>
     /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
     public async Task<IEnumerable<string[]>> LoadCsv(IBrowserFile file, XmlModel xmlModel){
+        if(file.Size > 10000000)
+            throw new ReplicatorException(Error.FileTooBig);
+        
         var model = new CsvModel(file, fileService){
             QuestionParametersList = xmlModel.QuestionParametersList,
             AnswersParametersList = xmlModel.AnswerParametersList

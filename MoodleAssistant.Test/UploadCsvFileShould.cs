@@ -82,6 +82,17 @@ internal class UploadCsvFileShould : FileUploadTest{
     }
 
     [Test]
+    public void Throw_FileTooBig(){
+        var csv = TestService.CreateDummy("dummy.csv", 10000000 + 1,System.Net.Mime.MediaTypeNames.Text.Csv); 
+        _xml.UploadFiles(_correctXml);
+        _csv.UploadFiles(csv);
+        
+        _submit.Click();
+        _page.WaitForState(() => _page.Instance.IsUploading == false);
+        Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.FileTooBig));
+    }
+
+    [Test]
     public void Success_CorrectCSVFile(){
         var csv = TestService.Create("MoodleQuestionOk.csv", System.Net.Mime.MediaTypeNames.Text.Csv);
         _xml.UploadFiles(_correctXml);
