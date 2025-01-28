@@ -85,6 +85,17 @@ internal class UploadXmlFileShould : FileUploadTest{
     }
 
     [Test]
+    public void Throw_FileTooBig(){
+        var xml = TestService.CreateDummy("dummy.xml", 10000000 + 1, System.Net.Mime.MediaTypeNames.Text.Xml);
+        _xml.UploadFiles(xml);
+        _csv.UploadFiles(_mockCsv);
+        
+        _submit.Click();
+        _page.WaitForState(() => _page.Instance.IsUploading == false);
+        Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.FileTooBig));
+    }
+
+    [Test]
     public void Success_BasicXml(){
         var xml = TestService.Create("MoodleQuestionOk.xml", System.Net.Mime.MediaTypeNames.Text.Xml);
         var csv = TestService.Create("MoodleQuestionOk.csv", System.Net.Mime.MediaTypeNames.Text.Csv);
