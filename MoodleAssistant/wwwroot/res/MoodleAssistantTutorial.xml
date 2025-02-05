@@ -12,8 +12,5 @@
 		<answer fraction="100" format="moodle_auto_format">
 			<text>[*[[capital]]*]</text>
 		</answer>
-		<answer fraction="0" format="moodle_auto_format">
-			<text>**</text>
-		</answer>
 	</question>
 </quiz>
