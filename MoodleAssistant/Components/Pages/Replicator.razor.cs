@@ -155,13 +155,7 @@ public partial class Replicator{
     /// Downloads the merged file.
     /// </summary>
     private async Task Download(){
-        var stream = new MemoryStream();
-        ReplicatorState.Merged?.Save(stream);
-        stream.Flush();
-        stream.Position = 0;
-        using var streamRef = new DotNetStreamReference(stream);
-        await Js.InvokeVoidAsync("downloadFileFromStream", "Question.xml", streamRef);
-        
-        FileService.DeleteAllFiles();
+        await FileService.SaveFile(ReplicatorState.Merged!);
+        await Js.InvokeVoidAsync("triggerFileDownload", "MERGED.xml", "/Uploads/MERGED.xml");
     }
 }

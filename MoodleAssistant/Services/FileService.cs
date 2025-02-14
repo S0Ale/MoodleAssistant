@@ -1,4 +1,6 @@
-﻿using System.Security.Cryptography;
+﻿using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Xml;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace MoodleAssistant.Services;
@@ -40,6 +42,21 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
         await using var fileStream = new FileStream(trustedFilePath, FileMode.Create);
         await file.OpenReadStream(MaxFileSize).CopyToAsync(fileStream);
         return true;
+    }
+
+    /// <inheritdoc/>
+    public Task<bool> SaveFile(XmlDocument doc){
+        Debug.Assert(doc != null);
+        var trustedFileName = Path.ChangeExtension("MERGED", ".xml");
+        _trustedFiles.Add("MERGED", trustedFileName);
+
+        if(!Directory.Exists(_rootFolder)){
+            Directory.CreateDirectory(_rootFolder);
+        }
+        
+        var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
+        doc.Save(trustedFilePath);
+        return Task.FromResult(true);
     }
 
     /// <inheritdoc/>
