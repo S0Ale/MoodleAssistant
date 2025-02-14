@@ -1,0 +1,59 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+    
+      - name: install deps
+        run: dotnet restore MoodleAssistant.Test
+        
+      - name: build solution
+        run: dotnet build MoodleAssistant.Test --configuration Release --no-restore
+      
+      - name: test solution
+        run: dotnet test MoodleAssistant.Test --no-restore
+
+  release:
+    name: release
+    runs-on: ubuntu-latest
+    needs: test
+    if: success()
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.x'
+        
+      - name: dotnet publish
+        run: dotnet publish MoodleAssistant -c Release -o release
+        
+      - name: zip release folder
+        run: sudo zip -r release.zip ./release
+
+      - name: Get Changelog Entry
+        id: changelog_reader
+        uses: mindsers/changelog-reader-action@v2
+        with:
+          path: ./CHANGELOG.md
+
+      - name: release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: release.zip
+          name: ${{ steps.changelog_reader.outputs.version }}
+          tag_name: v${{ steps.changelog_reader.outputs.version }}
+          body: ${{ steps.changelog_reader.outputs.body }}
+  
