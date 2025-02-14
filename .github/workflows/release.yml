@@ -55,5 +55,5 @@ jobs:
           files: release.zip
           name: ${{ steps.changelog_reader.outputs.version }}
           tag_name: v${{ steps.changelog_reader.outputs.version }}
-          body: ${{ steps.changelog_reader.outputs.body }}
+          body: ${{ steps.changelog_reader.outputs.changes }}
   
