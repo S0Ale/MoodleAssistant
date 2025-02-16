@@ -12,13 +12,13 @@ public enum Error
 
 <a name='MoodleAssistant.Logic.Utils.Error.CsvBadFormed'></a>
 
-`CsvBadFormed` 11
+`CsvBadFormed` 12
 
 The uploaded CSV file is not well-formed.
 
 <a name='MoodleAssistant.Logic.Utils.Error.CsvInvalidHeader'></a>
 
-`CsvInvalidHeader` 10
+`CsvInvalidHeader` 11
 
 The uploaded CSV file has not a valid header.
 
@@ -30,9 +30,15 @@ The uploaded file is empty.
 
 <a name='MoodleAssistant.Logic.Utils.Error.FileMismatch'></a>
 
-`FileMismatch` 13
+`FileMismatch` 14
 
 The uploaded files names or quantity do not match the values inside the CSV file.
+
+<a name='MoodleAssistant.Logic.Utils.Error.FileTooBig'></a>
+
+`FileTooBig` 6
+
+The uploaded file is too big.
 
 <a name='MoodleAssistant.Logic.Utils.Error.NoErrors'></a>
 
@@ -48,7 +54,7 @@ No files were uploaded.
 
 <a name='MoodleAssistant.Logic.Utils.Error.NonCsvFile'></a>
 
-`NonCsvFile` 9
+`NonCsvFile` 10
 
 The uploaded file is not a valid CSV file.
 
@@ -60,7 +66,7 @@ The uploaded file is not a valid XML file.
 
 <a name='MoodleAssistant.Logic.Utils.Error.NoValidFile'></a>
 
-`NoValidFile` 12
+`NoValidFile` 13
 
 The uploaded file is not a valid image/MS-Office file.
 
@@ -78,18 +84,18 @@ An unexpected error occurred.
 
 <a name='MoodleAssistant.Logic.Utils.Error.XmlBadFormed'></a>
 
-`XmlBadFormed` 6
+`XmlBadFormed` 7
 
 The uploaded XML file is not well-formatted.
 
 <a name='MoodleAssistant.Logic.Utils.Error.ZeroAnswers'></a>
 
-`ZeroAnswers` 8
+`ZeroAnswers` 9
 
 The uploaded XML file has no answers.
 
 <a name='MoodleAssistant.Logic.Utils.Error.ZeroOrMoreQuestions'></a>
 
-`ZeroOrMoreQuestions` 7
+`ZeroOrMoreQuestions` 8
 
 The uploaded XML file has zero or more than one question.
