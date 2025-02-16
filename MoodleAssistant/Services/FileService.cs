@@ -45,10 +45,10 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
     }
 
     /// <inheritdoc/>
-    public Task<bool> SaveFile(XmlDocument doc){
+    public Task<bool> SaveFile(XmlDocument doc, string fileName){
         Debug.Assert(doc != null);
-        var trustedFileName = Path.ChangeExtension("MERGED", ".xml");
-        _trustedFiles.Add("MERGED", trustedFileName);
+        var trustedFileName = Path.ChangeExtension(fileName, ".xml");
+        _trustedFiles.Add(fileName, trustedFileName);
 
         if(!Directory.Exists(_rootFolder)){
             Directory.CreateDirectory(_rootFolder);

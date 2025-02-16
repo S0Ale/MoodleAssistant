@@ -14,13 +14,14 @@ public interface IBrowserFileService{
     /// <param name="fileName">The file's name.</param>
     /// <returns><c>true</c> if the operation is successful; otherwise <c>false</c>.</returns>
     public Task<bool> SaveFile(IBrowserFile file, string fileName);
-    
+
     /// <summary>
     /// Saves the specified <see cref="XmlDocument"/>.
     /// </summary>
     /// <param name="doc">The <see cref="XmlDocument"/> to save.</param>
+    /// <param name="fileName">The file's name.</param>
     /// <returns><c>true</c> if the operation is successful; otherwise <c>false</c>.</returns>
-    public Task<bool> SaveFile(XmlDocument doc);
+    public Task<bool> SaveFile(XmlDocument doc, string fileName);
 
     /// <summary>
     /// Gets the <see cref="FileStream"/> of the specified file.

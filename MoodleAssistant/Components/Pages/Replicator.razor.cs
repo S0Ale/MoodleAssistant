@@ -155,7 +155,7 @@ public partial class Replicator{
     /// Downloads the merged file.
     /// </summary>
     private async Task Download(){
-        await FileService.SaveFile(ReplicatorState.Merged!);
-        await Js.InvokeVoidAsync("triggerFileDownload", "MERGED.xml", "/Uploads/MERGED.xml");
+        await FileService.SaveFile(ReplicatorState.Merged!, "Questions");
+        await Js.InvokeVoidAsync("triggerFileDownload", "Questions.xml", "/Uploads/Questions.xml");
     }
 }
