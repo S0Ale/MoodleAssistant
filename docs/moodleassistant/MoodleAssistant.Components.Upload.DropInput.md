@@ -24,6 +24,7 @@ Implements [System.IAsyncDisposable](https://docs.microsoft.com/en-us/dotnet/api
 | [ChildContent](MoodleAssistant.Components.Upload.DropInput.ChildContent.md 'MoodleAssistant.Components.Upload.DropInput.ChildContent') | The [Microsoft.AspNetCore.Components.RenderFragment](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Components.RenderFragment 'Microsoft.AspNetCore.Components.RenderFragment') representing the child content. |
 | [InputName](MoodleAssistant.Components.Upload.DropInput.InputName.md 'MoodleAssistant.Components.Upload.DropInput.InputName') | The name of the input element. |
 | [MaxFiles](MoodleAssistant.Components.Upload.DropInput.MaxFiles.md 'MoodleAssistant.Components.Upload.DropInput.MaxFiles') | The maximum number of files that can be uploaded. |
+| [MaxSize](MoodleAssistant.Components.Upload.DropInput.MaxSize.md 'MoodleAssistant.Components.Upload.DropInput.MaxSize') | The maximum size of the files that can be uploaded. |
 | [UploadedFiles](MoodleAssistant.Components.Upload.DropInput.UploadedFiles.md 'MoodleAssistant.Components.Upload.DropInput.UploadedFiles') | The uploaded files. |
 
 | Methods | |
