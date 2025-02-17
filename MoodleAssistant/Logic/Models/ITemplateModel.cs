@@ -1,9 +1,13 @@
 ﻿namespace MoodleAssistant.Logic.Models;
 
 /// <summary>
-/// Represents a validation model for the template question.
+/// Manages the validation process of the template question.
 /// </summary>
 public interface ITemplateModel{
+    /// <summary>
+    /// Gets the template document.
+    /// </summary>
+    public object TemplateDocument{ get; protected set; }
     
     /// <summary>
     /// Gets the parameters found in the question text.

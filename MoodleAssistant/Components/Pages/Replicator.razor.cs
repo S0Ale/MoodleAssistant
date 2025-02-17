@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using System.Xml;
+using Microsoft.JSInterop;
 using MoodleAssistant.Components.Upload;
 using MoodleAssistant.Logic;
 using MoodleAssistant.Logic.Models;
@@ -23,7 +24,7 @@ public partial class Replicator{
     /// <summary>
     /// The <see cref="DropInput"/> component for the XML file upload.
     /// </summary>
-    private DropInput _xmlInput = null!;
+    private DropInput _templateInput = null!;
     
     /// <summary>
     /// The <see cref="DropInput"/> component for the CSV file upload.
@@ -48,7 +49,7 @@ public partial class Replicator{
         var state = ReplicatorState;
         
         // Check if both files are uploaded
-        var totalFiles = _xmlInput.UploadedFiles.Count + _csvInput.UploadedFiles.Count;
+        var totalFiles = _templateInput.UploadedFiles.Count + _csvInput.UploadedFiles.Count;
         if(totalFiles < 2){
             SetError(Error.NoFiles);
             return;
@@ -56,19 +57,18 @@ public partial class Replicator{
         var loader = new Loader(FileService);
         
         // Load XML file
-        XmlModel xmlModel;
-        try{ xmlModel = await loader.LoadXml(_xmlInput.UploadedFiles.Values.FirstOrDefault()!); }
+        ITemplateModel templateModel;
+        try{ templateModel = await loader.LoadTemplate(_templateInput.UploadedFiles.Values.FirstOrDefault()!); }
         catch (ReplicatorException e){
             SetError(e.Error);
             return;
         }
-        state.Template = xmlModel.XmlFile;
-        state.AnswerCount = xmlModel.AnswerCount;
+        state.Template = (XmlDocument)templateModel.TemplateDocument;
         
         // Load CSV file
         List<string[]> csvList;
         try{
-            csvList = await loader.LoadCsv(_csvInput.UploadedFiles.Values.FirstOrDefault()!, xmlModel) as List<string[]> ?? []; 
+            csvList = await loader.LoadCsv(_csvInput.UploadedFiles.Values.FirstOrDefault()!, templateModel) as List<string[]> ?? []; 
         }catch (ReplicatorException e){
             SetError(e.Error);
             return;
@@ -88,7 +88,7 @@ public partial class Replicator{
             var merger = new Merger(FileService, state.Template, state.CsvAsList);
 
             try{
-                state.Preview = new PreviewModel(merger.MergeQuestion(true), state.AnswerCount);
+                state.Preview = new PreviewModel(merger.MergeQuestion(true));
                 state.Merged = merger.MergeQuestion();
             }
             catch (ReplicatorException e){
@@ -116,7 +116,7 @@ public partial class Replicator{
     /// Clears the form.
     /// </summary>
     private void ClearForm(){
-        _xmlInput.ClearFiles();
+        _templateInput.ClearFiles();
         _csvInput.ClearFiles();
     }
 

@@ -16,8 +16,8 @@ public class PreviewModel{
     /// </summary>
     /// <param name="question">The current <see cref="XmlDocument"/>.</param>
     /// <param name="answers">The current <see cref="XmlDocument"/>'s answer count.</param>
-    public PreviewModel(XmlDocument question, int answers){
-        GenerateItems(question, answers);
+    public PreviewModel(XmlDocument question){
+        GenerateItems(question, question.GetElementsByTagName("answer").Count);
     }
 
     /// <summary>

@@ -75,7 +75,7 @@ public partial class FileParam{
 
         // Merge question
         try{
-            state.Preview = new PreviewModel(merger.MergeQuestion(true), state.AnswerCount);
+            state.Preview = new PreviewModel(merger.MergeQuestion(true));
             state.Merged = merger.MergeQuestion();
         }
         catch (ReplicatorException e){

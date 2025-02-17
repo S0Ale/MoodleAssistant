@@ -7,6 +7,7 @@ namespace MoodleAssistant.Logic.Models;
 /// Represents a validation model.
 /// </summary>
 public interface IValidationModel{
+    
     /// <summary>
     /// Validates the file contained in the model.
     /// </summary>

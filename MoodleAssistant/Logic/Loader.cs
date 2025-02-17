@@ -11,15 +11,16 @@ namespace MoodleAssistant.Logic;
 /// <param name="fileService">An instance of <see cref="IBrowserFileService"/> to manage saved files.</param>
 public class Loader(IBrowserFileService fileService){
     /// <summary>
-    /// Loads the XML file and validates it.
+    /// Loads the template question file and validates it.
     /// </summary>
-    /// <param name="file">An instance of <see cref="IBrowserFile"/>representing the XML file.</param>
-    /// <returns>An instance of <see cref="XmlModel"/> to manage the file.</returns>
+    /// <param name="file">An instance of <see cref="IBrowserFile"/>representing the template question.</param>
+    /// <returns>An instance of <see cref="ITemplateModel"/> to manage the file.</returns>
     /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
-    public async Task<XmlModel> LoadXml(IBrowserFile file){
+    public async Task<ITemplateModel> LoadTemplate(IBrowserFile file){
         if(file.Size > 10000000)
             throw new ReplicatorException(Error.FileTooBig);
         
+        // change model according to the question type
         var model = new XmlModel(file, fileService);
         await fileService.SaveFile(file, XmlModel.FileName);
         model.Validate();
@@ -32,16 +33,16 @@ public class Loader(IBrowserFileService fileService){
     /// Loads the CSV file and validates it.
     /// </summary>
     /// <param name="file">An instance of <see cref="IBrowserFile"/> representing the CSV file.</param>
-    /// <param name="xmlModel">An instance of <see cref="XmlModel"/> representing the template XML file.</param>
+    /// <param name="templateModel">An instance of <see cref="ITemplateModel"/> representing the template file.</param>
     /// <returns>A list of string arrays representing the CSV file.</returns>
     /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
-    public async Task<IEnumerable<string[]>> LoadCsv(IBrowserFile file, XmlModel xmlModel){
+    public async Task<IEnumerable<string[]>> LoadCsv(IBrowserFile file, ITemplateModel templateModel){
         if(file.Size > 10000000)
             throw new ReplicatorException(Error.FileTooBig);
         
         var model = new CsvModel(file, fileService){
-            QuestionParametersList = xmlModel.QuestionParametersList,
-            AnswersParametersList = xmlModel.AnswerParametersList
+            QuestionParametersList = templateModel.QuestionParametersList,
+            AnswersParametersList = templateModel.AnswerParametersList
         };
         _ = await fileService.SaveFile(file, CsvModel.FileName);
         model.Validate();
