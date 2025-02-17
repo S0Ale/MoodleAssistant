@@ -1,17 +1,24 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
+using MoodleAssistant.Logic.Utils;
 
 namespace MoodleAssistant.Logic.Models;
 
 /// <summary>
-/// 
+/// Represents a validation model.
 /// </summary>
-/// <param name="file">The instance of <see cref="IBrowserFile"/> representing the file to validate.</param>
-public class ValidationModel(IBrowserFile file){
+public interface IValidationModel{
+    /// <summary>
+    /// Validates the file contained in the model.
+    /// </summary>
+    /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
+    public void Validate();
+    
     /// <summary>
     /// Checks if the file is empty.
     /// </summary>
+    /// <param name="file">The instance of <see cref="IBrowserFile"/></param>
     /// <returns><c>true</c> if the file is empty; otherwise <c>false</c></returns>
-    public bool IsEmpty(){
+    bool IsEmpty(IBrowserFile file){
         switch (file.Size){
             case 0:
                 return true;

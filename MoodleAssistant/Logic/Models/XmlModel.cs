@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.AspNetCore.Components.Forms;
+using MoodleAssistant.Logic.Utils;
 using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Logic.Models;
@@ -11,7 +12,7 @@ namespace MoodleAssistant.Logic.Models;
 /// </summary>
 /// <param name="file">The instance of <see cref="IBrowserFile"/> representing the file to validate.</param>
 /// <param name="fileService">An instance of <see cref="IBrowserFileService"/> to manage saved files.</param>
-public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : ValidationModel(file){
+public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : ITemplateModel, IValidationModel{
     /// <summary>
     /// The standard name of the XML file managed by the <see cref="XmlModel"/>.
     /// </summary>
@@ -28,26 +29,22 @@ public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : Vali
     public XmlDocument XmlFile{ get; private set; } = new();
     
     /// <summary>
-    /// Gets the parameters found in the question text.
-    /// </summary>
-    public IEnumerable<string> QuestionParametersList{ get; private set; } = [];
-    
-    /// <summary>
-    /// Gets the parameters found in the answers.
-    /// </summary>
-    public IEnumerable<string> AnswerParametersList{ get; private set; } = [];
-    
-    /// <summary>
     /// Gets the number of answers in the XML file.
     /// </summary>
     public int AnswerCount { get; private set; }
+    
+    /// <inheritdoc/>
+    public IEnumerable<string> QuestionParametersList{ get; set; } = [];
+    
+    /// <inheritdoc/>
+    public IEnumerable<string> AnswerParametersList{ get; set; } = [];
 
     /// <summary>
     /// Checks if the <see cref="IBrowserFile.ContentType"/> of a file is XML.
     /// </summary>
     /// <param name="file">An instance of <see cref="IBrowserFile"/> representing the file.</param>
     /// <returns><c>true</c> if the file is XML; otherwise <c>false</c>.</returns>
-    public static bool IsXml(IBrowserFile file)
+    private static bool IsXml(IBrowserFile file)
     {
         return System.Net.Mime.MediaTypeNames.Text.Xml == file.ContentType;
     }
@@ -56,7 +53,7 @@ public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : Vali
     /// Checks if the file with the <see cref="XmlModel"/>'s file name is well formatted XML.
     /// </summary>
     /// <returns><c>true</c> if the file is well formatted; otherwise <c>false</c>.</returns>
-    public bool IsWellFormattedXml(){
+    private bool IsWellFormattedXml(){
         var stream = fileService.GetFile(FileName);
         using var reader = new StreamReader(stream, Encoding.UTF8);
                                                                                                
@@ -74,7 +71,7 @@ public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : Vali
     /// Checks if the file with the <see cref="XmlModel"/>'s file name has only one question tag.
     /// </summary>
     /// <returns><c>true</c> if the file has only one question; otherwise <c>false</c>.</returns>
-    public bool HasOnlyOneQuestion(){                                                                                                                                                        
+    private bool HasOnlyOneQuestion(){                                                                                                                                                        
         var questionList = XmlFile.GetElementsByTagName("question");                                                                                         
         return questionList is {Count: 1};                                                                                                                      
     }  
@@ -83,14 +80,25 @@ public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : Vali
     /// Checks if the file with the <see cref="XmlModel"/>'s file name has a question text.
     /// </summary>
     /// <returns><c>true</c> if the file has question text; otherwise <c>false</c>.</returns>
-    public bool HasQuestionText(){                                                                                                                                                        
+    private bool HasQuestionText(){                                                                                                                                                        
         var questionTextNodeList = XmlFile.GetElementsByTagName("questiontext");                                                                             
         return questionTextNodeList is {Count: 1};                                                                                                              
     } 
     
     /// <summary>
-    /// Gets the parameters from the XML file and puts them in the <see cref="QuestionParametersList"/> and <see cref="AnswerParametersList"/>.
+    /// Gets the parameters from a XML node.
     /// </summary>
+    /// <param name="textNode">An instance of <see cref="XmlNode"/></param>
+    /// <returns>The list of parameters contained into the node.</returns>
+    private static List<string> GetParametersFromXmlNode(XmlNode textNode){
+        var questionText = textNode.InnerText;                                                                                                               
+        var parametersList = new List<string>();                                                                                                             
+        foreach (Match match in Regex.Matches(questionText, Pattern))                                                                                                   
+            parametersList.Add(match.Groups[2].Value);                                                                                                       
+        return parametersList;                                                                                                                               
+    }
+
+    /// <inheritdoc/>
     public void TakeParameters(){                                                                                                                                                        
         var questionTextNodeList = XmlFile.GetElementsByTagName("questiontext");
         QuestionParametersList = GetParametersFromXmlNode(questionTextNodeList.Item(0)!).Distinct();
@@ -113,18 +121,20 @@ public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : Vali
             answerParametersList.AddRange(GetParametersFromXmlNode(answer));
         AnswerParametersList = answerParametersList.Distinct();                                                                                              
     }
-    
-    /// <summary>
-    /// Gets the parameters from a XML node.
-    /// </summary>
-    /// <param name="textNode">An instance of <see cref="XmlNode"/></param>
-    /// <returns>The list of parameters contained into the node.</returns>
-    private static List<string> GetParametersFromXmlNode(XmlNode textNode){
-        var questionText = textNode.InnerText;                                                                                                               
-        var parametersList = new List<string>();                                                                                                             
-        foreach (Match match in Regex.Matches(questionText, Pattern))                                                                                                   
-            parametersList.Add(match.Groups[2].Value);                                                                                                       
-        return parametersList;                                                                                                                               
-                                                                                                                                                             
+
+    /// <inheritdoc/>
+    public void Validate(){
+        if (null == file)
+            throw new ReplicatorException(Error.NullFile);
+        if (!IsXml(file))
+            throw new ReplicatorException(Error.NonXmlFile);
+        if (((IValidationModel)this).IsEmpty(file))
+            throw new ReplicatorException(Error.EmptyFile);
+        if (!IsWellFormattedXml())
+            throw new ReplicatorException(Error.XmlBadFormed);
+        if (!HasOnlyOneQuestion())
+            throw new ReplicatorException(Error.ZeroOrMoreQuestions);
+        if (!HasQuestionText())
+            throw new ReplicatorException(Error.ZeroOrMoreQuestions);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Components.Forms;
+using MoodleAssistant.Logic.Utils;
 using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Logic.Models;
@@ -8,7 +9,7 @@ namespace MoodleAssistant.Logic.Models;
 /// Manage the validation of a uploaded file.
 /// </summary>
 /// <param name="file">The instance of <see cref="IBrowserFile"/> representing the file to validate.</param>
-public class FileModel(IBrowserFile file) : ValidationModel(file){
+public class FileModel(IBrowserFile file) : IValidationModel{
     /// <summary>
     /// A list of supported image MIME types.
     /// </summary>
@@ -52,18 +53,26 @@ public class FileModel(IBrowserFile file) : ValidationModel(file){
     /// <summary>
     /// Checks if the <see cref="IBrowserFile.ContentType"/> of a file is an image.
     /// </summary>
-    /// <param name="file">An instance of <see cref="IBrowserFile"/> representing the file.</param>
     /// <returns><see langword="true"/> if the file is an image; otherwise <see langword="false"/>.</returns>
-    public bool IsImage(IBrowserFile file){
+    private bool IsImage(){
         return ImageMimeTypes.Contains(file.ContentType);
     }
     
     /// <summary>
     /// Checks if the <see cref="IBrowserFile.ContentType"/> of a file is a Microsoft Office file.
     /// </summary>
-    /// <param name="file">An instance of <see cref="IBrowserFile"/> representing the file.</param>
     /// <returns><see langword="true"/> if the file is a MS Office file; otherwise <see langword="false"/>.</returns>
-    public bool IsOfficeFile(IBrowserFile file){
+    private bool IsOfficeFile(){
         return MsMimeTypes.Contains(file.ContentType);
+    }
+
+    /// <inheritdoc/>
+    public void Validate(){
+        if (null == file)
+            throw new ReplicatorException(Error.NullFile);
+        if (((IValidationModel)this).IsEmpty(file))  
+            throw new ReplicatorException(Error.EmptyFile);
+        if (!IsImage() && !IsOfficeFile())
+            throw new ReplicatorException(Error.NoValidFile);
     }
 }

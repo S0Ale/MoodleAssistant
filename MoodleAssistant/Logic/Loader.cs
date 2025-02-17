@@ -22,19 +22,7 @@ public class Loader(IBrowserFileService fileService){
         
         var model = new XmlModel(file, fileService);
         await fileService.SaveFile(file, XmlModel.FileName);
-
-        if (null == file)
-            throw new ReplicatorException(Error.NullFile);
-        if (!XmlModel.IsXml(file))
-            throw new ReplicatorException(Error.NonXmlFile);
-        if (model.IsEmpty())
-            throw new ReplicatorException(Error.EmptyFile);
-        if (!model.IsWellFormattedXml())
-            throw new ReplicatorException(Error.XmlBadFormed);
-        if (!model.HasOnlyOneQuestion())
-            throw new ReplicatorException(Error.ZeroOrMoreQuestions);
-        if (!model.HasQuestionText())
-            throw new ReplicatorException(Error.ZeroOrMoreQuestions);
+        model.Validate();
 
         model.TakeParameters();
         return model;
@@ -56,17 +44,7 @@ public class Loader(IBrowserFileService fileService){
             AnswersParametersList = xmlModel.AnswerParametersList
         };
         _ = await fileService.SaveFile(file, CsvModel.FileName);
-
-        if (null == file)
-            throw new ReplicatorException(Error.NullFile);
-        if (!CsvModel.IsCsv(file))
-            throw new ReplicatorException(Error.NonCsvFile);
-        if (model.IsEmpty())
-            throw new ReplicatorException(Error.EmptyFile);
-        if (!model.HasValidHeader())
-            throw new ReplicatorException(Error.CsvInvalidHeader);
-        if (!model.IsWellFormed())
-            throw new ReplicatorException(Error.CsvBadFormed);
+        model.Validate();
 
         return model.ConvertCsvToListOfArrayString();
     }
@@ -80,13 +58,7 @@ public class Loader(IBrowserFileService fileService){
         foreach (var file in files){
             var model = new FileModel(file);
             _ = await fileService.SaveFile(file, file.Name); 
-            
-            if (null == file)
-                throw new ReplicatorException(Error.NullFile);
-            if (model.IsEmpty())  
-                throw new ReplicatorException(Error.EmptyFile);
-            if (!model.IsImage(file) && !model.IsOfficeFile(file))
-                throw new ReplicatorException(Error.NoValidFile);
+            model.Validate();
         }
     }
 }
