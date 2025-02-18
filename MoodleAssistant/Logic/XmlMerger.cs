@@ -10,14 +10,9 @@ namespace MoodleAssistant.Logic;
 /// <param name="fileService">An instance of <see cref="IBrowserFileService"/> to manage saved files.</param>
 /// <param name="template">The <see cref="XmlDocument"/> of the template question.</param>
 /// <param name="csvAsList">The CSV file as a list of string arrays.</param>
-public class Merger(IBrowserFileService fileService, XmlDocument template, IEnumerable<string[]> csvAsList){
-    /// <summary>
-    /// This function creates a XML file with the replicated questions using the XML file as the template and the CSV file
-    /// to find the parameter values.
-    /// </summary>
-    /// <param name="previewMode">Whether the merge process is executing in preview mode or not.</param>
-    /// <returns>The merged <see cref="XmlDocument"/>.</returns>
-    public XmlDocument MergeQuestion(bool previewMode = false){
+public class XmlMerger(IBrowserFileService fileService, XmlDocument template, IEnumerable<string[]> csvAsList) : IMerger{
+    /// <inheritdoc/>
+    public object MergeQuestion(bool previewMode = false){
         // File names need to be equal to the names inside the CSV file
         var merged = (template.Clone() as XmlDocument)!;
         

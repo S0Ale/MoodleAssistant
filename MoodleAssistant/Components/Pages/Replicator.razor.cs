@@ -54,7 +54,11 @@ public partial class Replicator{
             SetError(Error.NoFiles);
             return;
         }
-        var loader = new Loader(FileService);
+        
+        // Change factory type according to the question type
+        state.Factory = new XmlFactory(FileService);
+        
+        var loader = new Loader(FileService, state.Factory);
         
         // Load XML file
         ITemplateModel templateModel;
@@ -81,15 +85,16 @@ public partial class Replicator{
         FileService.DeleteAllFiles();
 
         // Load parameters
-        state.Parameters = new ParameterModel(state.Template, csvList.Count() - 1);
+        state.Parameters = new ParameterModel(state.Template, csvList.Count() - 1); // need to change
         if (state.Parameters.GetFileParameters().Count > 0){
             _showFileParams = true;
         }else{
-            var merger = new Merger(FileService, state.Template, state.CsvAsList);
+            //var merger = new XmlMerger(FileService, state.Template, state.CsvAsList);
+            var merger = state.Factory.CreateMerger(state.Template, state.CsvAsList);
 
             try{
-                state.Preview = new PreviewModel(merger.MergeQuestion(true));
-                state.Merged = merger.MergeQuestion();
+                state.Preview = new PreviewModel((XmlDocument)merger.MergeQuestion(true));
+                state.Merged = (XmlDocument)merger.MergeQuestion();
             }
             catch (ReplicatorException e){
                 SetError(e.Error);

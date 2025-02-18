@@ -1,4 +1,5 @@
 ﻿using System.Xml;
+using MoodleAssistant.Logic;
 using MoodleAssistant.Logic.Models;
 
 namespace MoodleAssistant.Services;
@@ -7,6 +8,11 @@ namespace MoodleAssistant.Services;
 /// Represents the current state of the program, during the current user session.
 /// </summary>
 public class ReplicatorState : IDisposable{
+    /// <summary>
+    /// Gets or sets the factory for the replicator components.
+    /// </summary>
+    public IReplicatorFactory? Factory;
+
     /// <summary>
     /// Gets or sets the preview model of the current merged question (if any).
     /// </summary>

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Xml;
+using Microsoft.AspNetCore.Components;
 using MoodleAssistant.Components.Upload;
 using MoodleAssistant.Logic;
 using MoodleAssistant.Logic.Models;
@@ -58,8 +59,11 @@ public partial class FileParam{
             return;
         }
         
+        // Change factory type according to the question type
+        state.Factory = new XmlFactory(FileService);
+        
         // Load file parameters
-        var loader = new Loader(FileService);
+        var loader = new Loader(FileService, state.Factory);
         try{
             foreach (var param in state.Parameters?.GetFileParameters() ?? [])
                 await loader.LoadFiles(_inputs[param.Name].UploadedFiles.Values.ToArray());
@@ -71,12 +75,13 @@ public partial class FileParam{
             SetError(Error.Unexpected);
             return;
         }
-        var merger = new Merger(FileService, state.Template, state.CsvAsList);
+        //var merger = new XmlMerger(FileService, state.Template, state.CsvAsList);
+        var merger = state.Factory.CreateMerger(state.Template, state.CsvAsList);
 
         // Merge question
         try{
-            state.Preview = new PreviewModel(merger.MergeQuestion(true));
-            state.Merged = merger.MergeQuestion();
+            state.Preview = new PreviewModel((XmlDocument)merger.MergeQuestion(true));
+            state.Merged = (XmlDocument)merger.MergeQuestion();
         }
         catch (ReplicatorException e){
             SetError(e.Error);

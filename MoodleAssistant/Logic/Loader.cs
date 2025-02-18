@@ -9,7 +9,7 @@ namespace MoodleAssistant.Logic;
 /// Loads the files uploaded by the user.
 /// </summary>
 /// <param name="fileService">An instance of <see cref="IBrowserFileService"/> to manage saved files.</param>
-public class Loader(IBrowserFileService fileService){
+public class Loader(IBrowserFileService fileService, IReplicatorFactory factory){
     /// <summary>
     /// Loads the template question file and validates it.
     /// </summary>
@@ -25,7 +25,8 @@ public class Loader(IBrowserFileService fileService){
             throw new ReplicatorException(Error.FileTooBig);
         
         // change model according to the question type
-        var model = new XmlModel(file, fileService);
+        //var model = new XmlModel(file, fileService);
+        var model = factory.CreateTemplateModel(file);
         await fileService.SaveFile(file, XmlModel.FileName);
         model.Validate();
 
