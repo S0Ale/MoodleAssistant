@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using MoodleAssistant.Logic.Models;
+using MoodleAssistant.Logic.Processing;
 
 namespace MoodleAssistant.Logic;
 
@@ -30,10 +31,10 @@ public interface IReplicatorFactory{
     public IMerger CreateMerger(object template, IEnumerable<string[]> csvAsList);
     
     /// <summary>
-    /// Creates a new instance of <see cref="IParameterModel"/>.
+    /// Creates a new instance of <see cref="IParameterHandler"/>.
     /// </summary>
     /// <param name="doc">The template document.</param>
     /// <param name="csvRows">The number of csv rows in the CSV file.</param>
-    /// <returns>An instance of <see cref="IParameterModel"/>.</returns>
-    public IParameterModel CreateParameterModel(object doc, int csvRows);
+    /// <returns>An instance of <see cref="IParameterHandler"/>.</returns>
+    public IParameterHandler CreateParameterModel(object doc, int csvRows);
 }

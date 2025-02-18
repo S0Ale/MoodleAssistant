@@ -1,21 +1,21 @@
 ﻿using System.Xml;
 
-namespace MoodleAssistant.Logic.Models;
+namespace MoodleAssistant.Logic.Processing;
 
 /// <summary>
 /// Creates all the preview data for the current merged XML file.
 /// </summary>
-public class PreviewModel{
+public class PreviewHandler{
     /// <summary>
     /// Gets the list of preview items.
     /// </summary>
     public List<PreviewItem> Items{ get; } = [];
 
     /// <summary>
-    /// Initializes a new instance of the <see cref="PreviewModel"/> class.
+    /// Initializes a new instance of the <see cref="PreviewHandler"/> class.
     /// </summary>
     /// <param name="question">The current <see cref="XmlDocument"/>.</param>
-    public PreviewModel(XmlDocument question){
+    public PreviewHandler(XmlDocument question){
         GenerateItems(question);
     }
 
@@ -25,9 +25,6 @@ public class PreviewModel{
     /// <param name="doc">The current <see cref="XmlDocument"/>.</param>
     private void GenerateItems(XmlDocument doc) {
         var questions = doc.GetElementsByTagName("question");
-        //var answers = doc.GetElementsByTagName("answer");
-        //var e = answers.GetEnumerator();
-        //using var e1 = e as IDisposable;
 
         for (var i = 0; i < questions.Count; i++){
             var question = questions[i];

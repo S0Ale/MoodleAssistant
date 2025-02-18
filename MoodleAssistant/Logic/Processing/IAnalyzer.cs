@@ -1,4 +1,4 @@
-﻿namespace MoodleAssistant.Logic;
+﻿namespace MoodleAssistant.Logic.Processing;
 
 /// <summary>
 /// Manages the analysis of the template question document.

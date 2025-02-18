@@ -3,7 +3,7 @@ using MoodleAssistant.Logic.Models;
 using MoodleAssistant.Logic.Utils;
 using MoodleAssistant.Services;
 
-namespace MoodleAssistant.Logic;
+namespace MoodleAssistant.Logic.Processing;
 
 /// <summary>
 /// Loads the files uploaded by the user.

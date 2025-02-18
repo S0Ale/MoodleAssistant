@@ -1,14 +1,14 @@
 ﻿using System.Xml;
 using MoodleAssistant.Logic.Parse;
 
-namespace MoodleAssistant.Logic.Models;
+namespace MoodleAssistant.Logic.Processing.XML;
 
 /// <summary>
 /// Represents the parameters of the XML document.
 /// </summary>
 /// <param name="doc">A <see cref="XmlDocument"/> instance.</param>
 /// <param name="csvRows">The number of csv rows in the CSV file.</param>
-public class XmlParameterModel(XmlDocument doc, int csvRows) : IParameterModel{
+public class XmlParameterHandler(XmlDocument doc, int csvRows) : IParameterHandler{
     /// <summary>
     /// The parameters of the XML document.
     /// </summary>

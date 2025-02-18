@@ -1,6 +1,7 @@
 ﻿using System.Xml;
 using MoodleAssistant.Logic;
 using MoodleAssistant.Logic.Models;
+using MoodleAssistant.Logic.Processing;
 
 namespace MoodleAssistant.Services;
 
@@ -16,12 +17,12 @@ public class ReplicatorState : IDisposable{
     /// <summary>
     /// Gets or sets the preview model of the current merged question (if any).
     /// </summary>
-    public PreviewModel? Preview{ get; set; }
+    public PreviewHandler? Preview{ get; set; }
     
     /// <summary>
     /// Gets or sets the parameters model of the current merged question (if any).
     /// </summary>
-    public IParameterModel? Parameters{ get; set; }
+    public IParameterHandler? Parameters{ get; set; }
     
     /// <summary>
     /// Gets or sets the CSV file as a list of string arrays.

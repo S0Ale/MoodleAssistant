@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using MoodleAssistant.Components.Upload;
 using MoodleAssistant.Logic;
 using MoodleAssistant.Logic.Models;
+using MoodleAssistant.Logic.Processing;
 using MoodleAssistant.Logic.Utils;
 
 namespace MoodleAssistant.Components.Pages;
@@ -93,7 +94,7 @@ public partial class Replicator{
             var merger = state.Factory.CreateMerger(state.Template, state.CsvAsList);
 
             try{
-                state.Preview = new PreviewModel((XmlDocument)merger.MergeQuestion(true));
+                state.Preview = new PreviewHandler((XmlDocument)merger.MergeQuestion(true));
                 state.Merged = (XmlDocument)merger.MergeQuestion();
             }
             catch (ReplicatorException e){

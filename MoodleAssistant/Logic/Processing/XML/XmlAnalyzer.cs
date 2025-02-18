@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using System.Xml;
 
-namespace MoodleAssistant.Logic;
+namespace MoodleAssistant.Logic.Processing.XML;
 
 /// <summary>
 /// Analyzes a template question document in XML format.

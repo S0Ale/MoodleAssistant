@@ -1,6 +1,4 @@
-﻿using System.Xml;
-
-namespace MoodleAssistant.Logic;
+﻿namespace MoodleAssistant.Logic.Processing;
 
 /// <summary>
 /// Manage the merge process of the questions.

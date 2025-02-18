@@ -1,4 +1,4 @@
-﻿namespace MoodleAssistant.Logic.Models;
+﻿namespace MoodleAssistant.Logic.Processing;
 
 /// <summary>
 /// Represents a preview item of a question tag (inside the merged XML file), with its question text and answers.

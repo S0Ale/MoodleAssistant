@@ -1,11 +1,11 @@
 ﻿using MoodleAssistant.Logic.Parse;
 
-namespace MoodleAssistant.Logic.Models;
+namespace MoodleAssistant.Logic.Processing;
 
 /// <summary>
 /// Manager for the parameters of the template document.
 /// </summary>
-public interface IParameterModel{
+public interface IParameterHandler{
     /// <summary>
     /// Gets the number of needed files.
     /// </summary>

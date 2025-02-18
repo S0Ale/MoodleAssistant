@@ -2,7 +2,7 @@
 using MoodleAssistant.Logic.Parse;
 using MoodleAssistant.Services;
 
-namespace MoodleAssistant.Logic;
+namespace MoodleAssistant.Logic.Processing.XML;
 
 /// <summary>
 /// Represents a class that merges the template XML file with the CSV file to create a new XML file.
