@@ -13,10 +13,6 @@ namespace MoodleAssistant.Logic.Models;
 /// <param name="file">The instance of <see cref="IBrowserFile"/> representing the file to validate.</param>
 /// <param name="fileService">An instance of <see cref="IBrowserFileService"/> to manage saved files.</param>
 public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : ITemplateModel, IValidationModel{
-    /// <summary>
-    /// The standard name of the XML file managed by the <see cref="XmlModel"/>.
-    /// </summary>
-    public static string FileName => "XML";
     
     /// <summary>
     /// The pattern to match the parameters in the XML file.
@@ -57,7 +53,7 @@ public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : ITem
     /// </summary>
     /// <returns><c>true</c> if the file is well formatted; otherwise <c>false</c>.</returns>
     private bool IsWellFormattedXml(){
-        var stream = fileService.GetFile(FileName);
+        var stream = fileService.GetFile("TEMPLATE");
         using var reader = new StreamReader(stream, Encoding.UTF8);
                                                                                                
         try{                                                                                       

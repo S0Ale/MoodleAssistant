@@ -27,7 +27,7 @@ public class Loader(IBrowserFileService fileService, IReplicatorFactory factory)
         // change model according to the question type
         //var model = new XmlModel(file, fileService);
         var model = factory.CreateTemplateModel(file);
-        await fileService.SaveFile(file, XmlModel.FileName);
+        await fileService.SaveFile(file, "TEMPLATE");
         model.Validate();
 
         model.TakeParameters();
