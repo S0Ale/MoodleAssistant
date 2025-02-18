@@ -1,4 +1,5 @@
-﻿- Change loader behaviour according to template question file type
+﻿TODO:
+- Change loader behaviour according to template question file type
 - Make Analysis more generic
 - Make Merge more generic
 - Make merged questions more generic
