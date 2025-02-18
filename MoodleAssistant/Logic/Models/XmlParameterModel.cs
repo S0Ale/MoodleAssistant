@@ -8,20 +8,16 @@ namespace MoodleAssistant.Logic.Models;
 /// </summary>
 /// <param name="doc">A <see cref="XmlDocument"/> instance.</param>
 /// <param name="csvRows">The number of csv rows in the CSV file.</param>
-public class ParameterModel(XmlDocument doc, int csvRows){
+public class XmlParameterModel(XmlDocument doc, int csvRows) : IParameterModel{
     /// <summary>
     /// The parameters of the XML document.
     /// </summary>
     private readonly List<Parameter>? _param = new ParameterParser(doc.OuterXml).Match() as List<Parameter>;
-    /// <summary>
-    /// Gets the number of needed files.
-    /// </summary>
+
+    /// <inheritdoc/>
     public int NeededFiles{ get; } = csvRows;
 
-    /// <summary>
-    /// Gets the file-type parameters in the XML document.
-    /// </summary>
-    /// <returns>A list of the file-type parameters.</returns>
+    /// <inheritdoc/>
     public List<Parameter> GetFileParameters(){
         var fileParams = (_param ?? []).Where(p => p is FileParameter or ImageParameter).ToList();
         return fileParams;

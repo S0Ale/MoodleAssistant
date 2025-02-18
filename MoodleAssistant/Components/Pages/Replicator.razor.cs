@@ -83,9 +83,9 @@ public partial class Replicator{
         }
         state.CsvAsList = csvList;
         FileService.DeleteAllFiles();
-
+        
         // Load parameters
-        state.Parameters = new ParameterModel(state.Template, csvList.Count() - 1); // need to change
+        state.Parameters = state.Factory.CreateParameterModel(state.Template, csvList.Count - 1);
         if (state.Parameters.GetFileParameters().Count > 0){
             _showFileParams = true;
         }else{

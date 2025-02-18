@@ -21,7 +21,7 @@ public class ReplicatorState : IDisposable{
     /// <summary>
     /// Gets or sets the parameters model of the current merged question (if any).
     /// </summary>
-    public ParameterModel? Parameters{ get; set; }
+    public IParameterModel? Parameters{ get; set; }
     
     /// <summary>
     /// Gets or sets the CSV file as a list of string arrays.

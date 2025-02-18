@@ -28,4 +28,12 @@ public interface IReplicatorFactory{
     /// <param name="csvAsList">The csv file contained in a <see cref="IEnumerable{T}"/></param>
     /// <returns>An instance of <see cref="IMerger"/>.</returns>
     public IMerger CreateMerger(object template, IEnumerable<string[]> csvAsList);
+    
+    /// <summary>
+    /// Creates a new instance of <see cref="IParameterModel"/>.
+    /// </summary>
+    /// <param name="doc">The template document.</param>
+    /// <param name="csvRows">The number of csv rows in the CSV file.</param>
+    /// <returns>An instance of <see cref="IParameterModel"/>.</returns>
+    public IParameterModel CreateParameterModel(object doc, int csvRows);
 }

@@ -25,4 +25,9 @@ public class XmlFactory(IBrowserFileService fileService) : IReplicatorFactory{
     public IMerger CreateMerger(object template, IEnumerable<string[]> csvAsList){
         return new XmlMerger(fileService, (XmlDocument)template, csvAsList);
     }
+
+    /// <inheritdoc/>
+    public IParameterModel CreateParameterModel(object doc, int csvRows){
+        return new XmlParameterModel((XmlDocument)doc, csvRows);
+    }
 }
