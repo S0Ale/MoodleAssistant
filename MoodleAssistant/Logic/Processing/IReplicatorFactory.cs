@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
 using MoodleAssistant.Logic.Models;
-using MoodleAssistant.Logic.Processing;
 
-namespace MoodleAssistant.Logic;
+namespace MoodleAssistant.Logic.Processing;
 
 /// <summary>
 /// Defines the factory for the logic components.

@@ -4,6 +4,7 @@ using MoodleAssistant.Components.Upload;
 using MoodleAssistant.Logic;
 using MoodleAssistant.Logic.Models;
 using MoodleAssistant.Logic.Processing;
+using MoodleAssistant.Logic.Processing.XML;
 using MoodleAssistant.Logic.Utils;
 
 namespace MoodleAssistant.Components.Sections;

@@ -1,11 +1,9 @@
 ﻿using System.Xml;
 using Microsoft.AspNetCore.Components.Forms;
 using MoodleAssistant.Logic.Models;
-using MoodleAssistant.Logic.Processing;
-using MoodleAssistant.Logic.Processing.XML;
 using MoodleAssistant.Services;
 
-namespace MoodleAssistant.Logic;
+namespace MoodleAssistant.Logic.Processing.XML;
 
 /// <summary>
 /// Factory implementation for XML template types.
