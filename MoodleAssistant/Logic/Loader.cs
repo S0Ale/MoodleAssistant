@@ -17,7 +17,11 @@ public class Loader(IBrowserFileService fileService){
     /// <returns>An instance of <see cref="ITemplateModel"/> to manage the file.</returns>
     /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
     public async Task<ITemplateModel> LoadTemplate(IBrowserFile file){
-        if(file.Size > 10000000)
+        if (null == file)
+            throw new ReplicatorException(Error.NullFile);
+        if (IsEmpty(file))
+            throw new ReplicatorException(Error.EmptyFile);
+        if (file.Size > 10000000)
             throw new ReplicatorException(Error.FileTooBig);
         
         // change model according to the question type
@@ -37,7 +41,11 @@ public class Loader(IBrowserFileService fileService){
     /// <returns>A list of string arrays representing the CSV file.</returns>
     /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
     public async Task<IEnumerable<string[]>> LoadCsv(IBrowserFile file, ITemplateModel templateModel){
-        if(file.Size > 10000000)
+        if (null == file)
+            throw new ReplicatorException(Error.NullFile);
+        if (IsEmpty(file))
+            throw new ReplicatorException(Error.EmptyFile);
+        if (file.Size > 10000000)
             throw new ReplicatorException(Error.FileTooBig);
         
         var model = new CsvModel(file, fileService){
@@ -57,9 +65,33 @@ public class Loader(IBrowserFileService fileService){
     /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
     public async Task LoadFiles(IBrowserFile[] files){
         foreach (var file in files){
+            if (null == file)
+                throw new ReplicatorException(Error.NullFile);
+            if (IsEmpty(file))
+                throw new ReplicatorException(Error.EmptyFile);
+            
             var model = new FileModel(file);
             _ = await fileService.SaveFile(file, file.Name); 
             model.Validate();
         }
+    }
+    
+    /// <summary>
+    /// Checks if the file is empty.
+    /// </summary>
+    /// <param name="file">The instance of <see cref="IBrowserFile"/></param>
+    /// <returns><c>true</c> if the file is empty; otherwise <c>false</c></returns>
+    private static bool IsEmpty(IBrowserFile file){
+        switch (file.Size){
+            case 0:
+                return true;
+            case >= 6:
+                return false;
+        }
+
+        var stream = file.OpenReadStream();
+        using var reader = new StreamReader(stream);
+        stream.Position = 0;
+        return reader.ReadToEnd().Length == 0;
     }
 }

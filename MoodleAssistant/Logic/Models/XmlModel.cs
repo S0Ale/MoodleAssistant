@@ -123,14 +123,10 @@ public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : ITem
         AnswerParametersList = answerParametersList.Distinct();                                                                                              
     }
 
-    /// <inheritdoc/>
+    /// <inheritdoc cref="ITemplateModel.Validate" />
     public void Validate(){
-        if (null == file)
-            throw new ReplicatorException(Error.NullFile);
         if (!IsXml(file))
             throw new ReplicatorException(Error.NonXmlFile);
-        if (((IValidationModel)this).IsEmpty(file))
-            throw new ReplicatorException(Error.EmptyFile);
         if (!IsWellFormattedXml())
             throw new ReplicatorException(Error.XmlBadFormed);
         if (!HasOnlyOneQuestion())

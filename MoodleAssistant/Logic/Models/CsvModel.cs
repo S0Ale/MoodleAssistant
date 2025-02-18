@@ -110,12 +110,8 @@ public class CsvModel(IBrowserFile file, IBrowserFileService fileService) : IVal
 
     /// <inheritdoc/>
     public void Validate(){
-        if (null == file)
-            throw new ReplicatorException(Error.NullFile);
         if (!IsCsv(file))
             throw new ReplicatorException(Error.NonCsvFile);
-        if (((IValidationModel)this).IsEmpty(file))
-            throw new ReplicatorException(Error.EmptyFile);
         if (!HasValidHeader())
             throw new ReplicatorException(Error.CsvInvalidHeader);
         if (!IsWellFormed())

@@ -68,10 +68,6 @@ public class FileModel(IBrowserFile file) : IValidationModel{
 
     /// <inheritdoc/>
     public void Validate(){
-        if (null == file)
-            throw new ReplicatorException(Error.NullFile);
-        if (((IValidationModel)this).IsEmpty(file))  
-            throw new ReplicatorException(Error.EmptyFile);
         if (!IsImage() && !IsOfficeFile())
             throw new ReplicatorException(Error.NoValidFile);
     }
