@@ -1,6 +1,4 @@
 ﻿using System.Xml;
-using MoodleAssistant.Logic;
-using MoodleAssistant.Logic.Models;
 using MoodleAssistant.Logic.Processing;
 
 namespace MoodleAssistant.Services;
@@ -17,7 +15,7 @@ public class ReplicatorState : IDisposable{
     /// <summary>
     /// Gets or sets the preview model of the current merged question (if any).
     /// </summary>
-    public PreviewHandler? Preview{ get; set; }
+    public IPreviewHandler? Preview{ get; set; }
     
     /// <summary>
     /// Gets or sets the parameters model of the current merged question (if any).
@@ -38,11 +36,6 @@ public class ReplicatorState : IDisposable{
     /// Gets or sets the merged XML document.
     /// </summary>
     public XmlDocument? Merged{ get; set; }
-    
-    /// <summary>
-    /// Gets or sets the number of answers in the template question.
-    /// </summary>
-    public int AnswerCount { get; set; }
 
     /// <summary>
     /// Resets the state of the program.

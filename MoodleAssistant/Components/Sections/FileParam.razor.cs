@@ -77,12 +77,13 @@ public partial class FileParam{
             SetError(Error.Unexpected);
             return;
         }
-        //var merger = new XmlMerger(FileService, state.Template, state.CsvAsList);
         var merger = state.Factory.CreateMerger(state.Template, state.CsvAsList);
 
         // Merge question
         try{
-            state.Preview = new PreviewHandler((XmlDocument)merger.MergeQuestion(true));
+            state.Preview = state.Factory.CreatePreviewHandler();
+            state.Preview.GenerateItems(merger.MergeQuestion(true));
+            
             state.Merged = (XmlDocument)merger.MergeQuestion();
         }
         catch (ReplicatorException e){

@@ -1,7 +1,6 @@
 ﻿using System.Xml;
 using Microsoft.JSInterop;
 using MoodleAssistant.Components.Upload;
-using MoodleAssistant.Logic;
 using MoodleAssistant.Logic.Models;
 using MoodleAssistant.Logic.Processing;
 using MoodleAssistant.Logic.Processing.XML;
@@ -87,15 +86,16 @@ public partial class Replicator{
         FileService.DeleteAllFiles();
         
         // Load parameters
-        state.Parameters = state.Factory.CreateParameterModel(state.Template, csvList.Count - 1);
+        state.Parameters = state.Factory.CreateParameterHandler(state.Template, csvList.Count - 1);
         if (state.Parameters.GetFileParameters().Count > 0){
             _showFileParams = true;
         }else{
-            //var merger = new XmlMerger(FileService, state.Template, state.CsvAsList);
             var merger = state.Factory.CreateMerger(state.Template, state.CsvAsList);
 
             try{
-                state.Preview = new PreviewHandler((XmlDocument)merger.MergeQuestion(true));
+                state.Preview = state.Factory.CreatePreviewHandler();
+                state.Preview.GenerateItems(merger.MergeQuestion(true));
+                
                 state.Merged = (XmlDocument)merger.MergeQuestion();
             }
             catch (ReplicatorException e){

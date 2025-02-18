@@ -1,30 +1,18 @@
 ﻿using System.Xml;
 
-namespace MoodleAssistant.Logic.Processing;
+namespace MoodleAssistant.Logic.Processing.XML;
 
 /// <summary>
-/// Creates all the preview data for the current merged XML file.
+/// Creates all the preview data for the current XML file.
 /// </summary>
-public class PreviewHandler{
-    /// <summary>
-    /// Gets the list of preview items.
-    /// </summary>
+public class XmlPreviewHandler : IPreviewHandler{
+    /// <inheritdoc/>
     public List<PreviewItem> Items{ get; } = [];
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="PreviewHandler"/> class.
-    /// </summary>
-    /// <param name="question">The current <see cref="XmlDocument"/>.</param>
-    public PreviewHandler(XmlDocument question){
-        GenerateItems(question);
-    }
-
-    /// <summary>
-    /// Generates all the preview items of a question.
-    /// </summary>
-    /// <param name="doc">The current <see cref="XmlDocument"/>.</param>
-    private void GenerateItems(XmlDocument doc) {
-        var questions = doc.GetElementsByTagName("question");
+    /// <inheritdoc/>
+    public void GenerateItems(object doc){
+        if(doc is not XmlDocument xmlDocument) return;
+        var questions = xmlDocument.GetElementsByTagName("question");
 
         for (var i = 0; i < questions.Count; i++){
             var question = questions[i];
@@ -43,8 +31,7 @@ public class PreviewHandler{
                 }
                 item.Answers = answerStrings;
             }
-
-
+            
             Items.Add(item);
         }
     }

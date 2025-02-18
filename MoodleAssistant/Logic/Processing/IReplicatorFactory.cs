@@ -35,5 +35,11 @@ public interface IReplicatorFactory{
     /// <param name="doc">The template document.</param>
     /// <param name="csvRows">The number of csv rows in the CSV file.</param>
     /// <returns>An instance of <see cref="IParameterHandler"/>.</returns>
-    public IParameterHandler CreateParameterModel(object doc, int csvRows);
+    public IParameterHandler CreateParameterHandler(object doc, int csvRows);
+    
+    /// <summary>
+    /// Creates a new instance of <see cref="IPreviewHandler"/>.
+    /// </summary>
+    /// <returns>An instance of <see cref="IPreviewHandler"/>.</returns>
+    public IPreviewHandler CreatePreviewHandler();
 }
