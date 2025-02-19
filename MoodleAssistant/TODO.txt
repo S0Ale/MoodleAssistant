@@ -1,6 +1,3 @@
 ﻿TODO:
-- Change loader behaviour according to template question file type
-- Make Analysis more generic
-- Make Merge more generic
-- Make merged questions more generic
-- Make preview more generic
+- make download mor generic
+- ui component to change type
