@@ -32,6 +32,8 @@ public partial class Replicator{
     /// </summary>
     private DropInput _csvInput = null!;
     
+    private FormatSelect _formatSelect = null!;
+    
     private bool _isUploading;
     private bool _successfulUpload;
     private bool _showFileParams;
@@ -162,7 +164,8 @@ public partial class Replicator{
     /// Downloads the merged file.
     /// </summary>
     private async Task Download(){
-        await FileService.SaveFile(ReplicatorState.Merged!);
-        await Js.InvokeVoidAsync("triggerFileDownload", "MERGED.xml", "/Uploads/MERGED.xml");
+        var file = await FileService.StoreDownloadFile(ReplicatorState.Merged!); // need to change this
+        if (file != null)
+            await Js.InvokeVoidAsync("triggerFileDownload", file, "/Uploads/MERGED.xml");
     }
 }

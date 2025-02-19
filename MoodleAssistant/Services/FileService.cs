@@ -45,7 +45,7 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
     }
 
     /// <inheritdoc/>
-    public Task<bool> SaveFile(XmlDocument doc){
+    public Task<string?> StoreDownloadFile(XmlDocument doc){
         Debug.Assert(doc != null);
         var trustedFileName = Path.ChangeExtension("MERGED", ".xml");
         _trustedFiles.Add("MERGED", trustedFileName);
@@ -56,7 +56,7 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
         
         var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
         doc.Save(trustedFilePath);
-        return Task.FromResult(true);
+        return Task.FromResult(trustedFileName)!;
     }
 
     /// <inheritdoc/>

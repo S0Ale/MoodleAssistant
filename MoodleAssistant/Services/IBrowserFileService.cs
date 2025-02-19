@@ -20,7 +20,7 @@ public interface IBrowserFileService{
     /// </summary>
     /// <param name="doc">The <see cref="XmlDocument"/> to save.</param>
     /// <returns><c>true</c> if the operation is successful; otherwise <c>false</c>.</returns>
-    public Task<bool> SaveFile(XmlDocument doc);
+    public Task<string?> StoreDownloadFile(XmlDocument doc);
 
     /// <summary>
     /// Gets the <see cref="FileStream"/> of the specified file.
