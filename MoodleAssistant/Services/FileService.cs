@@ -2,6 +2,8 @@
 using System.Security.Cryptography;
 using System.Xml;
 using Microsoft.AspNetCore.Components.Forms;
+using MoodleAssistant.Logic;
+using MoodleAssistant.Logic.Utils;
 
 namespace MoodleAssistant.Services;
 
@@ -45,9 +47,10 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
     }
 
     /// <inheritdoc/>
-    public Task<string?> StoreDownloadFile(XmlDocument doc){
+    public Task<string> StoreDownloadFile(object doc, Format format){
         Debug.Assert(doc != null);
-        var trustedFileName = Path.ChangeExtension("MERGED", ".xml");
+        var merged = new MergedDocument(doc, format);
+        var trustedFileName = Path.ChangeExtension("MERGED", FormatExtension.GetExtension(format));
         _trustedFiles.Add("MERGED", trustedFileName);
 
         if(!Directory.Exists(_rootFolder)){
@@ -55,7 +58,7 @@ public class FileService(IWebHostEnvironment env) : IBrowserFileService, IDispos
         }
         
         var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
-        doc.Save(trustedFilePath);
+        merged.Save(trustedFilePath);
         return Task.FromResult(trustedFileName)!;
     }
 

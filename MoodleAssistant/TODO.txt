@@ -1,3 +1,0 @@
-﻿TODO:
-- make download mor generic
-- ui component to change type

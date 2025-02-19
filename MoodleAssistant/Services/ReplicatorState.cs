@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using MoodleAssistant.Logic.Processing;
+using MoodleAssistant.Logic.Utils;
 
 namespace MoodleAssistant.Services;
 
@@ -11,6 +12,11 @@ public class ReplicatorState : IDisposable{
     /// Gets or sets the factory for the replicator components.
     /// </summary>
     public IReplicatorFactory? Factory;
+    
+    /// <summary>
+    /// Gets or sets the format of the current template question.
+    /// </summary>
+    public Format Format{ get; set; } = Format.Xml;
 
     /// <summary>
     /// Gets or sets the preview model of the current merged question (if any).
@@ -28,14 +34,14 @@ public class ReplicatorState : IDisposable{
     public IEnumerable<string[]> CsvAsList{ get; set; } = [];
     
     /// <summary>
-    /// Gets or sets the template XML document.
+    /// Gets or sets the template document.
     /// </summary>
-    public XmlDocument Template{ get; set; } = new XmlDocument();
-    
+    public object Template{ get; set; } = null!;
+
     /// <summary>
-    /// Gets or sets the merged XML document.
+    /// Gets or sets the merged document.
     /// </summary>
-    public XmlDocument? Merged{ get; set; }
+    public object? Merged{ get; set; }
 
     /// <summary>
     /// Resets the state of the program.

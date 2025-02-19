@@ -1,4 +1,5 @@
-﻿using AngleSharp.Dom;
+﻿using System.Xml;
+using AngleSharp.Dom;
 using Bunit;
 using Microsoft.AspNetCore.Components.Forms;
 using MoodleAssistant.Components.Pages;
@@ -164,7 +165,7 @@ internal class UploadFileShould : FileUploadTest{
             Assert.That(_fileSection.Instance.ErrorMsg, Is.EqualTo(Error.NoErrors));
             Assert.That(_fileSection.Instance.SuccessUpload, Is.True);
             Assert.That(state?.Merged, Is.Not.Null);
-            Assert.That(state?.Merged?.InnerXml, Does.Contain("<![CDATA["));
+            Assert.That(((XmlDocument)state?.Merged!).InnerXml, Does.Contain("<![CDATA["));
         });
     }
 

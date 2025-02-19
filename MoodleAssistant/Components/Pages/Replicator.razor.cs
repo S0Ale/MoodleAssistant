@@ -32,6 +32,9 @@ public partial class Replicator{
     /// </summary>
     private DropInput _csvInput = null!;
     
+    /// <summary>
+    /// The <see cref="FormatSelect"/> component for selecting the format of the uploaded files.
+    /// </summary>
     private FormatSelect _formatSelect = null!;
     
     private bool _isUploading;
@@ -58,9 +61,12 @@ public partial class Replicator{
             return;
         }
         
-        // Change factory type according to the question type
-        state.Factory = new XmlFactory(FileService);
-        
+        state.Format = _formatSelect.Format;
+        state.Factory = state.Format switch{
+            Format.Xml => new XmlFactory(FileService),
+            _ => throw new NotImplementedException()
+        };
+
         var loader = new Loader(FileService, state.Factory);
         
         // Load XML file
@@ -70,7 +76,7 @@ public partial class Replicator{
             SetError(e.Error);
             return;
         }
-        state.Template = (XmlDocument)templateModel.TemplateDocument;
+        state.Template = templateModel.TemplateDocument;
         
         // Load CSV file
         List<string[]> csvList;
@@ -164,8 +170,7 @@ public partial class Replicator{
     /// Downloads the merged file.
     /// </summary>
     private async Task Download(){
-        var file = await FileService.StoreDownloadFile(ReplicatorState.Merged!); // need to change this
-        if (file != null)
-            await Js.InvokeVoidAsync("triggerFileDownload", file, "/Uploads/MERGED.xml");
+        var file = await FileService.StoreDownloadFile(ReplicatorState.Merged!, _formatSelect.Format); // need to change this
+        await Js.InvokeVoidAsync("triggerFileDownload", file, "/Uploads/MERGED.xml");
     }
 }
