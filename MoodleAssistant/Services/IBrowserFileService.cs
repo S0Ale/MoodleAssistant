@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components.Forms;
+﻿using System.Xml;
+using Microsoft.AspNetCore.Components.Forms;
+using MoodleAssistant.Logic.Utils;
 
 namespace MoodleAssistant.Services;
 
@@ -13,6 +15,14 @@ public interface IBrowserFileService{
     /// <param name="fileName">The file's name.</param>
     /// <returns><c>true</c> if the operation is successful; otherwise <c>false</c>.</returns>
     public Task<bool> SaveFile(IBrowserFile file, string fileName);
+
+    /// <summary>
+    /// Saves the specified document to file.
+    /// </summary>
+    /// <param name="doc">The document to save.</param>
+    /// <param name="format">The document's format.</param>
+    /// <returns>The file's name if the operation is successful; otherwise <c>null</c>.</returns>
+    public Task<string> StoreDownloadFile(object doc, Format format);
 
     /// <summary>
     /// Gets the <see cref="FileStream"/> of the specified file.

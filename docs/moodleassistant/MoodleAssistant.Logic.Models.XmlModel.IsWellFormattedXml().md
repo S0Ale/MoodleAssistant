@@ -6,7 +6,7 @@
 Checks if the file with the [XmlModel](MoodleAssistant.Logic.Models.XmlModel.md 'MoodleAssistant.Logic.Models.XmlModel')'s file name is well formatted XML.
 
 ```csharp
-public bool IsWellFormattedXml();
+private bool IsWellFormattedXml();
 ```
 
 #### Returns

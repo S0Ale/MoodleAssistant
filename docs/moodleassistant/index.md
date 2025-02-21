@@ -13,5 +13,7 @@ MoodleAssistant documentation.
 | [MoodleAssistant.Logic](MoodleAssistant.Logic.md 'MoodleAssistant.Logic') | Handles the application's behavior: parse, merge and validation. |
 | [MoodleAssistant.Logic.Models](MoodleAssistant.Logic.Models.md 'MoodleAssistant.Logic.Models') | |
 | [MoodleAssistant.Logic.Parse](MoodleAssistant.Logic.Parse.md 'MoodleAssistant.Logic.Parse') | Manages parameter parsing. |
+| [MoodleAssistant.Logic.Processing](MoodleAssistant.Logic.Processing.md 'MoodleAssistant.Logic.Processing') | Contains all the classes and interfaces responsible for the processing of the template question. |
+| [MoodleAssistant.Logic.Processing.XML](MoodleAssistant.Logic.Processing.XML.md 'MoodleAssistant.Logic.Processing.XML') | Contains all the classes to handle XML template questions. |
 | [MoodleAssistant.Logic.Utils](MoodleAssistant.Logic.Utils.md 'MoodleAssistant.Logic.Utils') | Common errors and exceptions. |
 | [MoodleAssistant.Services](MoodleAssistant.Services.md 'MoodleAssistant.Services') | Provides the services used by both the Presentation and Logic groups. |

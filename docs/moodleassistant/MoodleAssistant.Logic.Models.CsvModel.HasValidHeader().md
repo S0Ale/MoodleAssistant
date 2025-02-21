@@ -6,7 +6,7 @@
 Checks if the file with the [CsvModel](MoodleAssistant.Logic.Models.CsvModel.md 'MoodleAssistant.Logic.Models.CsvModel')'s file name has a valid header.
 
 ```csharp
-public bool HasValidHeader();
+private bool HasValidHeader();
 ```
 
 #### Returns

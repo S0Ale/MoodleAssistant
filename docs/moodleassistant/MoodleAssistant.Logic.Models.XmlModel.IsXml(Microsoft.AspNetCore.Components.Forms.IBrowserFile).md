@@ -6,7 +6,7 @@
 Checks if the [Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType 'Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType') of a file is XML.
 
 ```csharp
-public static bool IsXml(Microsoft.AspNetCore.Components.Forms.IBrowserFile file);
+private static bool IsXml(Microsoft.AspNetCore.Components.Forms.IBrowserFile file);
 ```
 #### Parameters
 

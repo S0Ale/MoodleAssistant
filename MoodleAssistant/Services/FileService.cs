@@ -1,5 +1,9 @@
-﻿using System.Security.Cryptography;
+﻿using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Xml;
 using Microsoft.AspNetCore.Components.Forms;
+using MoodleAssistant.Logic;
+using MoodleAssistant.Logic.Utils;
 
 namespace MoodleAssistant.Services;
 
@@ -27,6 +31,22 @@ public class FileService : IBrowserFileService, IDisposable{
         
         _trustedFiles.Add(fileName, file);
         return Task.FromResult(true);
+    }
+
+    /// <inheritdoc/>
+    public Task<string> StoreDownloadFile(object doc, Format format){
+        Debug.Assert(doc != null);
+        var merged = new MergedDocument(doc, format);
+        var trustedFileName = Path.ChangeExtension("MERGED", FormatExtension.GetExtension(format));
+        _trustedFiles.Add("MERGED", trustedFileName);
+
+        if(!Directory.Exists(_rootFolder)){
+            Directory.CreateDirectory(_rootFolder);
+        }
+        
+        var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
+        merged.Save(trustedFilePath);
+        return Task.FromResult(trustedFileName)!;
     }
 
     /// <inheritdoc/>

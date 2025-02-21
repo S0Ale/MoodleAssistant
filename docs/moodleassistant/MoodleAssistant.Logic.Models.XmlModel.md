@@ -6,10 +6,14 @@
 Manages the validation of a XML template file and its parameters.
 
 ```csharp
-public class XmlModel : MoodleAssistant.Logic.Models.ValidationModel
+public class XmlModel :
+MoodleAssistant.Logic.Models.ITemplateModel,
+MoodleAssistant.Logic.Models.IValidationModel
 ```
 
-Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object') &#129106; [ValidationModel](MoodleAssistant.Logic.Models.ValidationModel.md 'MoodleAssistant.Logic.Models.ValidationModel') &#129106; XmlModel
+Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object') &#129106; XmlModel
+
+Implements [ITemplateModel](MoodleAssistant.Logic.Models.ITemplateModel.md 'MoodleAssistant.Logic.Models.ITemplateModel'), [IValidationModel](MoodleAssistant.Logic.Models.IValidationModel.md 'MoodleAssistant.Logic.Models.IValidationModel')
 
 | Constructors | |
 | :--- | :--- |
@@ -17,15 +21,14 @@ Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.O
 
 | Fields | |
 | :--- | :--- |
+| [_xmlFile](MoodleAssistant.Logic.Models.XmlModel._xmlFile.md 'MoodleAssistant.Logic.Models.XmlModel._xmlFile') | Gets the XML template document. |
 | [Pattern](MoodleAssistant.Logic.Models.XmlModel.Pattern.md 'MoodleAssistant.Logic.Models.XmlModel.Pattern') | The pattern to match the parameters in the XML file. |
 
 | Properties | |
 | :--- | :--- |
-| [AnswerCount](MoodleAssistant.Logic.Models.XmlModel.AnswerCount.md 'MoodleAssistant.Logic.Models.XmlModel.AnswerCount') | Gets the number of answers in the XML file. |
 | [AnswerParametersList](MoodleAssistant.Logic.Models.XmlModel.AnswerParametersList.md 'MoodleAssistant.Logic.Models.XmlModel.AnswerParametersList') | Gets the parameters found in the answers. |
-| [FileName](MoodleAssistant.Logic.Models.XmlModel.FileName.md 'MoodleAssistant.Logic.Models.XmlModel.FileName') | The standard name of the XML file managed by the [XmlModel](MoodleAssistant.Logic.Models.XmlModel.md 'MoodleAssistant.Logic.Models.XmlModel'). |
 | [QuestionParametersList](MoodleAssistant.Logic.Models.XmlModel.QuestionParametersList.md 'MoodleAssistant.Logic.Models.XmlModel.QuestionParametersList') | Gets the parameters found in the question text. |
-| [XmlFile](MoodleAssistant.Logic.Models.XmlModel.XmlFile.md 'MoodleAssistant.Logic.Models.XmlModel.XmlFile') | Gets the XML template document. |
+| [TemplateDocument](MoodleAssistant.Logic.Models.XmlModel.TemplateDocument.md 'MoodleAssistant.Logic.Models.XmlModel.TemplateDocument') | Gets the template document. |
 
 | Methods | |
 | :--- | :--- |
@@ -34,4 +37,5 @@ Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.O
 | [HasQuestionText()](MoodleAssistant.Logic.Models.XmlModel.HasQuestionText().md 'MoodleAssistant.Logic.Models.XmlModel.HasQuestionText()') | Checks if the file with the [XmlModel](MoodleAssistant.Logic.Models.XmlModel.md 'MoodleAssistant.Logic.Models.XmlModel')'s file name has a question text. |
 | [IsWellFormattedXml()](MoodleAssistant.Logic.Models.XmlModel.IsWellFormattedXml().md 'MoodleAssistant.Logic.Models.XmlModel.IsWellFormattedXml()') | Checks if the file with the [XmlModel](MoodleAssistant.Logic.Models.XmlModel.md 'MoodleAssistant.Logic.Models.XmlModel')'s file name is well formatted XML. |
 | [IsXml(IBrowserFile)](MoodleAssistant.Logic.Models.XmlModel.IsXml(Microsoft.AspNetCore.Components.Forms.IBrowserFile).md 'MoodleAssistant.Logic.Models.XmlModel.IsXml(Microsoft.AspNetCore.Components.Forms.IBrowserFile)') | Checks if the [Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType 'Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType') of a file is XML. |
-| [TakeParameters()](MoodleAssistant.Logic.Models.XmlModel.TakeParameters().md 'MoodleAssistant.Logic.Models.XmlModel.TakeParameters()') | Gets the parameters from the XML file and puts them in the [QuestionParametersList](MoodleAssistant.Logic.Models.XmlModel.QuestionParametersList.md 'MoodleAssistant.Logic.Models.XmlModel.QuestionParametersList') and [AnswerParametersList](MoodleAssistant.Logic.Models.XmlModel.AnswerParametersList.md 'MoodleAssistant.Logic.Models.XmlModel.AnswerParametersList'). |
+| [TakeParameters()](MoodleAssistant.Logic.Models.XmlModel.TakeParameters().md 'MoodleAssistant.Logic.Models.XmlModel.TakeParameters()') | Gets the parameters from the XML file and puts them in the [QuestionParametersList](MoodleAssistant.Logic.Models.ITemplateModel.QuestionParametersList.md 'MoodleAssistant.Logic.Models.ITemplateModel.QuestionParametersList') and [AnswerParametersList](MoodleAssistant.Logic.Models.ITemplateModel.AnswerParametersList.md 'MoodleAssistant.Logic.Models.ITemplateModel.AnswerParametersList'). |
+| [Validate()](MoodleAssistant.Logic.Models.XmlModel.Validate().md 'MoodleAssistant.Logic.Models.XmlModel.Validate()') | Validates the template file contained in the model. |
