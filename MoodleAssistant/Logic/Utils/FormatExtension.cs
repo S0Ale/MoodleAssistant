@@ -3,7 +3,7 @@
 /// <summary>
 /// Contains extension methods for file formats.
 /// </summary>
-public class FormatExtension{
+public abstract class FormatExtension{
     /// <summary>
     /// The extension for XML files.
     /// </summary>

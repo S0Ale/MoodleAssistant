@@ -1,7 +1,7 @@
 ﻿namespace MoodleAssistant.Logic.Processing;
 
 /// <summary>
-/// Manage the merge process of the questions.
+/// Manages the merge process of the questions.
 /// </summary>
 public interface IMerger{
     /// <summary>
