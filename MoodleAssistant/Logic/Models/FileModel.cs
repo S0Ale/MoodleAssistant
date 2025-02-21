@@ -1,7 +1,6 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Components.Forms;
 using MoodleAssistant.Logic.Utils;
-using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Logic.Models;
 
@@ -61,14 +60,16 @@ public class FileModel(IBrowserFile file) : IValidationModel{
     /// <summary>
     /// Checks if the <see cref="IBrowserFile.ContentType"/> of a file is a Microsoft Office file.
     /// </summary>
-    /// <returns><see langword="true"/> if the file is a MS Office file; otherwise <see langword="false"/>.</returns>
+    /// <returns><see langword="true"/> if the file is an MS Office file; otherwise <see langword="false"/>.</returns>
     private bool IsOfficeFile(){
         return MsMimeTypes.Contains(file.ContentType);
     }
 
     /// <inheritdoc/>
-    public void Validate(){
+    public Task Validate(){
         if (!IsImage() && !IsOfficeFile())
             throw new ReplicatorException(Error.NoValidFile);
+        
+        return Task.CompletedTask;
     }
 }

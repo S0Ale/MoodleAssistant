@@ -9,5 +9,5 @@ public interface IMerger{
     /// </summary>
     /// <param name="previewMode">Whether the merge process is executing in preview mode or not.</param>
     /// <returns>The merged document.</returns>
-    public object MergeQuestion(bool previewMode = false);
+    public Task<object> MergeQuestion(bool previewMode = false);
 }

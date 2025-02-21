@@ -35,18 +35,7 @@ public class FileService : IBrowserFileService, IDisposable{
 
     /// <inheritdoc/>
     public Task<string> StoreDownloadFile(object doc, Format format){
-        Debug.Assert(doc != null);
-        var merged = new MergedDocument(doc, format);
-        var trustedFileName = Path.ChangeExtension("MERGED", FormatExtension.GetExtension(format));
-        _trustedFiles.Add("MERGED", trustedFileName);
-
-        if(!Directory.Exists(_rootFolder)){
-            Directory.CreateDirectory(_rootFolder);
-        }
-        
-        var trustedFilePath = Path.Combine(_rootFolder, trustedFileName);
-        merged.Save(trustedFilePath);
-        return Task.FromResult(trustedFileName)!;
+        throw new NotImplementedException();
     }
 
     /// <inheritdoc/>

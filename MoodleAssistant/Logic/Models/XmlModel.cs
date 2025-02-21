@@ -120,10 +120,10 @@ public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : ITem
     }
 
     /// <inheritdoc cref="ITemplateModel.Validate" />
-    public void Validate(){
+    public async Task Validate(){
         if (!IsXml(file))
             throw new ReplicatorException(Error.NonXmlFile);
-        if (!IsWellFormattedXml())
+        if (!await IsWellFormattedXml())
             throw new ReplicatorException(Error.XmlBadFormed);
         if (!HasOnlyOneQuestion())
             throw new ReplicatorException(Error.ZeroOrMoreQuestions);

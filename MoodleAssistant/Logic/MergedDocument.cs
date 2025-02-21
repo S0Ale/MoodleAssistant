@@ -27,4 +27,22 @@ public class MergedDocument(object doc, Format format){
                 throw new ArgumentOutOfRangeException(nameof(format), format, null);
         }
     }
+
+    /// <summary>
+    /// Saves the document to the specified stream.
+    /// </summary>
+    /// <param name="str"></param>
+    public void Save(Stream str){
+        switch (format){
+            case Format.Xml:
+                ((XmlDocument)doc).Save(str);
+                break;
+            //case Format.Aiken:
+                //break;
+            //case Format.Gift:
+                //break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(format), format, null);
+        }
+    }
 }

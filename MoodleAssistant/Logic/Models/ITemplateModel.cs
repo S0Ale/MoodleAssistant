@@ -25,7 +25,7 @@ public interface ITemplateModel{
     /// Validates the template file contained in the model.
     /// </summary>
     /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
-    public void Validate();
+    public Task Validate();
     
     /// <summary>
     /// Gets the parameters from the XML file and puts them in the <see cref="QuestionParametersList"/> and <see cref="AnswerParametersList"/>.

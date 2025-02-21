@@ -1,6 +1,7 @@
 ﻿using System.Xml;
 using Microsoft.JSInterop;
 using MoodleAssistant.Components.Upload;
+using MoodleAssistant.Logic;
 using MoodleAssistant.Logic.Models;
 using MoodleAssistant.Logic.Processing;
 using MoodleAssistant.Logic.Processing.XML;
@@ -172,11 +173,13 @@ public partial class Replicator{
     /// </summary>
     private async Task Download(){
         var stream = new MemoryStream();
-        ReplicatorState.Merged?.Save(stream);
+        var doc = new MergedDocument(ReplicatorState.Merged!, ReplicatorState.Format);
+        
+        doc.Save(stream);
         stream.Flush();
         stream.Position = 0;
         using var streamRef = new DotNetStreamReference(stream);
-        await Js.InvokeVoidAsync("downloadFileFromStream", "Question.xml", streamRef);
+        await Js.InvokeVoidAsync("downloadFileFromStream", "MERGED.xml", streamRef);
         
         FileService.DeleteAllFiles();
     }

@@ -12,5 +12,5 @@ public interface IValidationModel{
     /// Validates the file contained in the model.
     /// </summary>
     /// <exception cref="ReplicatorException">Thrown when a validation error occurs.</exception>
-    public void Validate();
+    public Task Validate();
 }
