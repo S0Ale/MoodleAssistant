@@ -6,10 +6,13 @@
 Manage the validation of a uploaded file.
 
 ```csharp
-public class FileModel : MoodleAssistant.Logic.Models.ValidationModel
+public class FileModel :
+MoodleAssistant.Logic.Models.IValidationModel
 ```
 
-Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object') &#129106; [ValidationModel](MoodleAssistant.Logic.Models.ValidationModel.md 'MoodleAssistant.Logic.Models.ValidationModel') &#129106; FileModel
+Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object') &#129106; FileModel
+
+Implements [IValidationModel](MoodleAssistant.Logic.Models.IValidationModel.md 'MoodleAssistant.Logic.Models.IValidationModel')
 
 | Constructors | |
 | :--- | :--- |
@@ -22,5 +25,6 @@ Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.O
 
 | Methods | |
 | :--- | :--- |
-| [IsImage(IBrowserFile)](MoodleAssistant.Logic.Models.FileModel.IsImage(Microsoft.AspNetCore.Components.Forms.IBrowserFile).md 'MoodleAssistant.Logic.Models.FileModel.IsImage(Microsoft.AspNetCore.Components.Forms.IBrowserFile)') | Checks if the [Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType 'Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType') of a file is an image. |
-| [IsOfficeFile(IBrowserFile)](MoodleAssistant.Logic.Models.FileModel.IsOfficeFile(Microsoft.AspNetCore.Components.Forms.IBrowserFile).md 'MoodleAssistant.Logic.Models.FileModel.IsOfficeFile(Microsoft.AspNetCore.Components.Forms.IBrowserFile)') | Checks if the [Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType 'Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType') of a file is a Microsoft Office file. |
+| [IsImage()](MoodleAssistant.Logic.Models.FileModel.IsImage().md 'MoodleAssistant.Logic.Models.FileModel.IsImage()') | Checks if the [Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType 'Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType') of a file is an image. |
+| [IsOfficeFile()](MoodleAssistant.Logic.Models.FileModel.IsOfficeFile().md 'MoodleAssistant.Logic.Models.FileModel.IsOfficeFile()') | Checks if the [Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType](https://docs.microsoft.com/en-us/dotnet/api/Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType 'Microsoft.AspNetCore.Components.Forms.IBrowserFile.ContentType') of a file is a Microsoft Office file. |
+| [Validate()](MoodleAssistant.Logic.Models.FileModel.Validate().md 'MoodleAssistant.Logic.Models.FileModel.Validate()') | Validates the file contained in the model. |

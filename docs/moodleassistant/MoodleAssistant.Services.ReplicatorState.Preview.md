@@ -6,8 +6,8 @@
 Gets or sets the preview model of the current merged question (if any).
 
 ```csharp
-public MoodleAssistant.Logic.Models.PreviewModel? Preview { get; set; }
+public MoodleAssistant.Logic.Processing.IPreviewHandler? Preview { get; set; }
 ```
 
 #### Property Value
-[PreviewModel](MoodleAssistant.Logic.Models.PreviewModel.md 'MoodleAssistant.Logic.Models.PreviewModel')
+[IPreviewHandler](MoodleAssistant.Logic.Processing.IPreviewHandler.md 'MoodleAssistant.Logic.Processing.IPreviewHandler')

@@ -18,10 +18,11 @@
     <div class="flex items-center justify-center mx-auto">
         <div>
             <p class="mb-6 text-center">Here you can upload your XML and CSV files (max file size: 10MB):</p>
+            <FormatSelect @ref="_formatSelect"/>
             <form method="post" id="@(mainForm)" @formname="main-upload" @onsubmit="Submit">
                 <AntiforgeryToken />
                 <div class="flex flex-col space-y-3 md:space-y-0 md:space-x-3 md:flex-row">
-                    <DropInput @ref="_xmlInput" InputName="xml-input">
+                    <DropInput @ref="_templateInput" InputName="template-input">
                         <p class="text-inherit">Drop XML here, or <span class="text-blue-500 underline ml-[4px]">browse</span>.</p>
                     </DropInput>
                     <DropInput @ref="_csvInput" InputName="csv-input">

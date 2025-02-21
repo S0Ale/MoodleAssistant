@@ -1,71 +1,21 @@
-﻿@using System.Text.RegularExpressions
-@using System.Xml
-@using MoodleAssistant.Services
+﻿@using MoodleAssistant.Services
 @inject ReplicatorState ReplicatorState;
 
-<div class="flex justify-center pt-6 pb-6 border-t border-zinc-200">
-    <div id="answer-section" class="border rounded border-zinc-300 overflow-hidden">
-        <h3 class="py-2 bg-gray-100 border-b border-zinc-300 text-lg font-semibold text-gray-700 text-center">Questions</h3>
-        <div class="py-3 px-6 text-center">
-            @((MarkupString) GetFormattedQuestionText(ReplicatorState.Template))
-        </div>
-        <h3 class="py-2 bg-gray-100 border-b border-t border-zinc-300 text-lg font-semibold text-gray-700 text-center">Answers</h3>
-        <div class="py-3 px-6 text-center">
-            @((MarkupString) GetFormattedAnswers(ReplicatorState.Template))
+@{
+    var analyzer = ReplicatorState.Factory?.CreateAnalyzer();
+}
+
+@if (analyzer != null){
+    <div class="flex justify-center pt-6 pb-6 border-t border-zinc-200">
+        <div id="answer-section" class="border rounded border-zinc-300 overflow-hidden">
+            <h3 class="py-2 bg-gray-100 border-b border-zinc-300 text-lg font-semibold text-gray-700 text-center">Questions</h3>
+            <div class="py-3 px-6 text-center">
+                @((MarkupString) analyzer.GetFormattedQuestionText(ReplicatorState.Template))
+            </div>
+            <h3 class="py-2 bg-gray-100 border-b border-t border-zinc-300 text-lg font-semibold text-gray-700 text-center">Answers</h3>
+            <div class="py-3 px-6 text-center">
+                @((MarkupString) analyzer.GetFormattedAnswers(ReplicatorState.Template))
+            </div>
         </div>
     </div>
-</div>
-
-@code {
-    
-    private const string Pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
-
-    private bool HasQuestionText(XmlDocument file){                                                                                                                                                        
-        var questionTextNodeList = file.GetElementsByTagName("questiontext");                                                                             
-        return questionTextNodeList is {Count: 1};                                                                                                              
-    }
-    
-    private bool HasAnswer(XmlDocument file){                                                                                                                                                        
-        var answerList = file.GetElementsByTagName("answer");                                                                                             
-        return answerList is {Count: > 0};                                                                                                                         
-    }
-
-    private string GetFormattedQuestionText(XmlDocument file){                                                                                                                                                        
-        if(!HasQuestionText(file))                                                                                                                               
-            return string.Empty;                                                                                                                             
-        var questionTextNode = file.GetElementsByTagName("questiontext").Item(0);                                                                         
-        if (questionTextNode == null)                                                                                                                        
-            return string.Empty;                                                                                                                             
-                                                                                                                                                             
-        var htmlFormatted = "";
-        var questionText = questionTextNode.SelectSingleNode("text")?.InnerText ?? "";
-        foreach (Match match in Regex.Matches(questionText, Pattern))                                                                                                   
-            questionText = questionText.Replace(match.Value, "<span class=\"code\">" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</span>");          
-        htmlFormatted += questionText;                                                                                                                       
-        return htmlFormatted;                                                                                                                       
-                                                                                                                                                             
-    }
-
-    private string GetFormattedAnswers(XmlDocument file){                                                                                                                                                        
-        if (!HasAnswer(file))                                                                                                                                    
-            return string.Empty;                                                                                                                             
-        var htmlFormatted = "";                                                                                                                              
-        var answerTextNodeList = file.GetElementsByTagName("answer");
-        foreach (XmlNode answerTextNode in answerTextNodeList){
-            if (answerTextNode == null)
-                continue;
-            htmlFormatted += "<p>";
-            foreach (XmlNode node in answerTextNode.SelectNodes("text")!){
-                var answerText = node.InnerText;
-                foreach (Match match in Regex.Matches(answerText, Pattern))
-                    answerText = answerText.Replace(match.Value,
-                        "<span class=\"code\">" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</span>");
-                htmlFormatted += answerText;
-            }
-
-            htmlFormatted += "</p>";
-        }
-
-        return htmlFormatted;                                                                                                                                
-    }
 }

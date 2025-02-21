@@ -1,5 +1,6 @@
 ﻿using System.Xml;
-using MoodleAssistant.Logic.Models;
+using MoodleAssistant.Logic.Processing;
+using MoodleAssistant.Logic.Utils;
 
 namespace MoodleAssistant.Services;
 
@@ -8,14 +9,24 @@ namespace MoodleAssistant.Services;
 /// </summary>
 public class ReplicatorState : IDisposable{
     /// <summary>
+    /// Gets or sets the factory for the replicator components.
+    /// </summary>
+    public IReplicatorFactory? Factory;
+    
+    /// <summary>
+    /// Gets or sets the format of the current template question.
+    /// </summary>
+    public Format Format{ get; set; } = Format.Xml;
+
+    /// <summary>
     /// Gets or sets the preview model of the current merged question (if any).
     /// </summary>
-    public PreviewModel? Preview{ get; set; }
+    public IPreviewHandler? Preview{ get; set; }
     
     /// <summary>
     /// Gets or sets the parameters model of the current merged question (if any).
     /// </summary>
-    public ParameterModel? Parameters{ get; set; }
+    public IParameterHandler? Parameters{ get; set; }
     
     /// <summary>
     /// Gets or sets the CSV file as a list of string arrays.
@@ -23,19 +34,14 @@ public class ReplicatorState : IDisposable{
     public IEnumerable<string[]> CsvAsList{ get; set; } = [];
     
     /// <summary>
-    /// Gets or sets the template XML document.
+    /// Gets or sets the template document.
     /// </summary>
-    public XmlDocument Template{ get; set; } = new XmlDocument();
-    
+    public object Template{ get; set; } = null!;
+
     /// <summary>
-    /// Gets or sets the merged XML document.
+    /// Gets or sets the merged document.
     /// </summary>
-    public XmlDocument? Merged{ get; set; }
-    
-    /// <summary>
-    /// Gets or sets the number of answers in the template question.
-    /// </summary>
-    public int AnswerCount { get; set; }
+    public object? Merged{ get; set; }
 
     /// <summary>
     /// Resets the state of the program.

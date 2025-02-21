@@ -6,7 +6,7 @@
 Checks if the file with the [CsvModel](MoodleAssistant.Logic.Models.CsvModel.md 'MoodleAssistant.Logic.Models.CsvModel')'s file name is well-formed.
 
 ```csharp
-public bool IsWellFormed();
+private bool IsWellFormed();
 ```
 
 #### Returns

@@ -3,11 +3,11 @@
 
 ## ReplicatorState.Merged Property
 
-Gets or sets the merged XML document.
+Gets or sets the merged document.
 
 ```csharp
-public System.Xml.XmlDocument? Merged { get; set; }
+public object? Merged { get; set; }
 ```
 
 #### Property Value
-[System.Xml.XmlDocument](https://docs.microsoft.com/en-us/dotnet/api/System.Xml.XmlDocument 'System.Xml.XmlDocument')
+[System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object')

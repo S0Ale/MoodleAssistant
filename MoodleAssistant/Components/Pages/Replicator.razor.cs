@@ -1,7 +1,9 @@
-﻿using Microsoft.JSInterop;
+﻿using System.Xml;
+using Microsoft.JSInterop;
 using MoodleAssistant.Components.Upload;
-using MoodleAssistant.Logic;
 using MoodleAssistant.Logic.Models;
+using MoodleAssistant.Logic.Processing;
+using MoodleAssistant.Logic.Processing.XML;
 using MoodleAssistant.Logic.Utils;
 
 namespace MoodleAssistant.Components.Pages;
@@ -23,12 +25,17 @@ public partial class Replicator{
     /// <summary>
     /// The <see cref="DropInput"/> component for the XML file upload.
     /// </summary>
-    private DropInput _xmlInput = null!;
+    private DropInput _templateInput = null!;
     
     /// <summary>
     /// The <see cref="DropInput"/> component for the CSV file upload.
     /// </summary>
     private DropInput _csvInput = null!;
+    
+    /// <summary>
+    /// The <see cref="FormatSelect"/> component for selecting the format of the uploaded files.
+    /// </summary>
+    private FormatSelect _formatSelect = null!;
     
     private bool _isUploading;
     private bool _successfulUpload;
@@ -48,27 +55,34 @@ public partial class Replicator{
         var state = ReplicatorState;
         
         // Check if both files are uploaded
-        var totalFiles = _xmlInput.UploadedFiles.Count + _csvInput.UploadedFiles.Count;
+        var totalFiles = _templateInput.UploadedFiles.Count + _csvInput.UploadedFiles.Count;
         if(totalFiles < 2){
             SetError(Error.NoFiles);
             return;
         }
-        var loader = new Loader(FileService);
         
-        // Load XML file
-        XmlModel xmlModel;
-        try{ xmlModel = await loader.LoadXml(_xmlInput.UploadedFiles.Values.FirstOrDefault()!); }
+        // Change factory according to the selected format
+        state.Format = _formatSelect.Format;
+        state.Factory = state.Format switch{
+            Format.Xml => new XmlFactory(FileService),
+            _ => throw new NotImplementedException()
+        };
+
+        var loader = new Loader(FileService, state.Factory);
+        
+        // Load template file
+        ITemplateModel templateModel;
+        try{ templateModel = await loader.LoadTemplate(_templateInput.UploadedFiles.Values.FirstOrDefault()!); }
         catch (ReplicatorException e){
             SetError(e.Error);
             return;
         }
-        state.Template = xmlModel.XmlFile;
-        state.AnswerCount = xmlModel.AnswerCount;
+        state.Template = templateModel.TemplateDocument;
         
         // Load CSV file
         List<string[]> csvList;
         try{
-            csvList = await loader.LoadCsv(_csvInput.UploadedFiles.Values.FirstOrDefault()!, xmlModel) as List<string[]> ?? []; 
+            csvList = await loader.LoadCsv(_csvInput.UploadedFiles.Values.FirstOrDefault()!, templateModel) as List<string[]> ?? []; 
         }catch (ReplicatorException e){
             SetError(e.Error);
             return;
@@ -79,17 +93,19 @@ public partial class Replicator{
         }
         state.CsvAsList = csvList;
         FileService.DeleteAllFiles();
-
+        
         // Load parameters
-        state.Parameters = new ParameterModel(state.Template, csvList.Count() - 1);
+        state.Parameters = state.Factory.CreateParameterHandler(state.Template, csvList.Count - 1);
         if (state.Parameters.GetFileParameters().Count > 0){
             _showFileParams = true;
         }else{
-            var merger = new Merger(FileService, state.Template, state.CsvAsList);
+            var merger = state.Factory.CreateMerger(state.Template, state.CsvAsList);
 
             try{
-                state.Preview = new PreviewModel(merger.MergeQuestion(true), state.AnswerCount);
-                state.Merged = merger.MergeQuestion();
+                state.Preview = state.Factory.CreatePreviewHandler();
+                state.Preview.GenerateItems(merger.MergeQuestion(true));
+                
+                state.Merged = (XmlDocument)merger.MergeQuestion();
             }
             catch (ReplicatorException e){
                 SetError(e.Error);
@@ -116,7 +132,7 @@ public partial class Replicator{
     /// Clears the form.
     /// </summary>
     private void ClearForm(){
-        _xmlInput.ClearFiles();
+        _templateInput.ClearFiles();
         _csvInput.ClearFiles();
     }
 
@@ -155,7 +171,7 @@ public partial class Replicator{
     /// Downloads the merged file.
     /// </summary>
     private async Task Download(){
-        await FileService.SaveFile(ReplicatorState.Merged!, "Questions");
-        await Js.InvokeVoidAsync("triggerFileDownload", "Questions.xml", "/Uploads/Questions.xml");
+        var file = await FileService.StoreDownloadFile(ReplicatorState.Merged!, _formatSelect.Format); // need to change this
+        await Js.InvokeVoidAsync("triggerFileDownload", file, "/Uploads/MERGED.xml");
     }
 }
