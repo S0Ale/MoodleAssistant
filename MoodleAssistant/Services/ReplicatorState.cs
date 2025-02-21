@@ -1,5 +1,4 @@
-﻿using System.Xml;
-using MoodleAssistant.Logic.Processing;
+﻿using MoodleAssistant.Logic.Processing;
 using MoodleAssistant.Logic.Utils;
 
 namespace MoodleAssistant.Services;
@@ -26,7 +25,7 @@ public class ReplicatorState : IDisposable{
     /// <summary>
     /// Gets or sets the parameters model of the current merged question (if any).
     /// </summary>
-    public IParameterHandler? Parameters{ get; set; }
+    public ParameterHandler? Parameters{ get; set; }
     
     /// <summary>
     /// Gets or sets the CSV file as a list of string arrays.

@@ -27,7 +27,7 @@ public class XmlFactory(IBrowserFileService fileService) : IReplicatorFactory{
     }
 
     /// <inheritdoc/>
-    public IParameterHandler CreateParameterHandler(object doc, int csvRows){
+    public ParameterHandler CreateParameterHandler(object doc, int csvRows){
         return new XmlParameterHandler((XmlDocument)doc, csvRows);
     }
 

@@ -30,12 +30,12 @@ public interface IReplicatorFactory{
     public IMerger CreateMerger(object template, IEnumerable<string[]> csvAsList);
     
     /// <summary>
-    /// Creates a new instance of <see cref="IParameterHandler"/>.
+    /// Creates a new instance of <see cref="ParameterHandler"/>.
     /// </summary>
     /// <param name="doc">The template document.</param>
     /// <param name="csvRows">The number of csv rows in the CSV file.</param>
-    /// <returns>An instance of <see cref="IParameterHandler"/>.</returns>
-    public IParameterHandler CreateParameterHandler(object doc, int csvRows);
+    /// <returns>An instance of <see cref="ParameterHandler"/>.</returns>
+    public ParameterHandler CreateParameterHandler(object doc, int csvRows);
     
     /// <summary>
     /// Creates a new instance of <see cref="IPreviewHandler"/>.
