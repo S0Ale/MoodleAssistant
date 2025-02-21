@@ -3,11 +3,11 @@
 
 ## ReplicatorState.Template Property
 
-Gets or sets the template XML document.
+Gets or sets the template document.
 
 ```csharp
-public System.Xml.XmlDocument Template { get; set; }
+public object Template { get; set; }
 ```
 
 #### Property Value
-[System.Xml.XmlDocument](https://docs.microsoft.com/en-us/dotnet/api/System.Xml.XmlDocument 'System.Xml.XmlDocument')
+[System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object')

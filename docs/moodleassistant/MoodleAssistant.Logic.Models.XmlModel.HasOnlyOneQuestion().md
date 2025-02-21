@@ -6,7 +6,7 @@
 Checks if the file with the [XmlModel](MoodleAssistant.Logic.Models.XmlModel.md 'MoodleAssistant.Logic.Models.XmlModel')'s file name has only one question tag.
 
 ```csharp
-public bool HasOnlyOneQuestion();
+private bool HasOnlyOneQuestion();
 ```
 
 #### Returns

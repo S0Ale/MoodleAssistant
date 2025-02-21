@@ -6,8 +6,8 @@
 Gets or sets the parameters model of the current merged question (if any).
 
 ```csharp
-public MoodleAssistant.Logic.Models.ParameterModel? Parameters { get; set; }
+public MoodleAssistant.Logic.Processing.IParameterHandler? Parameters { get; set; }
 ```
 
 #### Property Value
-[ParameterModel](MoodleAssistant.Logic.Models.ParameterModel.md 'MoodleAssistant.Logic.Models.ParameterModel')
+[IParameterHandler](MoodleAssistant.Logic.Processing.IParameterHandler.md 'MoodleAssistant.Logic.Processing.IParameterHandler')

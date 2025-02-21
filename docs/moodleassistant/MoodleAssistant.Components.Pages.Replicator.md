@@ -15,7 +15,8 @@ Inheritance [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.O
 | :--- | :--- |
 | [_csvInput](MoodleAssistant.Components.Pages.Replicator._csvInput.md 'MoodleAssistant.Components.Pages.Replicator._csvInput') | The [DropInput](MoodleAssistant.Components.Upload.DropInput.md 'MoodleAssistant.Components.Upload.DropInput') component for the CSV file upload. |
 | [_dialog](MoodleAssistant.Components.Pages.Replicator._dialog.md 'MoodleAssistant.Components.Pages.Replicator._dialog') | The message dialog on the page. |
-| [_xmlInput](MoodleAssistant.Components.Pages.Replicator._xmlInput.md 'MoodleAssistant.Components.Pages.Replicator._xmlInput') | The [DropInput](MoodleAssistant.Components.Upload.DropInput.md 'MoodleAssistant.Components.Upload.DropInput') component for the XML file upload. |
+| [_formatSelect](MoodleAssistant.Components.Pages.Replicator._formatSelect.md 'MoodleAssistant.Components.Pages.Replicator._formatSelect') | The [MoodleAssistant.Components.FormatSelect](https://docs.microsoft.com/en-us/dotnet/api/MoodleAssistant.Components.FormatSelect 'MoodleAssistant.Components.FormatSelect') component for selecting the format of the uploaded files. |
+| [_templateInput](MoodleAssistant.Components.Pages.Replicator._templateInput.md 'MoodleAssistant.Components.Pages.Replicator._templateInput') | The [DropInput](MoodleAssistant.Components.Upload.DropInput.md 'MoodleAssistant.Components.Upload.DropInput') component for the XML file upload. |
 
 | Properties | |
 | :--- | :--- |
