@@ -19,10 +19,10 @@ public class MergedDocument(object doc, Format format){
             case Format.Xml:
                 ((XmlDocument)doc).Save(filename);
                 break;
-            case Format.Aiken:
-                break;
-            case Format.Gift:
-                break;
+            //case Format.Aiken:
+                //break;
+            //case Format.Gift:
+                //break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(format), format, null);
         }

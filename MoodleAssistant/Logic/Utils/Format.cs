@@ -9,13 +9,13 @@ public enum Format{
     /// </summary>
     Xml,
     
-    /// <summary>
-    /// The format is Aiken.
-    /// </summary>
-    Aiken,
+    ///// <summary>
+    ///// The format is Aiken.
+    ///// </summary>
+    //Aiken,
     
-    /// <summary>
-    /// The format is GIFT.
-    /// </summary>
-    Gift
+    ///// <summary>
+    ///// The format is GIFT.
+    ///// </summary>
+    //Gift
 }
