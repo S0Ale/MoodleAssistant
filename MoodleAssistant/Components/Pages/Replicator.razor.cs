@@ -61,6 +61,7 @@ public partial class Replicator{
             return;
         }
         
+        // Change factory according to the selected format
         state.Format = _formatSelect.Format;
         state.Factory = state.Format switch{
             Format.Xml => new XmlFactory(FileService),
@@ -69,7 +70,7 @@ public partial class Replicator{
 
         var loader = new Loader(FileService, state.Factory);
         
-        // Load XML file
+        // Load template file
         ITemplateModel templateModel;
         try{ templateModel = await loader.LoadTemplate(_templateInput.UploadedFiles.Values.FirstOrDefault()!); }
         catch (ReplicatorException e){
