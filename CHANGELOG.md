@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ## Unreleased
 
+### Added
+
+* **UI**: added type chooser for the template question
+
+### Changed
+
+* Changed the structure of the project to support multiple types of template questions
+
 ### Fixed
 
 * Memory issue in the download process
