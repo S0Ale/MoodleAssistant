@@ -14,8 +14,9 @@ public static class ErrorMessage
     private const string Unexpected = "An unexpected error occurred. Try reloading the page.";
     private const string FileTooBig = "File is too big. File size must be less than 10MB.";
 
-    //xml errors
+    //template errors
     private const string NonXmlFile = "File type must be XML.";
+    private const string NonAikenFile = "File type must be Aiken.";
     private const string MalFormatted = "XML file is bad formed.";
     private const string ZeroOrMoreQuestions = "XML file must contains only one question.";
     private const string ZeroAnswers = "XML quiz must contains answers.";
@@ -47,6 +48,7 @@ public static class ErrorMessage
             Error.FileTooBig => FileTooBig,
             
             Error.NonXmlFile => NonXmlFile,
+            Error.NonAikenFile => NonAikenFile,
             Error.EmptyFile => EmptyFile,
             Error.XmlBadFormed => MalFormatted,
             Error.ZeroOrMoreQuestions => ZeroOrMoreQuestions,

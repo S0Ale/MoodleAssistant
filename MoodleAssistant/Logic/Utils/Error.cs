@@ -30,6 +30,11 @@ public enum Error{
     NonXmlFile,
     
     /// <summary>
+    /// The uploaded file is not a valid Aiken file.
+    /// </summary>
+    NonAikenFile,
+    
+    /// <summary>
     /// The uploaded file is empty.
     /// </summary>
     EmptyFile,
