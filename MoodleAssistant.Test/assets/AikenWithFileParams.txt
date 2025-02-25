@@ -1,4 +1,4 @@
-What is the correct answer to this question [*[[number]]*]?
+What is the correct answer to this question [*[[number]]*] [*[[FILE-fileparam]]*]?
 A. Is it this one?
 B. Maybe this answer?
 C. Possibly this one?

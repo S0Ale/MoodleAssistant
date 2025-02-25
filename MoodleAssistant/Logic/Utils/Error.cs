@@ -35,6 +35,11 @@ public enum Error{
     NonAikenFile,
     
     /// <summary>
+    /// The uploaded Aiken file cannot have file-ype parameters.
+    /// </summary>
+    AikenWithFile,
+    
+    /// <summary>
     /// The uploaded file is empty.
     /// </summary>
     EmptyFile,

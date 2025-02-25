@@ -55,6 +55,22 @@ public class AikenModel(IBrowserFile file, IBrowserFileService fileService) : IT
         }                                                                                      
     }
     
+    private bool HasFileParameters(){
+        foreach (var question in _aikenFile.Questions){
+            var paramList = new ParameterParser(question.Text).Match();
+            if (paramList.Any(parameter => parameter is FileParameter))
+                return true;
+            
+            foreach (var option in question.Options){
+                paramList = new ParameterParser(option.Text).Match();
+                if (paramList.Any(parameter => parameter is FileParameter))
+                    return true;
+            }
+        }
+
+        return false;
+    }
+    
     /// <summary>
     /// Gets the parameters from an Aiken element.
     /// </summary>
@@ -81,5 +97,7 @@ public class AikenModel(IBrowserFile file, IBrowserFileService fileService) : IT
         if(!IsText(file) || !IsWellFormattedAiken()){
             throw new ReplicatorException(Error.NonAikenFile);
         }
+        if (HasFileParameters())
+            throw new ReplicatorException(Error.AikenWithFile);
     }
 }
