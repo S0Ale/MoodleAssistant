@@ -1,8 +1,8 @@
-﻿using MoodleAssistant.Logic.Models;
+﻿using AikenDoc;
+using MoodleAssistant.Logic.Models;
 using MoodleAssistant.Logic.Utils;
 
 namespace MoodleAssistant.Test;
-
 
 internal class AikenModelShould : ModelTest{
     [SetUp]
@@ -15,6 +15,37 @@ internal class AikenModelShould : ModelTest{
         var file = TestService.GetMockFile("EmptyCsv.csv", System.Net.Mime.MediaTypeNames.Text.Csv).Object;
         var model = new AikenModel(file, Service.Object);
         Assert.Throws<ReplicatorException>(() => model.Validate());
+    }
+    
+    [Test]
+    public void Throw_NoAnswer(){
+        Service.Setup(s => s.GetFile("TEMPLATE"))
+            .Returns(() => TestService.GetStream("InvalidAnswer.txt"));
+
+        var file = TestService.GetMockFile("InvalidAnswer.txt", System.Net.Mime.MediaTypeNames.Text.Plain).Object;
+        var model = new AikenModel(file, Service.Object);
+        Assert.Throws<ReplicatorException>(() => model.Validate());
+    }
+    
+    [Test]
+    public void Throw_InvalidOption(){
+        Service.Setup(s => s.GetFile("TEMPLATE"))
+            .Returns(() => TestService.GetStream("InvalidOption.txt"));
+        
+        var file = TestService.GetMockFile("InvalidOption.txt", System.Net.Mime.MediaTypeNames.Text.Plain).Object;
+        var model = new AikenModel(file, Service.Object);
+        Assert.Throws<ReplicatorException>(() => model.Validate());
+    }
+    
+    [Test]
+    public void Success_BasicAiken(){
+        Service.Setup(s => s.GetFile("TEMPLATE"))
+            .Returns(() => TestService.GetStream("AikenOk.txt"));
+        
+        var file = TestService.GetMockFile("AikenOk.txt", System.Net.Mime.MediaTypeNames.Text.Plain).Object;
+        var model = new AikenModel(file, Service.Object);
+        model.Validate();
+        Assert.That(((AikenDocument)model.TemplateDocument).Questions, Has.Count.EqualTo(1));
     }
     
     [TearDown]
