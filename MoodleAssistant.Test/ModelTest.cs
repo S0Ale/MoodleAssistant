@@ -14,9 +14,6 @@ internal abstract class ModelTest{
         var env = new Mock<IWebHostEnvironment>(); // faking IWebHostEnvironment
         env.Setup(e => e.WebRootPath).Returns("./wwwroot");
         Service = new Mock<IBrowserFileService>();
-        
-        Service.Setup(s => s.GetFile(It.IsAny<string>()))
-            .Returns((string filename) => TestService.GetStream(filename));
     }
     
     [TearDown]

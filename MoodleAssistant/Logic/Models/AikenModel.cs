@@ -47,7 +47,7 @@ public class AikenModel(IBrowserFile file, IBrowserFileService fileService) : IT
         using var reader = new StreamReader(stream, Encoding.UTF8);
                                                                                                 
         try{                                                                                       
-            _aikenFile.Load(reader.ReadToEnd());                                         
+            _aikenFile.LoadText(reader.ReadToEnd());                                         
             return true;                                                                       
         }                                                                                      
         catch (Exception){                                                                                      
