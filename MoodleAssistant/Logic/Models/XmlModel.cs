@@ -115,7 +115,7 @@ public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : ITem
         if (!IsXml(file))
             throw new ReplicatorException(Error.NonXmlFile);
         if (!IsWellFormattedXml())
-            throw new ReplicatorException(Error.XmlBadFormed);
+            throw new ReplicatorException(Error.TemplateBadFormed);
         if (!HasOnlyOneQuestion())
             throw new ReplicatorException(Error.ZeroOrMoreQuestions);
         if (!HasQuestionText())

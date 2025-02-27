@@ -18,8 +18,8 @@ public static class ErrorMessage
     private const string NonXmlFile = "File type must be XML.";
     private const string NonAikenFile = "File type must be Aiken.";
     private const string AikenWithFile = "Aiken file cannot have file-type parameters.";
-    private const string MalFormatted = "XML file is bad formed.";
-    private const string ZeroOrMoreQuestions = "XML file must contains only one question.";
+    private const string TemplateBadFormed = "Template file is bad formed.";
+    private const string ZeroOrMoreQuestions = "Template file must contains only one question.";
     private const string ZeroAnswers = "XML quiz must contains answers.";
 
     //csv errors
@@ -52,7 +52,7 @@ public static class ErrorMessage
             Error.NonAikenFile => NonAikenFile,
             Error.AikenWithFile => AikenWithFile,
             Error.EmptyFile => EmptyFile,
-            Error.XmlBadFormed => MalFormatted,
+            Error.TemplateBadFormed => TemplateBadFormed,
             Error.ZeroOrMoreQuestions => ZeroOrMoreQuestions,
             Error.ZeroAnswers => ZeroAnswers,
             Error.NonCsvFile => NonCsvFile,

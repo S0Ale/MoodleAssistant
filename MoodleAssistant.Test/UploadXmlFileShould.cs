@@ -59,7 +59,7 @@ internal class UploadXmlFileShould : FileUploadTest{
         
         _submit.Click();
         _page.WaitForState(() => _page.Instance.IsUploading == false);
-        Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.XmlBadFormed));
+        Assert.That(_page.Instance.ErrorMsg, Is.EqualTo(Error.TemplateBadFormed));
     }
 
     [Test]

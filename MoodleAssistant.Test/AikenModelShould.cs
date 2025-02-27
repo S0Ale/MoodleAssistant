@@ -36,6 +36,16 @@ internal class AikenModelShould : ModelTest{
         var model = new AikenModel(file, Service.Object);
         Assert.Throws<ReplicatorException>(() => model.Validate());
     }
+    
+    [Test]
+    public void Throw_MoreThanOneQuestion(){
+        Service.Setup(s => s.GetFile("TEMPLATE"))
+            .Returns(() => TestService.GetStream("AikenMoreQuestions.txt"));
+        
+        var file = TestService.GetMockFile("AikenMoreQuestions.txt", System.Net.Mime.MediaTypeNames.Text.Plain).Object;
+        var model = new AikenModel(file, Service.Object);
+        Assert.Throws<ReplicatorException>(() => model.Validate());
+    }
 
     [Test]
     public void Throw_AikenWithFile(){

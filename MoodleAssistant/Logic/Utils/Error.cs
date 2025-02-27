@@ -50,12 +50,12 @@ public enum Error{
     FileTooBig,
     
     /// <summary>
-    /// The uploaded XML file is not well-formatted.
+    /// The uploaded template file is not well-formatted.
     /// </summary>
-    XmlBadFormed,
+    TemplateBadFormed,
     
     /// <summary>
-    /// The uploaded XML file has zero or more than one question.
+    /// The uploaded template file has zero or more than one question.
     /// </summary>
     ZeroOrMoreQuestions,
     

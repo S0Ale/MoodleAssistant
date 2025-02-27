@@ -55,6 +55,18 @@ public class AikenModel(IBrowserFile file, IBrowserFileService fileService) : IT
         }                                                                                      
     }
     
+    /// <summary>
+    /// Checks if the Aiken file has only one question.
+    /// </summary>
+    /// <returns><c>true</c> if the file contains only one question; otherwise <c>false</c>.</returns>
+    private bool HasOnlyOneQuestion(){
+        return _aikenFile.Questions is {Count : 1};
+    }
+    
+    /// <summary>
+    /// Checks if the Aiken file has at least one file parameter.
+    /// </summary>
+    /// <returns><c>true</c> if the file contains file parameters; otherwise <c>false</c>.</returns>
     private bool HasFileParameters(){
         foreach (var question in _aikenFile.Questions){
             var paramList = new ParameterParser(question.Text).Match();
@@ -94,9 +106,12 @@ public class AikenModel(IBrowserFile file, IBrowserFileService fileService) : IT
     
     /// <inheritdoc/>
     public void Validate(){
-        if(!IsText(file) || !IsWellFormattedAiken()){
+        if(!IsText(file))
             throw new ReplicatorException(Error.NonAikenFile);
-        }
+        if(!IsWellFormattedAiken())
+            throw new ReplicatorException(Error.TemplateBadFormed);
+        if(!HasOnlyOneQuestion())
+            throw new ReplicatorException(Error.ZeroOrMoreQuestions);
         if (HasFileParameters())
             throw new ReplicatorException(Error.AikenWithFile);
     }
