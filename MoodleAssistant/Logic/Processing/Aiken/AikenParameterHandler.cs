@@ -8,7 +8,13 @@ namespace MoodleAssistant.Logic.Processing.Aiken;
 /// </summary>
 public class AikenParameterHandler : ParameterHandler{
     
+    /// <summary>
+    /// Initializes a new instance of <see cref="AikenParameterHandler"/>.
+    /// </summary>
+    /// <param name="doc">A <see cref="AikenDocument"/> instance.</param>
+    /// <param name="csvRows">The number of csv rows in the CSV file.</param>
     public AikenParameterHandler(AikenDocument doc, int csvRows) : base(csvRows){
-        //Param = new ParameterParser(doc.OuterXml).Match() as List<Parameter>;
+        var question = doc.Questions.First();
+        Param = new ParameterParser(question.GetAllText()).Match() as List<Parameter>;
     }
 }

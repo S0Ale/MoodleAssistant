@@ -28,7 +28,7 @@ public class AikenFactory(IBrowserFileService fileService) : IReplicatorFactory{
 
     /// <inheritdoc/>
     public ParameterHandler CreateParameterHandler(object doc, int csvRows){
-        throw new NotImplementedException();
+        return new AikenParameterHandler((AikenDocument)doc, csvRows);
     }
 
     /// <inheritdoc/>
