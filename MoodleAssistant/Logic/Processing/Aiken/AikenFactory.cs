@@ -33,6 +33,6 @@ public class AikenFactory(IBrowserFileService fileService) : IReplicatorFactory{
 
     /// <inheritdoc/>
     public IPreviewHandler CreatePreviewHandler(){
-        throw new NotImplementedException();
+        return new AikenPreviewHandler();
     }
 }
