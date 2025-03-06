@@ -12,10 +12,5 @@ public enum Format{
     ///// <summary>
     ///// The format is Aiken.
     ///// </summary>
-    //Aiken,
-    
-    ///// <summary>
-    ///// The format is GIFT.
-    ///// </summary>
-    //Gift
+    Aiken
 }

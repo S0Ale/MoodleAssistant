@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using MoodleAssistant.Components.Upload;
 using MoodleAssistant.Logic.Models;
 using MoodleAssistant.Logic.Processing;
+using MoodleAssistant.Logic.Processing.Aiken;
 using MoodleAssistant.Logic.Processing.XML;
 using MoodleAssistant.Logic.Utils;
 
@@ -65,6 +66,7 @@ public partial class Replicator{
         state.Format = _formatSelect.Format;
         state.Factory = state.Format switch{
             Format.Xml => new XmlFactory(FileService),
+            Format.Aiken => new AikenFactory(FileService),
             _ => throw new NotImplementedException()
         };
 

@@ -9,6 +9,8 @@ public abstract class FormatExtension{
     /// </summary>
     private const string Xml = ".xml";
     
+    private const string Aiken = ".txt";
+    
     /// <summary>
     /// Returns the extension of the specified format.
     /// </summary>
@@ -18,6 +20,7 @@ public abstract class FormatExtension{
     public static string GetExtension(Format format){
         return format switch{
             Format.Xml => Xml,
+            Format.Aiken => Aiken,
             _ => throw new ArgumentOutOfRangeException(nameof(format), format, null)
         };
     }
