@@ -2,10 +2,10 @@
 using MoodleAssistant.Services;
 using Moq;
 
-namespace MoodleAssistant.Test;
+namespace MoodleAssistant.Test.Logic;
 
 [TestFixture]
-internal abstract class ModelTest{
+public abstract class ModelTest{
 
     protected Mock<IBrowserFileService> Service;
     

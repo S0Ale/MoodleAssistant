@@ -2,7 +2,7 @@
 using MoodleAssistant.Logic.Models;
 using MoodleAssistant.Logic.Utils;
 
-namespace MoodleAssistant.Test;
+namespace MoodleAssistant.Test.Logic;
 
 internal class AikenModelShould : ModelTest{
     [SetUp]
