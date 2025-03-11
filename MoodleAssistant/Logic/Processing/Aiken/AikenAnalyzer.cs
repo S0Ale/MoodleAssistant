@@ -46,7 +46,7 @@ public class AikenAnalyzer : IAnalyzer{
             var answerText = option.Text;
             foreach (Match match in Regex.Matches(answerText, Pattern))
                 answerText = answerText.Replace(match.Value, "<span class=\"code\">" + System.Web.HttpUtility.HtmlEncode(match.Value) + "</span>");
-            htmlFormatted += answerText;
+            htmlFormatted += $"<p>{option.Letter}) {answerText}</p>";
         }
 
         return htmlFormatted;
