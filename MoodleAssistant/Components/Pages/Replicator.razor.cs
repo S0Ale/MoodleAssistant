@@ -107,7 +107,8 @@ public partial class Replicator{
                 state.Preview = state.Factory.CreatePreviewHandler();
                 state.Preview.GenerateItems(merger.MergeQuestion(true));
                 
-                state.Merged = (XmlDocument)merger.MergeQuestion();
+                // it throws an exception cuz I can't cast to XmlDocument: I need to take care of the Aiken download first
+                state.Merged = merger.MergeQuestion();
             }
             catch (ReplicatorException e){
                 SetError(e.Error);
@@ -173,7 +174,7 @@ public partial class Replicator{
     /// Downloads the merged file.
     /// </summary>
     private async Task Download(){
-        var file = await FileService.StoreDownloadFile(ReplicatorState.Merged!, _formatSelect.Format); // need to change this
-        await Js.InvokeVoidAsync("triggerFileDownload", file, "/Uploads/MERGED.xml");
+        var file = await FileService.StoreDownloadFile(ReplicatorState.Merged!, _formatSelect.Format); 
+        await Js.InvokeVoidAsync("triggerFileDownload", file, $"/Uploads/{file}");
     }
 }

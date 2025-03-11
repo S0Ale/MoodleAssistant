@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Xml;
+using AikenDoc;
 using MoodleAssistant.Logic.Utils;
 
 namespace MoodleAssistant.Logic;
@@ -19,8 +20,9 @@ public class MergedDocument(object doc, Format format){
             case Format.Xml:
                 ((XmlDocument)doc).Save(filename);
                 break;
-            //case Format.Aiken:
-                //break;
+            case Format.Aiken:
+                ((AikenDocument)doc).Save(filename);
+                break;
             //case Format.Gift:
                 //break;
             default:

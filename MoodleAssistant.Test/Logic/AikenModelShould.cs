@@ -18,41 +18,15 @@ internal class AikenModelShould : ModelTest{
     }
     
     [Test]
-    public void Throw_NoAnswer(){
+    [TestCase("InvalidAnswer.txt")]
+    [TestCase("InvalidOption.txt")]
+    [TestCase("AikenMoreQuestions.txt")]
+    [TestCase("AikenWithFileParams.txt")]
+    public void Throw_AikenBadFormed(string name){
         Service.Setup(s => s.GetFile("TEMPLATE"))
-            .Returns(() => TestService.GetStream("InvalidAnswer.txt"));
-
-        var file = TestService.GetMockFile("InvalidAnswer.txt", System.Net.Mime.MediaTypeNames.Text.Plain).Object;
-        var model = new AikenModel(file, Service.Object);
-        Assert.Throws<ReplicatorException>(() => model.Validate());
-    }
-    
-    [Test]
-    public void Throw_InvalidOption(){
-        Service.Setup(s => s.GetFile("TEMPLATE"))
-            .Returns(() => TestService.GetStream("InvalidOption.txt"));
+            .Returns(() => TestService.GetStream(name));
         
-        var file = TestService.GetMockFile("InvalidOption.txt", System.Net.Mime.MediaTypeNames.Text.Plain).Object;
-        var model = new AikenModel(file, Service.Object);
-        Assert.Throws<ReplicatorException>(() => model.Validate());
-    }
-    
-    [Test]
-    public void Throw_MoreThanOneQuestion(){
-        Service.Setup(s => s.GetFile("TEMPLATE"))
-            .Returns(() => TestService.GetStream("AikenMoreQuestions.txt"));
-        
-        var file = TestService.GetMockFile("AikenMoreQuestions.txt", System.Net.Mime.MediaTypeNames.Text.Plain).Object;
-        var model = new AikenModel(file, Service.Object);
-        Assert.Throws<ReplicatorException>(() => model.Validate());
-    }
-
-    [Test]
-    public void Throw_AikenWithFile(){
-        Service.Setup(s => s.GetFile("TEMPLATE"))
-            .Returns(() => TestService.GetStream("AikenWithFileParams.txt"));
-        
-        var file = TestService.GetMockFile("InvalidOption.txt", System.Net.Mime.MediaTypeNames.Text.Plain).Object;
+        var file = TestService.GetMockFile(name, System.Net.Mime.MediaTypeNames.Text.Plain).Object;
         var model = new AikenModel(file, Service.Object);
         Assert.Throws<ReplicatorException>(() => model.Validate());
     }

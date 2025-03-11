@@ -3,7 +3,7 @@ using MoodleAssistant.Logic.Utils;
 
 namespace MoodleAssistant.Test.Logic;
 
-public class XmlModelShould : ModelTest{
+internal class XmlModelShould : ModelTest{
     [SetUp]
     public new void Setup(){
         base.Setup();
