@@ -17,6 +17,6 @@ public abstract class ModelTest{
     }
     
     [TearDown]
-    public new void TearDown(){
+    public void TearDown(){
     }
 }

@@ -6,6 +6,7 @@ namespace MoodleAssistant.Test;
 
 internal abstract class TestService{
     private const string AssetsDir = "./assets";
+    private const string TempDir = "./tmp";
 
     private static byte[] GetBytes(string fileName){
         return File.ReadAllBytes(Path.Combine(AssetsDir, fileName));
@@ -13,6 +14,11 @@ internal abstract class TestService{
     
     public static FileStream GetStream(string fileName){
         return new FileStream(Path.Combine(AssetsDir, fileName), FileMode.Open);
+    }
+
+    public static string GetString(bool temp, string fileName){
+        var dir = temp ? TempDir : AssetsDir;
+        return File.ReadAllText(Path.Combine(dir, fileName));
     }
     
     public static Mock<IBrowserFile> GetMockFile(string name, string contentType){

@@ -9,8 +9,13 @@ public enum Format{
     /// </summary>
     Xml,
     
-    ///// <summary>
-    ///// The format is Aiken.
-    ///// </summary>
-    Aiken
+    /// <summary>
+    /// The format is Aiken.
+    /// </summary>
+    Aiken,
+    
+    /// <summary>
+    /// Invalid format. Only for testing purposes.
+    /// </summary>
+    Invalid
 }
