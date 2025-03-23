@@ -10,6 +10,7 @@ public interface ITemplateModel
 ```
 
 Derived  
+&#8627; [AikenModel](MoodleAssistant.Logic.Models.AikenModel.md 'MoodleAssistant.Logic.Models.AikenModel')  
 &#8627; [XmlModel](MoodleAssistant.Logic.Models.XmlModel.md 'MoodleAssistant.Logic.Models.XmlModel')
 
 | Properties | |
@@ -20,5 +21,5 @@ Derived
 
 | Methods | |
 | :--- | :--- |
-| [TakeParameters()](MoodleAssistant.Logic.Models.ITemplateModel.TakeParameters().md 'MoodleAssistant.Logic.Models.ITemplateModel.TakeParameters()') | Gets the parameters from the XML file and puts them in the [QuestionParametersList](MoodleAssistant.Logic.Models.ITemplateModel.QuestionParametersList.md 'MoodleAssistant.Logic.Models.ITemplateModel.QuestionParametersList') and [AnswerParametersList](MoodleAssistant.Logic.Models.ITemplateModel.AnswerParametersList.md 'MoodleAssistant.Logic.Models.ITemplateModel.AnswerParametersList'). |
+| [TakeParameters()](MoodleAssistant.Logic.Models.ITemplateModel.TakeParameters().md 'MoodleAssistant.Logic.Models.ITemplateModel.TakeParameters()') | Gets the parameters from the template file and puts them in the [QuestionParametersList](MoodleAssistant.Logic.Models.ITemplateModel.QuestionParametersList.md 'MoodleAssistant.Logic.Models.ITemplateModel.QuestionParametersList') and [AnswerParametersList](MoodleAssistant.Logic.Models.ITemplateModel.AnswerParametersList.md 'MoodleAssistant.Logic.Models.ITemplateModel.AnswerParametersList'). |
 | [Validate()](MoodleAssistant.Logic.Models.ITemplateModel.Validate().md 'MoodleAssistant.Logic.Models.ITemplateModel.Validate()') | Validates the template file contained in the model. |

@@ -3,10 +3,10 @@
 
 ## IReplicatorFactory.CreateParameterHandler(object, int) Method
 
-Creates a new instance of [IParameterHandler](MoodleAssistant.Logic.Processing.IParameterHandler.md 'MoodleAssistant.Logic.Processing.IParameterHandler').
+Creates a new instance of [ParameterHandler](MoodleAssistant.Logic.Processing.ParameterHandler.md 'MoodleAssistant.Logic.Processing.ParameterHandler').
 
 ```csharp
-MoodleAssistant.Logic.Processing.IParameterHandler CreateParameterHandler(object doc, int csvRows);
+MoodleAssistant.Logic.Processing.ParameterHandler CreateParameterHandler(object doc, int csvRows);
 ```
 #### Parameters
 
@@ -23,5 +23,5 @@ The template document.
 The number of csv rows in the CSV file.
 
 #### Returns
-[IParameterHandler](MoodleAssistant.Logic.Processing.IParameterHandler.md 'MoodleAssistant.Logic.Processing.IParameterHandler')  
-An instance of [IParameterHandler](MoodleAssistant.Logic.Processing.IParameterHandler.md 'MoodleAssistant.Logic.Processing.IParameterHandler').
+[ParameterHandler](MoodleAssistant.Logic.Processing.ParameterHandler.md 'MoodleAssistant.Logic.Processing.ParameterHandler')  
+An instance of [ParameterHandler](MoodleAssistant.Logic.Processing.ParameterHandler.md 'MoodleAssistant.Logic.Processing.ParameterHandler').

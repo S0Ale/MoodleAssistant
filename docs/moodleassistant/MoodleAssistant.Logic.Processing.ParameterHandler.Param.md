@@ -1,12 +1,12 @@
 #### [MoodleAssistant](index.md 'index')
-### [MoodleAssistant.Logic.Processing.XML](MoodleAssistant.Logic.Processing.XML.md 'MoodleAssistant.Logic.Processing.XML').[XmlParameterHandler](MoodleAssistant.Logic.Processing.XML.XmlParameterHandler.md 'MoodleAssistant.Logic.Processing.XML.XmlParameterHandler')
+### [MoodleAssistant.Logic.Processing](MoodleAssistant.Logic.Processing.md 'MoodleAssistant.Logic.Processing').[ParameterHandler](MoodleAssistant.Logic.Processing.ParameterHandler.md 'MoodleAssistant.Logic.Processing.ParameterHandler')
 
-## XmlParameterHandler._param Field
+## ParameterHandler.Param Field
 
 The parameters of the XML document.
 
 ```csharp
-private readonly List<Parameter>? _param;
+protected List<Parameter>? Param;
 ```
 
 #### Field Value

@@ -1,7 +1,7 @@
 #### [MoodleAssistant](index.md 'index')
-### [MoodleAssistant.Logic.Models](MoodleAssistant.Logic.Models.md 'MoodleAssistant.Logic.Models').[XmlModel](MoodleAssistant.Logic.Models.XmlModel.md 'MoodleAssistant.Logic.Models.XmlModel')
+### [MoodleAssistant.Logic.Models](MoodleAssistant.Logic.Models.md 'MoodleAssistant.Logic.Models').[AikenModel](MoodleAssistant.Logic.Models.AikenModel.md 'MoodleAssistant.Logic.Models.AikenModel')
 
-## XmlModel.TakeParameters() Method
+## AikenModel.TakeParameters() Method
 
 Gets the parameters from the template file and puts them in the [QuestionParametersList](MoodleAssistant.Logic.Models.ITemplateModel.QuestionParametersList.md 'MoodleAssistant.Logic.Models.ITemplateModel.QuestionParametersList') and [AnswerParametersList](MoodleAssistant.Logic.Models.ITemplateModel.AnswerParametersList.md 'MoodleAssistant.Logic.Models.ITemplateModel.AnswerParametersList').
 

@@ -3,7 +3,7 @@
 
 ## XmlParameterHandler(XmlDocument, int) Constructor
 
-Represents the parameters of the XML document.
+Initializes a new instance of [XmlParameterHandler](MoodleAssistant.Logic.Processing.XML.XmlParameterHandler.md 'MoodleAssistant.Logic.Processing.XML.XmlParameterHandler').
 
 ```csharp
 public XmlParameterHandler(System.Xml.XmlDocument doc, int csvRows);

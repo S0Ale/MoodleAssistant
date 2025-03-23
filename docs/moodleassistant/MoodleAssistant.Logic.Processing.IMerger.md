@@ -3,13 +3,14 @@
 
 ## IMerger Interface
 
-Manage the merge process of the questions.
+Manages the merge process of the questions.
 
 ```csharp
 public interface IMerger
 ```
 
 Derived  
+&#8627; [AikenMerger](MoodleAssistant.Logic.Processing.Aiken.AikenMerger.md 'MoodleAssistant.Logic.Processing.Aiken.AikenMerger')  
 &#8627; [XmlMerger](MoodleAssistant.Logic.Processing.XML.XmlMerger.md 'MoodleAssistant.Logic.Processing.XML.XmlMerger')
 
 | Methods | |

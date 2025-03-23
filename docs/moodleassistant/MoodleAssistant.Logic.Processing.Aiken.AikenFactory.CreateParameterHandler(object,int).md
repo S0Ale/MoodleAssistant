@@ -1,7 +1,7 @@
 #### [MoodleAssistant](index.md 'index')
-### [MoodleAssistant.Logic.Processing.XML](MoodleAssistant.Logic.Processing.XML.md 'MoodleAssistant.Logic.Processing.XML').[XmlFactory](MoodleAssistant.Logic.Processing.XML.XmlFactory.md 'MoodleAssistant.Logic.Processing.XML.XmlFactory')
+### [MoodleAssistant.Logic.Processing.Aiken](MoodleAssistant.Logic.Processing.Aiken.md 'MoodleAssistant.Logic.Processing.Aiken').[AikenFactory](MoodleAssistant.Logic.Processing.Aiken.AikenFactory.md 'MoodleAssistant.Logic.Processing.Aiken.AikenFactory')
 
-## XmlFactory.CreateParameterHandler(object, int) Method
+## AikenFactory.CreateParameterHandler(object, int) Method
 
 Creates a new instance of [ParameterHandler](MoodleAssistant.Logic.Processing.ParameterHandler.md 'MoodleAssistant.Logic.Processing.ParameterHandler').
 
@@ -10,13 +10,13 @@ public MoodleAssistant.Logic.Processing.ParameterHandler CreateParameterHandler(
 ```
 #### Parameters
 
-<a name='MoodleAssistant.Logic.Processing.XML.XmlFactory.CreateParameterHandler(object,int).doc'></a>
+<a name='MoodleAssistant.Logic.Processing.Aiken.AikenFactory.CreateParameterHandler(object,int).doc'></a>
 
 `doc` [System.Object](https://docs.microsoft.com/en-us/dotnet/api/System.Object 'System.Object')
 
 The template document.
 
-<a name='MoodleAssistant.Logic.Processing.XML.XmlFactory.CreateParameterHandler(object,int).csvRows'></a>
+<a name='MoodleAssistant.Logic.Processing.Aiken.AikenFactory.CreateParameterHandler(object,int).csvRows'></a>
 
 `csvRows` [System.Int32](https://docs.microsoft.com/en-us/dotnet/api/System.Int32 'System.Int32')
 

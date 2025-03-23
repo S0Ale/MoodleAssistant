@@ -10,33 +10,39 @@ public enum Error
 ```
 ### Fields
 
+<a name='MoodleAssistant.Logic.Utils.Error.AikenWithFile'></a>
+
+`AikenWithFile` 6
+
+The uploaded Aiken file cannot have file-ype parameters.
+
 <a name='MoodleAssistant.Logic.Utils.Error.CsvBadFormed'></a>
 
-`CsvBadFormed` 12
+`CsvBadFormed` 14
 
 The uploaded CSV file is not well-formed.
 
 <a name='MoodleAssistant.Logic.Utils.Error.CsvInvalidHeader'></a>
 
-`CsvInvalidHeader` 11
+`CsvInvalidHeader` 13
 
 The uploaded CSV file has not a valid header.
 
 <a name='MoodleAssistant.Logic.Utils.Error.EmptyFile'></a>
 
-`EmptyFile` 5
+`EmptyFile` 7
 
 The uploaded file is empty.
 
 <a name='MoodleAssistant.Logic.Utils.Error.FileMismatch'></a>
 
-`FileMismatch` 14
+`FileMismatch` 16
 
 The uploaded files names or quantity do not match the values inside the CSV file.
 
 <a name='MoodleAssistant.Logic.Utils.Error.FileTooBig'></a>
 
-`FileTooBig` 6
+`FileTooBig` 8
 
 The uploaded file is too big.
 
@@ -52,9 +58,15 @@ No errors occurred.
 
 No files were uploaded.
 
+<a name='MoodleAssistant.Logic.Utils.Error.NonAikenFile'></a>
+
+`NonAikenFile` 5
+
+The uploaded file is not a valid Aiken file.
+
 <a name='MoodleAssistant.Logic.Utils.Error.NonCsvFile'></a>
 
-`NonCsvFile` 10
+`NonCsvFile` 12
 
 The uploaded file is not a valid CSV file.
 
@@ -66,7 +78,7 @@ The uploaded file is not a valid XML file.
 
 <a name='MoodleAssistant.Logic.Utils.Error.NoValidFile'></a>
 
-`NoValidFile` 13
+`NoValidFile` 15
 
 The uploaded file is not a valid image/MS-Office file.
 
@@ -76,26 +88,26 @@ The uploaded file is not a valid image/MS-Office file.
 
 Uploaded files are null.
 
+<a name='MoodleAssistant.Logic.Utils.Error.TemplateBadFormed'></a>
+
+`TemplateBadFormed` 9
+
+The uploaded template file is not well-formatted.
+
 <a name='MoodleAssistant.Logic.Utils.Error.Unexpected'></a>
 
 `Unexpected` 3
 
 An unexpected error occurred.
 
-<a name='MoodleAssistant.Logic.Utils.Error.XmlBadFormed'></a>
-
-`XmlBadFormed` 7
-
-The uploaded XML file is not well-formatted.
-
 <a name='MoodleAssistant.Logic.Utils.Error.ZeroAnswers'></a>
 
-`ZeroAnswers` 9
+`ZeroAnswers` 11
 
 The uploaded XML file has no answers.
 
 <a name='MoodleAssistant.Logic.Utils.Error.ZeroOrMoreQuestions'></a>
 
-`ZeroOrMoreQuestions` 8
+`ZeroOrMoreQuestions` 10
 
-The uploaded XML file has zero or more than one question.
+The uploaded template file has zero or more than one question.

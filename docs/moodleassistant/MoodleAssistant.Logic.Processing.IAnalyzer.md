@@ -10,6 +10,7 @@ public interface IAnalyzer
 ```
 
 Derived  
+&#8627; [AikenAnalyzer](MoodleAssistant.Logic.Processing.Aiken.AikenAnalyzer.md 'MoodleAssistant.Logic.Processing.Aiken.AikenAnalyzer')  
 &#8627; [XmlAnalyzer](MoodleAssistant.Logic.Processing.XML.XmlAnalyzer.md 'MoodleAssistant.Logic.Processing.XML.XmlAnalyzer')
 
 | Methods | |

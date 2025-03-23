@@ -1,7 +1,7 @@
 #### [MoodleAssistant](index.md 'index')
-### [MoodleAssistant.Logic.Models](MoodleAssistant.Logic.Models.md 'MoodleAssistant.Logic.Models').[XmlModel](MoodleAssistant.Logic.Models.XmlModel.md 'MoodleAssistant.Logic.Models.XmlModel')
+### [MoodleAssistant.Logic.Models](MoodleAssistant.Logic.Models.md 'MoodleAssistant.Logic.Models').[AikenModel](MoodleAssistant.Logic.Models.AikenModel.md 'MoodleAssistant.Logic.Models.AikenModel')
 
-## XmlModel.Validate() Method
+## AikenModel.Validate() Method
 
 Validates the template file contained in the model.
 
