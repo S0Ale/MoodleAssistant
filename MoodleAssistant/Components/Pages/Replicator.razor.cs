@@ -106,8 +106,6 @@ public partial class Replicator{
             try{
                 state.Preview = state.Factory.CreatePreviewHandler();
                 state.Preview.GenerateItems(merger.MergeQuestion(true));
-                
-                // it throws an exception cuz I can't cast to XmlDocument: I need to take care of the Aiken download first
                 state.Merged = merger.MergeQuestion();
             }
             catch (ReplicatorException e){

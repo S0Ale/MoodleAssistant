@@ -9,6 +9,9 @@ public abstract class FormatExtension{
     /// </summary>
     private const string Xml = ".xml";
     
+    /// <summary>
+    /// The extension for Aiken files.
+    /// </summary>
     private const string Aiken = ".txt";
     
     /// <summary>
