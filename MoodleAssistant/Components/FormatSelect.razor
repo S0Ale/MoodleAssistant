@@ -4,6 +4,10 @@
     <select class="pl-2" @bind="Format">
         @foreach (var format in Enum.GetValues(typeof(Format)).Cast<Format>())
         {
+            @if (format == Format.Invalid){
+                continue;
+            }
+
             <option value="@format">@format</option>
         }
     </select>
