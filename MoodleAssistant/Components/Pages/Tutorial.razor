@@ -1,4 +1,5 @@
 ﻿@page "/Tutorial"
+@using Microsoft.AspNetCore.Components.Sections
 
 <PageTitle>Tutorial</PageTitle>
 
@@ -11,25 +12,45 @@
             MoodleAssistant can be the solution!
         </p>
     </div>
-
-    <div class="mt-20">
-        <h2 class="text-center text-3xl text-gray-700">1. First of all you need a Moodle question in Moodle XML Format.</h2>
-        <p class="mt-4">
-            When creating a question, where possible, you should include some <i>parameters</i> in the question and answer text areas. The parameter format is <span class="code">[*[[identifier]]*]</span> and is used by MoodleAssistant to identify the words you want to replace.
-            <br/>Next, export the question in Moodle XML format
-            (<a class="text-blue-500" href="https://docs.moodle.org/310/en/Export_questions" target="_blank">How to export questions in Moodle?</a>).
-            Make sure not to check the "Write category to file" option.
-            If direct editing in Moodle is not possible, you need to find your identifiers and add <span class="code">[*[[</span> and <span class="code">]]*]</span> in the previously exported file.<br />
-            In our example, we have:
+    
+    <div class="mt-20 debug1">
+        <h2 class="text-center text-3xl text-gray-700">1. Write a template question.</h2>
+        <p class="mt-3">
+            First, you need to create a Moodle question. Inside the question or answer text, you should include some <i>parameters</i> that will be replaced.
+            The parameter format is <span class="code">[*[[identifier]]*]</span> and is used by MoodleAssistant to identify the words you want to replace.
+            In our example, we will create a question about the capitals of some states.
         </p>
-    </div>
-    
-    <div class="mt-6 text-center">
-        <img src="res/questionExample.png" alt="Question with parameters example." class="mx-auto text-center border rounded border-zinc-200" />
-    </div>
-    
-    <div class="mt-3 text-center">
-        <a class="block w-fit mx-auto btn btn-secondary py-1.5 px-20" href="res/MoodleAssistantTutorial.xml" download>Download XML example</a>
+        <label class="mt-2 block">
+            Select your template format. Supported formats: Moodle XML, Aiken.
+            <select class="ml-2 pl-2" id="tutorial-format">
+                <option value="0">Moodle XML</option>
+                <option value="1">Aiken</option>
+            </select>
+        </label>
+        <div class="mt-6 format-section format-0">
+            <h3 class="text-2xl text-gray-700">Moodle XML template</h3>
+            <p class="mt-3">
+                You can include your <i>parameters</i> in the question and answer text areas. Next, export the question in Moodle XML format
+                (<a class="text-blue-500" href="https://docs.moodle.org/310/en/Export_questions" target="_blank">How to export questions in Moodle?</a>).
+                Make sure not to check the "Write category to file" option.
+                If direct editing in Moodle is not possible, you need to find your identifiers and add <span class="code">[*[[</span> and <span class="code">]]*]</span> in the previously exported file.<br/>
+                In our example, we have:
+            </p>
+            <div class="mt-6 text-center">
+                <img src="res/questionExample.png" alt="Question with parameters example." class="mx-auto text-center border rounded border-zinc-200"/>
+            </div>
+            <div class="mt-3 text-center">
+                <a class="block w-fit mx-auto btn btn-secondary py-1.5 px-20" href="res/MoodleAssistantTutorial.xml" download>Download XML example</a>
+            </div>
+        </div>
+        <div class="mt-6 format-section format-1 hidden">
+            <h3 class="text-2xl text-gray-700">Aiken template</h3>
+            <p class="mt-3">
+                You can include your <i>parameters</i> in the question text and the answers. You can't include them in the correct answer field.
+                Next, export the question in Aiken format
+                (<a class="text-blue-500" href="https://docs.moodle.org/310/en/Export_questions" target="_blank">How to export questions in Moodle?</a>).
+            </p>
+        </div>
     </div>
     
     <div class="mt-16">
@@ -89,28 +110,28 @@
         <div class="mt-3">
             <table class="mx-auto border-collapse table-auto border border-zinc-300">
                 <thead>
-                    <tr>
-                        <th class="p-1 border border-zinc-200" scope="col">state</th>
-                        <th class="p-1 border border-zinc-200" scope="col">IMAGE-number</th>
-                        <th class="p-1 border border-zinc-200" scope="col">capital</th>
-                    </tr>
+                <tr>
+                    <th class="p-1 border border-zinc-200" scope="col">state</th>
+                    <th class="p-1 border border-zinc-200" scope="col">IMAGE-number</th>
+                    <th class="p-1 border border-zinc-200" scope="col">capital</th>
+                </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td class="p-1 border border-zinc-200">Italy</td>
-                        <td class="p-1 border border-zinc-200">Image1.png</td>
-                        <td class="p-1 border border-zinc-200">Rome</td>
-                    </tr>
-                    <tr>
-                        <td class="p-1 border border-zinc-200">France</td>
-                        <td class="p-1 border border-zinc-200">Image2.png</td>
-                        <td class="p-1 border border-zinc-200">Paris</td>
-                    </tr>
-                    <tr>
-                        <td class="p-1 border border-zinc-200">Spain</td>
-                        <td class="p-1 border border-zinc-200">Image3.png</td>
-                        <td class="p-1 border border-zinc-200">Madrid</td>
-                    </tr>
+                <tr>
+                    <td class="p-1 border border-zinc-200">Italy</td>
+                    <td class="p-1 border border-zinc-200">Image1.png</td>
+                    <td class="p-1 border border-zinc-200">Rome</td>
+                </tr>
+                <tr>
+                    <td class="p-1 border border-zinc-200">France</td>
+                    <td class="p-1 border border-zinc-200">Image2.png</td>
+                    <td class="p-1 border border-zinc-200">Paris</td>
+                </tr>
+                <tr>
+                    <td class="p-1 border border-zinc-200">Spain</td>
+                    <td class="p-1 border border-zinc-200">Image3.png</td>
+                    <td class="p-1 border border-zinc-200">Madrid</td>
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -143,6 +164,9 @@
         <NavLink href="/Replicator" class="block w-fit mt-6 mx-auto btn btn-primary py-1.5 px-10">Try to expand your question now!</NavLink>
     </div>
 </div>
+<SectionContent SectionName="LocalScripts">
+    <script src="js/tutorial.js"></script>
+</SectionContent>
 
 @code {
     
