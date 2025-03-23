@@ -22,11 +22,12 @@ internal class MergedDocumentShould{
     [Test]
     public void Success_XmlDocument(){
         var xml = new XmlDocument();
-        xml.LoadXml(TestService.GetString(false, "MoodleQuestionOk.xml"));
+        xml.LoadXml(TestService.GetString("MoodleQuestionOk.xml", true));
+        var dir = Directory.GetCurrentDirectory();
 
         var doc = new MergedDocument(xml, Format.Xml);
         doc.Save("./tmp/SAMPLE.xml");
-        Assert.That(File.Exists(TestService.GetString(true, "SAMPLE.xml")));
+        Assert.That(File.Exists($"{dir}/tmp/SAMPLE.xml"));
     }
 
     [TearDown]

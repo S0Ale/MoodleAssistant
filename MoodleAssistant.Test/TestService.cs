@@ -16,9 +16,9 @@ internal abstract class TestService{
         return new FileStream(Path.Combine(AssetsDir, fileName), FileMode.Open);
     }
 
-    public static string GetString(bool temp, string fileName){
-        var dir = temp ? TempDir : AssetsDir;
-        return File.ReadAllText(Path.Combine(dir, fileName));
+    public static string GetString(string fileName, bool includeDir = false){
+        var path = includeDir ? Path.Combine(AssetsDir, fileName) : fileName;
+        return File.ReadAllText(path);
     }
     
     public static Mock<IBrowserFile> GetMockFile(string name, string contentType){
