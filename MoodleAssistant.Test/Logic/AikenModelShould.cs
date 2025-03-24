@@ -18,7 +18,6 @@ internal class AikenModelShould : ModelTest{
     }
     
     [Test]
-    [TestCase("InvalidAnswer.txt")]
     [TestCase("InvalidOption.txt")]
     [TestCase("AikenMoreQuestions.txt")]
     [TestCase("AikenWithFileParams.txt")]

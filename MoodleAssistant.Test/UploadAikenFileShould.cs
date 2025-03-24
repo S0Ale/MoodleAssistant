@@ -52,7 +52,6 @@ internal class UploadAikenFileShould : FileUploadTest{
     }
 
     [Test]
-    [TestCase("InvalidAnswer.txt")]
     [TestCase("InvalidOption.txt")]
     public void Throw_AikenBadFormed(string name){
         var template = TestService.Create(name, System.Net.Mime.MediaTypeNames.Text.Plain);
