@@ -84,6 +84,14 @@ public class AikenModel(IBrowserFile file, IBrowserFileService fileService) : IT
     }
     
     /// <summary>
+    /// Checks if the correct section of the Aiken file has only one parameter.
+    /// </summary>
+    /// <returns><c>true</c> if the correct answer contains one parameter or less; otherwise <c>false</c>.</returns>
+    private bool AnswerHasOnlyOneParameter(){
+        return new ParameterParser(_aikenFile.Questions.First().CorrectAnswer).Match().Count() <= 1;
+    }
+    
+    /// <summary>
     /// Gets the parameters from an Aiken element.
     /// </summary>
     /// <param name="el">An instance of <see cref="AikenElement"/></param>
@@ -101,6 +109,8 @@ public class AikenModel(IBrowserFile file, IBrowserFileService fileService) : IT
         var options = _aikenFile.Questions.SelectMany(question => question.Options);
         foreach (var option in options)
             answerParametersList.AddRange(GetParametersFromAikenElement(option));
+        
+        answerParametersList.AddRange(_aikenFile.Questions.Select(question => question.CorrectAnswer));
         AnswerParametersList = answerParametersList.Distinct();
     }
     
@@ -114,5 +124,7 @@ public class AikenModel(IBrowserFile file, IBrowserFileService fileService) : IT
             throw new ReplicatorException(Error.ZeroOrMoreQuestions);
         if (HasFileParameters())
             throw new ReplicatorException(Error.AikenWithFile);
+        if (!AnswerHasOnlyOneParameter())
+            throw new ReplicatorException(Error.AnswerTooMuchParams);
     }
 }

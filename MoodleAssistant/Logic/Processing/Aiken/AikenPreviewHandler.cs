@@ -11,8 +11,10 @@ public class AikenPreviewHandler : IPreviewHandler{
         if(doc is not AikenDocument aikenDoc) return;
         
         foreach (var question in aikenDoc.Questions){
+            var answers = question.Options.Select(option => $"{option.Letter}) {option.Text}");
+            answers = answers.Append($"ANSWER: {question.CorrectAnswer}");
             var item = new PreviewItem(question.Text){
-                Answers = question.Options.Select(option => $"{option.Letter}) {option.Text}").ToArray()
+                Answers = answers.ToArray()
             };
             Items.Add(item);
         }

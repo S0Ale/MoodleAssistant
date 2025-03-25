@@ -40,6 +40,11 @@ public enum Error{
     AikenWithFile,
     
     /// <summary>
+    /// The uploaded Aiken file cannot have more than one parameter.
+    /// </summary>
+    AnswerTooMuchParams,
+    
+    /// <summary>
     /// The uploaded file is empty.
     /// </summary>
     EmptyFile,
