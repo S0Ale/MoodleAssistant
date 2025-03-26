@@ -21,6 +21,7 @@ internal class AikenModelShould : ModelTest{
     [TestCase("InvalidOption.txt")]
     [TestCase("AikenMoreQuestions.txt")]
     [TestCase("AikenWithFileParams.txt")]
+    [TestCase("AikenParamsIntoAnswer.txt")]
     public void Throw_AikenBadFormed(string name){
         Service.Setup(s => s.GetFile("TEMPLATE"))
             .Returns(() => TestService.GetStream(name));
@@ -31,11 +32,13 @@ internal class AikenModelShould : ModelTest{
     }
 
     [Test]
-    public void Success_BasicAiken(){
+    [TestCase("AikenOk.txt")]
+    [TestCase("AikenOk2.txt")]
+    public void Success_BasicAiken(string name){
         Service.Setup(s => s.GetFile("TEMPLATE"))
-            .Returns(() => TestService.GetStream("AikenOk.txt"));
+            .Returns(() => TestService.GetStream(name));
         
-        var file = TestService.GetMockFile("AikenOk.txt", System.Net.Mime.MediaTypeNames.Text.Plain).Object;
+        var file = TestService.GetMockFile(name, System.Net.Mime.MediaTypeNames.Text.Plain).Object;
         var model = new AikenModel(file, Service.Object);
         model.Validate();
         Assert.That(((AikenDocument)model.TemplateDocument).Questions, Has.Count.EqualTo(1));
