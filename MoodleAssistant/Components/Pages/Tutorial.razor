@@ -32,7 +32,7 @@
             <p class="mt-3">
                 You can include your <i>parameters</i> in the question and answer text areas. Next, export the question in Moodle XML format
                 (<a class="text-blue-500" href="https://docs.moodle.org/310/en/Export_questions" target="_blank">How to export questions in Moodle?</a>).
-                Make sure not to check the "Write category to file" option.
+                Make sure not to check the "Write category to file" option.<br/>
                 If direct editing in Moodle is not possible, you need to find your identifiers and add <span class="code">[*[[</span> and <span class="code">]]*]</span> in the previously exported file.<br/>
                 In our example, we have:
             </p>
@@ -46,10 +46,29 @@
         <div class="mt-6 format-section format-1 hidden">
             <h3 class="text-2xl text-gray-700">Aiken template</h3>
             <p class="mt-3">
-                You can include your <i>parameters</i> in the question text and the answers. You can't include them in the correct answer field.
-                Next, export the question in Aiken format
-                (<a class="text-blue-500" href="https://docs.moodle.org/310/en/Export_questions" target="_blank">How to export questions in Moodle?</a>).
+                You can include <i>parameters</i> in the question text, the answer options, and the correct answer field.
             </p>
+            <p class="w-fit mt-1 px-2 py-1 warning-dialog text-left">
+                (<strong>NOTE</strong>: The correct answer field can only contain one parameter)
+            </p>
+            <p class="mt-3">
+                Additionally, if the parameter you’re replacing is not a letter, Moodle will reject the file. You can write the question in the Moodle editor or in a text editor.
+                Next, export the question in Aiken format
+                (<a class="text-blue-500" href="https://docs.moodle.org/310/en/Export_questions" target="_blank">How to export questions in Moodle?</a>). Make sure not to check the "Write category to file" option.
+            </p>
+            <p class="w-fit mt-1 px-2 py-1 warning-dialog text-left">
+                (<strong>NOTE</strong>: If you're using the Moodle editor, you cannot include parameters in the correct answer field. To do so, you'll need to modify the text file directly)
+            </p>
+            <p class="mt-3">
+                In our example, we have:
+            </p>
+            
+            <div class="mt-6 text-center">
+                <img src="res/aikenExample.png" alt="Question with parameters example." class="mx-auto text-center border rounded border-zinc-200"/>
+            </div>
+            <div class="mt-3 text-center">
+                <a class="block w-fit mx-auto btn btn-secondary py-1.5 px-20" href="res/AikenTutorial.txt" download>Download Aiken example</a>
+            </div>
         </div>
     </div>
     
@@ -69,29 +88,56 @@
         </figure>
         
         <p class="mt-6 text-center">Our CSV example:</p>
-        <table class="mt-3 mx-auto border-collapse table-auto border border-zinc-300">
-            <thead>
-            <tr>
-                <th class="p-1 border border-zinc-200" scope="col">state</th>
-                <th class="p-1 border border-zinc-200" scope="col">capital</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td class="p-1 border border-zinc-200">Italy</td>
-                <td class="p-1 border border-zinc-200">Rome</td>
-            </tr>
-            <tr>
-                <td class="p-1 border border-zinc-200">France</td>
-                <td class="p-1 border border-zinc-200">Paris</td>
-            </tr>
-            <tr>
-                <td class="p-1 border border-zinc-200">Spain</td>
-                <td class="p-1 border border-zinc-200">Madrid</td>
-            </tr>
-            </tbody>
-        </table>
-        <a class="mt-3 block w-fit mx-auto btn btn-secondary py-1.5 px-20" href="res/MoodleAssistantTutorial.csv" download>Download CSV example</a>
+        <div class="format-csv-section csv-0">
+            <table class="mt-3 mx-auto border-collapse table-auto border border-zinc-300">
+                <thead>
+                <tr>
+                    <th class="p-1 border border-zinc-200" scope="col">state</th>
+                    <th class="p-1 border border-zinc-200" scope="col">capital</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="p-1 border border-zinc-200">Italy</td>
+                    <td class="p-1 border border-zinc-200">Rome</td>
+                </tr>
+                <tr>
+                    <td class="p-1 border border-zinc-200">France</td>
+                    <td class="p-1 border border-zinc-200">Paris</td>
+                </tr>
+                <tr>
+                    <td class="p-1 border border-zinc-200">Spain</td>
+                    <td class="p-1 border border-zinc-200">Madrid</td>
+                </tr>
+                </tbody>
+            </table>
+            <a class="mt-3 block w-fit mx-auto btn btn-secondary py-1.5 px-20" href="res/MoodleAssistantTutorial.csv" download>Download CSV example</a>
+        </div>
+        <div class="format-csv-section csv-1 hidden">
+            <table class="mt-3 mx-auto border-collapse table-auto border border-zinc-300">
+                <thead>
+                <tr>
+                    <th class="p-1 border border-zinc-200" scope="col">state</th>
+                    <th class="p-1 border border-zinc-200" scope="col">capital</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td class="p-1 border border-zinc-200">Italy</td>
+                    <td class="p-1 border border-zinc-200">A</td>
+                </tr>
+                <tr>
+                    <td class="p-1 border border-zinc-200">France</td>
+                    <td class="p-1 border border-zinc-200">B</td>
+                </tr>
+                <tr>
+                    <td class="p-1 border border-zinc-200">Spain</td>
+                    <td class="p-1 border border-zinc-200">C</td>
+                </tr>
+                </tbody>
+            </table>
+            <a class="mt-3 block w-fit mx-auto btn btn-secondary py-1.5 px-20" href="res/AikenTutorial.csv" download>Download CSV example</a>
+        </div>
     </div>
     
     <div class="mt-8">

@@ -1,17 +1,18 @@
-﻿let index = 0;
-const select = document.querySelector('#tutorial-format');
-console.log(select);
-select.addEventListener('change', (event) => {
+﻿let index1 = 0;
+let index2 = 0;
+document.querySelector('#tutorial-format').addEventListener('change', (event) => {
     //reset all sections
-    let sections = document.querySelectorAll('.format-section');
-    sections.forEach(section => {
+    document.querySelectorAll('.format-section').forEach(section => {
+        section.classList.add('hidden');
+    });
+    document.querySelectorAll('.format-csv-section').forEach(section => {
         section.classList.add('hidden');
     });
 
-    //parse vlue to int
-    index = parseInt(event.target.value);
+    //parse value to int
+    index1 = parseInt(event.target.value);
+    index2 = parseInt(event.target.value);
     
-    let toDisplay = document.querySelector(`.format-${index}`);
-    toDisplay.classList.remove('hidden');
-    console.log(toDisplay);
+    document.querySelector(`.format-${index1}`).classList.remove('hidden');
+    document.querySelector(`.csv-${index2}`).classList.remove('hidden');
 });
