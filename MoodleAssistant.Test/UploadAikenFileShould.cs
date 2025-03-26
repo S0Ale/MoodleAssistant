@@ -86,9 +86,11 @@ internal class UploadAikenFileShould : FileUploadTest{
     }
     
     [Test]
-    public void Success_BasicAiken(){
-        var template = TestService.Create("AikenOk.txt", System.Net.Mime.MediaTypeNames.Text.Plain);
-        var csv = TestService.Create("CsvOkWithAiken.csv", System.Net.Mime.MediaTypeNames.Text.Csv);
+    [TestCase("AikenOk.txt", "CsvOkWithAiken.csv")]
+    [TestCase("AikenOk2.txt", "CsvOkWithAiken2.csv")]
+    public void Success_BasicAiken(string aiken, string csvName){
+        var template = TestService.Create(aiken, System.Net.Mime.MediaTypeNames.Text.Plain);
+        var csv = TestService.Create(csvName, System.Net.Mime.MediaTypeNames.Text.Csv);
         _xml.UploadFiles(template);
         _csv.UploadFiles(csv);
         

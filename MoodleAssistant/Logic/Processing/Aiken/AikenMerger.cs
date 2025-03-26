@@ -41,13 +41,13 @@ public class AikenMerger(AikenDocument template, IEnumerable<string[]> csvAsList
             }
             
             // Look into the correct answer for params
-            parser = new ParameterParser(newQuestion.CorrectAnswer);
+            parser = new ParameterParser(newQuestion.CorrectAnswer ?? "");
             parameterList = parser.Match() as List<Parameter> ?? [];
             foreach (var parameter in parameterList){
                 parameter.Replacement = !previewMode ? FindInCsv(csvAsList, j, parameter.Name) :
                     $"<span class=\"code\">[{FindInCsv(csvAsList, j, parameter.Name)}]</span>";
             }
-            parser.Replace(parameterList);
+            newQuestion.CorrectAnswer = parser.Replace(parameterList);
             
             merged.AppendQuestion(newQuestion);
         }

@@ -110,7 +110,12 @@ public class AikenModel(IBrowserFile file, IBrowserFileService fileService) : IT
         foreach (var option in options)
             answerParametersList.AddRange(GetParametersFromAikenElement(option));
         
-        answerParametersList.AddRange(_aikenFile.Questions.Select(question => question.CorrectAnswer));
+        var correctAnswers = _aikenFile.Questions.Select(question => question.CorrectAnswer);
+        foreach (var answer in correctAnswers){
+            var paramList = new ParameterParser(answer ?? "").Match();
+            answerParametersList.AddRange(paramList.Select(parameter => parameter.Name));
+        }
+        
         AnswerParametersList = answerParametersList.Distinct();
     }
     
