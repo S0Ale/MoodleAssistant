@@ -30,6 +30,7 @@ Implements [ITemplateModel](MoodleAssistant.Logic.Models.ITemplateModel.md 'Mood
 
 | Methods | |
 | :--- | :--- |
+| [AnswerHasOnlyOneParameter()](MoodleAssistant.Logic.Models.AikenModel.AnswerHasOnlyOneParameter().md 'MoodleAssistant.Logic.Models.AikenModel.AnswerHasOnlyOneParameter()') | Checks if the correct section of the Aiken file has only one parameter. |
 | [GetParametersFromAikenElement(AikenElement)](MoodleAssistant.Logic.Models.AikenModel.GetParametersFromAikenElement(AikenDoc.AikenElement).md 'MoodleAssistant.Logic.Models.AikenModel.GetParametersFromAikenElement(AikenDoc.AikenElement)') | Gets the parameters from an Aiken element. |
 | [HasFileParameters()](MoodleAssistant.Logic.Models.AikenModel.HasFileParameters().md 'MoodleAssistant.Logic.Models.AikenModel.HasFileParameters()') | Checks if the Aiken file has at least one file parameter. |
 | [HasOnlyOneQuestion()](MoodleAssistant.Logic.Models.AikenModel.HasOnlyOneQuestion().md 'MoodleAssistant.Logic.Models.AikenModel.HasOnlyOneQuestion()') | Checks if the Aiken file has only one question. |
