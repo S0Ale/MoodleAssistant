@@ -1,6 +1,5 @@
 ﻿using AikenDoc;
 using MoodleAssistant.Logic.Parse;
-using MoodleAssistant.Services;
 
 namespace MoodleAssistant.Logic.Processing.Aiken;
 
@@ -21,40 +20,42 @@ public class AikenMerger(AikenDocument template, IEnumerable<string[]> csvAsList
         
         for (var j = 1; j < csvAsList.Count(); j++){
             var newQuestion = question.Clone() as AikenQuestion;
-            var parser = new ParameterParser(newQuestion!.Text);
-            var parameterList = parser.Match() as List<Parameter> ?? [];
-            foreach (var parameter in parameterList){
-                parameter.Replacement = !previewMode ? FindInCsv(csvAsList, j, parameter.Name) : 
-                    $"<span class=\"code\">[{FindInCsv(csvAsList, j, parameter.Name)}]</span>";
-            }
-            newQuestion.Text = parser.Replace(parameterList);
+            // Replace into the question text
+            newQuestion!.Text = ReplaceParameters(newQuestion.Text, previewMode, j);
             
-            // Look in the options for parameters
-            foreach (var option in newQuestion.Options){
-                parser = new ParameterParser(option.Text);
-                parameterList = parser.Match() as List<Parameter> ?? [];
-                foreach (var parameter in parameterList){
-                    parameter.Replacement = !previewMode ? FindInCsv(csvAsList, j, parameter.Name) : 
-                        $"<span class=\"code\">[{FindInCsv(csvAsList, j, parameter.Name)}]</span>";
-                }
-                option.Text = parser.Replace(parameterList);
-            }
+            // Replace into the options' text
+            foreach (var option in newQuestion.Options)
+                option.Text = ReplaceParameters(option.Text, previewMode, j);
             
-            // Look into the correct answer for params
-            parser = new ParameterParser(newQuestion.CorrectAnswer ?? "");
-            parameterList = parser.Match() as List<Parameter> ?? [];
-            foreach (var parameter in parameterList){
-                parameter.Replacement = !previewMode ? FindInCsv(csvAsList, j, parameter.Name) :
-                    $"<span class=\"code\">[{FindInCsv(csvAsList, j, parameter.Name)}]</span>";
-            }
-            newQuestion.CorrectAnswer = parser.Replace(parameterList);
-            
+            // Replace into the correct answer
+            newQuestion.CorrectAnswer = ReplaceParameters(newQuestion.CorrectAnswer!, previewMode, j);
+              
             merged.AppendQuestion(newQuestion);
         }
 
         return merged;
     }
-    
+
+    /// <summary>
+    /// Replace the parameters in the input string with the values from the CSV file.
+    /// </summary>
+    /// <param name="input">The input string to replace the parameters in.</param>
+    /// <param name="previewMode">Weather the method is in preview mode or not.</param>
+    /// <param name="rowIndex"> The index of the row in the CSV file to use.</param>
+    /// <returns> The input string with the parameters replaced.</returns>
+    private string ReplaceParameters(string input, bool previewMode, int rowIndex){
+        var parser = new ParameterParser(input);
+        var parameterList = parser.Match() as List<Parameter> ?? [];
+
+        foreach (var parameter in parameterList){
+            parameter.Replacement = !previewMode
+                ? FindInCsv(csvAsList, rowIndex, parameter.Name)
+                : $"<span class=\"code\">[{FindInCsv(csvAsList, rowIndex, parameter.Name)}]</span>";
+        }
+
+        return parser.Replace(parameterList);
+    }
+
     /// <summary>
     /// Finds the value of a parameter in the CSV file.
     /// </summary>
