@@ -28,7 +28,7 @@ public interface ITemplateModel{
     public void Validate();
     
     /// <summary>
-    /// Gets the parameters from the XML file and puts them in the <see cref="QuestionParametersList"/> and <see cref="AnswerParametersList"/>.
+    /// Gets the parameters from the template file and puts them in the <see cref="QuestionParametersList"/> and <see cref="AnswerParametersList"/>.
     /// </summary>
     public void TakeParameters();
 }

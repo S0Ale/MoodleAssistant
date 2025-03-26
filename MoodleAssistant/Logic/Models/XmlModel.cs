@@ -1,7 +1,7 @@
 ﻿using System.Text;
-using System.Text.RegularExpressions;
 using System.Xml;
 using Microsoft.AspNetCore.Components.Forms;
+using MoodleAssistant.Logic.Parse;
 using MoodleAssistant.Logic.Utils;
 using MoodleAssistant.Services;
 
@@ -12,22 +12,15 @@ namespace MoodleAssistant.Logic.Models;
 /// </summary>
 /// <param name="file">The instance of <see cref="IBrowserFile"/> representing the file to validate.</param>
 /// <param name="fileService">An instance of <see cref="IBrowserFileService"/> to manage saved files.</param>
-public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : ITemplateModel, IValidationModel{
-    
-    /// <summary>
-    /// The pattern to match the parameters in the XML file.
-    /// </summary>
-    private const string Pattern = @"(\[\*\[\[)([^\]\*\]\]]+)(\]\]\*\])";
+public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : ITemplateModel{
     
     /// <summary>
     /// Gets the XML template document.
     /// </summary>
     private XmlDocument _xmlFile = new XmlDocument();
     
-    /// <summary>
-    /// Gets the template document.
-    /// </summary>
-    public Object TemplateDocument{
+    /// <inheritdoc/>
+    public object TemplateDocument{
         get => _xmlFile;
         set => _xmlFile = (XmlDocument)value;
     }
@@ -86,14 +79,12 @@ public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : ITem
     /// <summary>
     /// Gets the parameters from a XML node.
     /// </summary>
-    /// <param name="textNode">An instance of <see cref="XmlNode"/></param>
+    /// <param name="textNode">An instance of <see cref="XmlNode"/>.</param>
     /// <returns>The list of parameters contained into the node.</returns>
     private static List<string> GetParametersFromXmlNode(XmlNode textNode){
-        var questionText = textNode.InnerText;                                                                                                               
-        var parametersList = new List<string>();                                                                                                             
-        foreach (Match match in Regex.Matches(questionText, Pattern))                                                                                                   
-            parametersList.Add(match.Groups[2].Value);                                                                                                       
-        return parametersList;                                                                                                                               
+        var nodeText = textNode.InnerText;                   
+        var paramsList = new ParameterParser(nodeText).Match();
+        return paramsList.Select(param => param.Name).ToList();                                                                                                                               
     }
 
     /// <inheritdoc/>
@@ -119,12 +110,12 @@ public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : ITem
         AnswerParametersList = answerParametersList.Distinct();                                                                                              
     }
 
-    /// <inheritdoc cref="ITemplateModel.Validate" />
+    /// <inheritdoc/>
     public void Validate(){
         if (!IsXml(file))
             throw new ReplicatorException(Error.NonXmlFile);
         if (!IsWellFormattedXml())
-            throw new ReplicatorException(Error.XmlBadFormed);
+            throw new ReplicatorException(Error.TemplateBadFormed);
         if (!HasOnlyOneQuestion())
             throw new ReplicatorException(Error.ZeroOrMoreQuestions);
         if (!HasQuestionText())

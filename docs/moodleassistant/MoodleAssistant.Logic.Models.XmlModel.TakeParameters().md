@@ -3,7 +3,7 @@
 
 ## XmlModel.TakeParameters() Method
 
-Gets the parameters from the XML file and puts them in the [QuestionParametersList](MoodleAssistant.Logic.Models.ITemplateModel.QuestionParametersList.md 'MoodleAssistant.Logic.Models.ITemplateModel.QuestionParametersList') and [AnswerParametersList](MoodleAssistant.Logic.Models.ITemplateModel.AnswerParametersList.md 'MoodleAssistant.Logic.Models.ITemplateModel.AnswerParametersList').
+Gets the parameters from the template file and puts them in the [QuestionParametersList](MoodleAssistant.Logic.Models.ITemplateModel.QuestionParametersList.md 'MoodleAssistant.Logic.Models.ITemplateModel.QuestionParametersList') and [AnswerParametersList](MoodleAssistant.Logic.Models.ITemplateModel.AnswerParametersList.md 'MoodleAssistant.Logic.Models.ITemplateModel.AnswerParametersList').
 
 ```csharp
 public void TakeParameters();

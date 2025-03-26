@@ -14,7 +14,7 @@ private static System.Collections.Generic.List<string> GetParametersFromXmlNode(
 
 `textNode` [System.Xml.XmlNode](https://docs.microsoft.com/en-us/dotnet/api/System.Xml.XmlNode 'System.Xml.XmlNode')
 
-An instance of [System.Xml.XmlNode](https://docs.microsoft.com/en-us/dotnet/api/System.Xml.XmlNode 'System.Xml.XmlNode')
+An instance of [System.Xml.XmlNode](https://docs.microsoft.com/en-us/dotnet/api/System.Xml.XmlNode 'System.Xml.XmlNode').
 
 #### Returns
 [System.Collections.Generic.List&lt;](https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.List-1 'System.Collections.Generic.List`1')[System.String](https://docs.microsoft.com/en-us/dotnet/api/System.String 'System.String')[&gt;](https://docs.microsoft.com/en-us/dotnet/api/System.Collections.Generic.List-1 'System.Collections.Generic.List`1')  

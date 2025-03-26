@@ -30,6 +30,21 @@ public enum Error{
     NonXmlFile,
     
     /// <summary>
+    /// The uploaded file is not a valid Aiken file.
+    /// </summary>
+    NonAikenFile,
+    
+    /// <summary>
+    /// The uploaded Aiken file cannot have file-ype parameters.
+    /// </summary>
+    AikenWithFile,
+    
+    /// <summary>
+    /// The uploaded Aiken file cannot have more than one parameter.
+    /// </summary>
+    AnswerTooMuchParams,
+    
+    /// <summary>
     /// The uploaded file is empty.
     /// </summary>
     EmptyFile,
@@ -40,12 +55,12 @@ public enum Error{
     FileTooBig,
     
     /// <summary>
-    /// The uploaded XML file is not well-formatted.
+    /// The uploaded template file is not well-formatted.
     /// </summary>
-    XmlBadFormed,
+    TemplateBadFormed,
     
     /// <summary>
-    /// The uploaded XML file has zero or more than one question.
+    /// The uploaded template file has zero or more than one question.
     /// </summary>
     ZeroOrMoreQuestions,
     

@@ -11,8 +11,7 @@ public interface IValidationModel
 
 Derived  
 &#8627; [CsvModel](MoodleAssistant.Logic.Models.CsvModel.md 'MoodleAssistant.Logic.Models.CsvModel')  
-&#8627; [FileModel](MoodleAssistant.Logic.Models.FileModel.md 'MoodleAssistant.Logic.Models.FileModel')  
-&#8627; [XmlModel](MoodleAssistant.Logic.Models.XmlModel.md 'MoodleAssistant.Logic.Models.XmlModel')
+&#8627; [FileModel](MoodleAssistant.Logic.Models.FileModel.md 'MoodleAssistant.Logic.Models.FileModel')
 
 | Methods | |
 | :--- | :--- |

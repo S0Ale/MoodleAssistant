@@ -3,6 +3,7 @@ using Microsoft.JSInterop;
 using MoodleAssistant.Components.Upload;
 using MoodleAssistant.Logic.Models;
 using MoodleAssistant.Logic.Processing;
+using MoodleAssistant.Logic.Processing.Aiken;
 using MoodleAssistant.Logic.Processing.XML;
 using MoodleAssistant.Logic.Utils;
 
@@ -65,6 +66,7 @@ public partial class Replicator{
         state.Format = _formatSelect.Format;
         state.Factory = state.Format switch{
             Format.Xml => new XmlFactory(FileService),
+            Format.Aiken => new AikenFactory(FileService),
             _ => throw new NotImplementedException()
         };
 
@@ -104,8 +106,7 @@ public partial class Replicator{
             try{
                 state.Preview = state.Factory.CreatePreviewHandler();
                 state.Preview.GenerateItems(merger.MergeQuestion(true));
-                
-                state.Merged = (XmlDocument)merger.MergeQuestion();
+                state.Merged = merger.MergeQuestion();
             }
             catch (ReplicatorException e){
                 SetError(e.Error);
@@ -171,7 +172,7 @@ public partial class Replicator{
     /// Downloads the merged file.
     /// </summary>
     private async Task Download(){
-        var file = await FileService.StoreDownloadFile(ReplicatorState.Merged!, _formatSelect.Format); // need to change this
-        await Js.InvokeVoidAsync("triggerFileDownload", file, "/Uploads/MERGED.xml");
+        var file = await FileService.StoreDownloadFile(ReplicatorState.Merged!, _formatSelect.Format); 
+        await Js.InvokeVoidAsync("triggerFileDownload", file, $"/Uploads/{file}");
     }
 }

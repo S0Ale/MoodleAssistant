@@ -1,0 +1,5 @@
+﻿What is the capital of [*[[state]]*]?
+A. Rome
+B. Paris
+C. Madrid
+ANSWER: [*[[capital]]*][*[[extra]]*]

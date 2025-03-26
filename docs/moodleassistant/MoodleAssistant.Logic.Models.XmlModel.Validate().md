@@ -9,7 +9,7 @@ Validates the template file contained in the model.
 public void Validate();
 ```
 
-Implements [Validate()](MoodleAssistant.Logic.Models.IValidationModel.Validate().md 'MoodleAssistant.Logic.Models.IValidationModel.Validate()'), [Validate()](MoodleAssistant.Logic.Models.ITemplateModel.Validate().md 'MoodleAssistant.Logic.Models.ITemplateModel.Validate()')
+Implements [Validate()](MoodleAssistant.Logic.Models.ITemplateModel.Validate().md 'MoodleAssistant.Logic.Models.ITemplateModel.Validate()')
 
 #### Exceptions
 
