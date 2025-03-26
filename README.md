@@ -1,6 +1,6 @@
 # MoodleAssistant
 
-[![Build](https://github.com/S0Ale/MoodleAssistant/actions/workflows/build.yml/badge.svg)](https://github.com/S0Ale/MoodleAssistant/actions/workflows/build.yml) [![Coverage Status](https://coveralls.io/repos/github/S0Ale/MoodleAssistant/badge.svg?branch=master)](https://coveralls.io/github/S0Ale/MoodleAssistant?branch=master) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Build](https://github.com/S0Ale/MoodleAssistant/actions/workflows/build.yml/badge.svg)](https://github.com/S0Ale/MoodleAssistant/actions/workflows/build.yml) <a href='https://coveralls.io/github/S0Ale/MoodleAssistant?branch=master'><img src='https://coveralls.io/repos/github/S0Ale/MoodleAssistant/badge.svg?branch=master' alt='Coverage Status' /></a> [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **MoodleAssistant** is a web application that generates multiple question variants for Moodle from a single template question, enabling users to create diverse quizzes with minimal effort.
 
