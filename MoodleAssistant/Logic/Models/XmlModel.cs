@@ -31,6 +31,8 @@ public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : ITem
     /// <inheritdoc/>
     public IEnumerable<string> AnswerParametersList{ get; set; } = [];
 
+    /// <inheritdoc/>
+    public IEnumerable<string> ParametersList { get; set; } = [];
     /// <summary>
     /// Checks if the <see cref="IBrowserFile.ContentType"/> of a file is XML.
     /// </summary>
@@ -110,6 +112,14 @@ public class XmlModel(IBrowserFile file, IBrowserFileService fileService) : ITem
         AnswerParametersList = answerParametersList.Distinct();                                                                                              
     }
 
+    /// <inheritdoc/>
+    public void TakeAllParameters() {
+        var textNodeList = _xmlFile.GetElementsByTagName("text");
+        var parametersList = new List<string>();
+        foreach (XmlNode node in textNodeList)
+            parametersList.AddRange(GetParametersFromXmlNode(node));
+        ParametersList = parametersList.Distinct();
+    }
     /// <inheritdoc/>
     public void Validate(){
         if (!IsXml(file))

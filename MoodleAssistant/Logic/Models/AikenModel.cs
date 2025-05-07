@@ -25,7 +25,9 @@ public class AikenModel(IBrowserFile file, IBrowserFileService fileService) : IT
 
     /// <inheritdoc/>
     public IEnumerable<string> QuestionParametersList{ get; set; } = [];
-    
+
+    /// <inheritdoc/>
+    public IEnumerable<string> ParametersList { get; set; } = [];
     /// <inheritdoc/>
     public IEnumerable<string> AnswerParametersList{ get; set; } = [];
     
@@ -118,7 +120,27 @@ public class AikenModel(IBrowserFile file, IBrowserFileService fileService) : IT
         
         AnswerParametersList = answerParametersList.Distinct();
     }
-    
+    /// <summary>
+    /// Initializes all parameter lists
+    /// TODO update the body to initialize ParametersList
+    /// </summary>
+    public void TakeAllParameters() {
+        QuestionParametersList = _aikenFile.Questions.SelectMany(GetParametersFromAikenElement).Distinct();
+
+        var answerParametersList = new List<string>();
+        var options = _aikenFile.Questions.SelectMany(question => question.Options);
+        foreach (var option in options)
+            answerParametersList.AddRange(GetParametersFromAikenElement(option));
+
+        var correctAnswers = _aikenFile.Questions.Select(question => question.CorrectAnswer);
+        foreach (var answer in correctAnswers) {
+            var paramList = new ParameterParser(answer ?? "").Match();
+            answerParametersList.AddRange(paramList.Select(parameter => parameter.Name));
+        }
+
+        AnswerParametersList = answerParametersList.Distinct();
+    }
+
     /// <inheritdoc/>
     public void Validate(){
         if(!IsText(file))

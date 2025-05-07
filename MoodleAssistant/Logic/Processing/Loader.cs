@@ -30,7 +30,8 @@ public class Loader(IBrowserFileService fileService, IReplicatorFactory factory)
         await fileService.SaveFile(file, "TEMPLATE");
         model.Validate();
 
-        model.TakeParameters();
+        model.TakeAllParameters();
+        //model.TakeParameters();hopefully redundant
         return model;
     }
 
@@ -50,8 +51,9 @@ public class Loader(IBrowserFileService fileService, IReplicatorFactory factory)
             throw new ReplicatorException(Error.FileTooBig);
         
         var model = new CsvModel(file, fileService){
-            QuestionParametersList = templateModel.QuestionParametersList,
-            AnswersParametersList = templateModel.AnswerParametersList
+            AllParametersList = templateModel.ParametersList,
+            QuestionParametersList = templateModel.QuestionParametersList,//TODO redundant?
+            AnswersParametersList = templateModel.AnswerParametersList//TODO redundant?
         };
         _ = await fileService.SaveFile(file, CsvModel.FileName);
         model.Validate();

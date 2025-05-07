@@ -27,7 +27,7 @@ public class XmlMerger(IBrowserFileService fileService, XmlDocument template, IE
         for (var j = 1; j < csvAsList.Count(); j++){
             var xmlQuestionNode = merged.GetElementsByTagName("question").Item(0)?.Clone(); // 1. Clone the template question
             if (xmlQuestionNode == null) continue;
-            
+            /* TODO redundant if macroexpansion is available in question name
             var nameNode = xmlQuestionNode.SelectSingleNode("//name/text");
             if (!previewMode){
                 if (nameNode != null){
@@ -35,9 +35,9 @@ public class XmlMerger(IBrowserFileService fileService, XmlDocument template, IE
                     i++;
                 }
             }
-
+            */
             // 2. Replace the parameters with the values from the CSV file
-            var allNodes = xmlQuestionNode.SelectNodes("//text"); // Select all nodes of type text
+            var allNodes = xmlQuestionNode.SelectNodes(".//text");//xmlQuestionNode.SelectNodes("//text"); // Select all nodes of type text
             if (allNodes == null) continue;
             var nodes = allNodes.Cast<XmlNode>();
             var paramNodes = nodes.Where(n =>

@@ -10,7 +10,11 @@ public interface ITemplateModel{
     /// Gets the template document.
     /// </summary>
     public object TemplateDocument{ get; }
-    
+
+    /// <summary>
+    /// Gets the parameters found in any text part of the question.
+    /// </summary>
+    public IEnumerable<string> ParametersList { get; protected set; }
     /// <summary>
     /// Gets the parameters found in the question text.
     /// </summary>
@@ -31,4 +35,8 @@ public interface ITemplateModel{
     /// Gets the parameters from the template file and puts them in the <see cref="QuestionParametersList"/> and <see cref="AnswerParametersList"/>.
     /// </summary>
     public void TakeParameters();
+    /// <summary>
+    /// Gets the parameters from the template file from whatever part of the question and puts them in the <see cref="ParametersList"/>.
+    /// </summary>
+    public void TakeAllParameters();
 }

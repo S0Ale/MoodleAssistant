@@ -24,10 +24,15 @@ public class CsvModel(IBrowserFile file, IBrowserFileService fileService) : IVal
     private static readonly string[] MimeTypes = ["application/vnd.ms-excel", "text/csv"];
     
     /// <summary>
+    /// Gets the parameters found in any part of the question
+    /// </summary>
+    public IEnumerable<string> AllParametersList{ get; init; } = [];
+
+    /// <summary>
     /// Gets the parameters found in the question text
     /// </summary>
-    public IEnumerable<string> QuestionParametersList{ get; init; } = [];
-    
+    public IEnumerable<string> QuestionParametersList { get; init; } = [];
+
     /// <summary>
     /// Gets the parameters found in the answers.
     /// </summary>
@@ -55,8 +60,9 @@ public class CsvModel(IBrowserFile file, IBrowserFileService fileService) : IVal
         csv.Read();
         csv.ReadHeader();
         var headerRow = csv.HeaderRecord ?? [];
-        var questionAndAnswerList = QuestionParametersList.Concat(AnswersParametersList).Distinct().ToList();
-        return headerRow.All(questionAndAnswerList.Contains) && Equals(headerRow.Length, questionAndAnswerList.Count);
+        //var questionAndAnswerList = QuestionParametersList.Concat(AnswersParametersList).Distinct().ToList();//TODO redundant?
+        //return headerRow.All(questionAndAnswerList.Contains) && Equals(headerRow.Length, questionAndAnswerList.Count);
+        return headerRow.All(AllParametersList.Contains) && Equals(headerRow.Length, AllParametersList.Count());
     }
 
     /// <summary>
